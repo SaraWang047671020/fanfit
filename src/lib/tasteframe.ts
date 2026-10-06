@@ -2,7 +2,7 @@
 // the LLM layer only plans and explains, it never produces scores.
 // Algorithms follow docs/tasteframe_product_plan_v3.html §6 (validated by spike/ on 2026-10-06).
 
-import { type Domain, type EntityType, type QlooEntity, insights, insightsDeep, search } from "./qloo";
+import { DOMAINS, type Domain, type EntityType, type QlooEntity, insights, insightsDeep, search } from "./qloo";
 
 export interface PackageEntity {
   id: string;
@@ -156,5 +156,50 @@ export function swap(pkg: CreativePackage, slot: string, replacement: PackageEnt
     id: `${pkg.id}~${replacement.id.slice(0, 8)}`,
     label: label ?? `${pkg.label} (${replacement.name})`,
     entities: [...pkg.entities.filter((e) => e.slot !== slot), replacement],
+  };
+}
+
+// ---------------------------------------------------------------- agent metrics (deterministic)
+
+export interface PackageMetrics {
+  /** Share of the package's top-50 neighbours that also rank in the audience's top 100 (mean over domains). */
+  targetOverlap: number;
+  /** Share of the package's top-50 neighbours that were already in the base package's top 50 (mean over domains). */
+  coreRetention: number;
+  perDomain: { domain: Domain; targetOverlap: number; coreRetention: number }[];
+}
+
+export async function evaluatePackage(
+  pkg: CreativePackage,
+  base: CreativePackage,
+  audienceSeeds: string[],
+): Promise<PackageMetrics> {
+  const perDomain = await Promise.all(
+    DOMAINS.map(async (domain) => {
+      const [p, b, t] = await Promise.all([
+        packageContext(pkg, domain),
+        packageContext(base, domain),
+        insightsDeep({ entities: audienceSeeds, domain }),
+      ]);
+      const inBase = new Set(b.map((e) => e.entity_id));
+      const inTarget = new Set(t.map((e) => e.entity_id));
+      const n = p.length || 1;
+      return {
+        domain,
+        targetOverlap: p.filter((e) => inTarget.has(e.entity_id)).length / n,
+        coreRetention: p.filter((e) => inBase.has(e.entity_id)).length / n,
+      };
+    }),
+  );
+  const mean = (k: "targetOverlap" | "coreRetention") => perDomain.reduce((s, d) => s + d[k], 0) / perDomain.length;
+  return { targetOverlap: mean("targetOverlap"), coreRetention: mean("coreRetention"), perDomain };
+}
+
+export function applySwaps(base: CreativePackage, swaps: PackageEntity[], id: string): CreativePackage {
+  const slots = new Set(swaps.map((s) => s.slot));
+  return {
+    id,
+    label: swaps.map((s) => s.name).join(" + "),
+    entities: [...base.entities.filter((e) => !slots.has(e.slot)), ...swaps],
   };
 }

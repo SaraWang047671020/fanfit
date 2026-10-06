@@ -1,0 +1,1000 @@
+{
+  "recordedAt": "2026-10-06T08:34:39.545Z",
+  "events": [
+    {
+      "at": 6824,
+      "event": {
+        "type": "start",
+        "goal": "Move closer to the Gen Z streetwear audience without losing the arthouse horror core. Change at most 2 elements.",
+        "model": "gpt-5.4-mini",
+        "base": {
+          "id": "demo-a",
+          "label": "Package A — Arthouse core",
+          "entities": [
+            {
+              "id": "17C8BCEF-2FF2-4A23-8F51-6C8CB9CD8114",
+              "name": "Hereditary",
+              "type": "movie",
+              "slot": "film_ref"
+            },
+            {
+              "id": "B6D76FFA-A387-4B93-B56A-50575C698643",
+              "name": "Midsommar",
+              "type": "movie",
+              "slot": "film_ref_2"
+            },
+            {
+              "id": "16B70494-1B07-47E4-A318-D89DA4A50DAE",
+              "name": "Florence Pugh",
+              "type": "person",
+              "slot": "cast"
+            },
+            {
+              "id": "0795B56A-783E-4F4F-A268-98453C535C72",
+              "name": "Mica Levi",
+              "type": "artist",
+              "slot": "music"
+            },
+            {
+              "id": "C90E3920-BF05-4537-903F-085BFE2E41AC",
+              "name": "Acne Studios",
+              "type": "brand",
+              "slot": "brand"
+            }
+          ]
+        },
+        "audience": "Gen Z streetwear",
+        "baseline": {
+          "targetOverlap": 0.20000000000000004,
+          "coreRetention": 1,
+          "perDomain": [
+            {
+              "domain": "movie",
+              "targetOverlap": 0.46,
+              "coreRetention": 1
+            },
+            {
+              "domain": "artist",
+              "targetOverlap": 0.02,
+              "coreRetention": 1
+            },
+            {
+              "domain": "brand",
+              "targetOverlap": 0.12,
+              "coreRetention": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "at": 8361,
+      "event": {
+        "type": "tool_call",
+        "step": 1,
+        "tool": "inspect_package",
+        "reason": "Inspect the base package to see its current cultural neighbours and identify which slots are best to swap for a Gen Z streetwear shift.",
+        "args": {}
+      }
+    },
+    {
+      "at": 11680,
+      "event": {
+        "type": "tool_result",
+        "step": 1,
+        "tool": "inspect_package",
+        "summary": "5 slots; baseline target_overlap 20%"
+      }
+    },
+    {
+      "at": 13331,
+      "event": {
+        "type": "tool_call",
+        "step": 2,
+        "tool": "find_bridges",
+        "reason": "Find bridge candidates in movies that overlap with both the base package and a streetwear-leaning Gen Z audience.",
+        "args": {
+          "domain": "movie"
+        }
+      }
+    },
+    {
+      "at": 13333,
+      "event": {
+        "type": "tool_call",
+        "step": 3,
+        "tool": "find_bridges",
+        "reason": "Find bridge candidates in artists that overlap with both the base package and a streetwear-leaning Gen Z audience.",
+        "args": {
+          "domain": "artist"
+        }
+      }
+    },
+    {
+      "at": 13333,
+      "event": {
+        "type": "tool_call",
+        "step": 4,
+        "tool": "find_bridges",
+        "reason": "Find bridge candidates in brands that overlap with both the base package and a streetwear-leaning Gen Z audience.",
+        "args": {
+          "domain": "brand"
+        }
+      }
+    },
+    {
+      "at": 15876,
+      "event": {
+        "type": "tool_result",
+        "step": 2,
+        "tool": "find_bridges",
+        "summary": "Waves, The Favourite, Beautiful Boy, I'm Thinking of Ending Things"
+      }
+    },
+    {
+      "at": 18581,
+      "event": {
+        "type": "tool_result",
+        "step": 3,
+        "tool": "find_bridges",
+        "summary": "SZA"
+      }
+    },
+    {
+      "at": 19064,
+      "event": {
+        "type": "tool_result",
+        "step": 4,
+        "tool": "find_bridges",
+        "summary": "Off-white, Balenciaga, Comme des Garcons, Ssense"
+      }
+    },
+    {
+      "at": 21202,
+      "event": {
+        "type": "tool_call",
+        "step": 5,
+        "tool": "search_entity",
+        "reason": "Resolve a plausible actor swap that keeps the horror-art tone while appealing to Gen Z streetwear.",
+        "args": {
+          "name": "Jenna Ortega",
+          "type": "person"
+        }
+      }
+    },
+    {
+      "at": 21203,
+      "event": {
+        "type": "tool_call",
+        "step": 6,
+        "tool": "search_entity",
+        "reason": "Resolve a plausible actor swap that keeps the horror-art tone while appealing to Gen Z streetwear.",
+        "args": {
+          "name": "Hunter Schafer",
+          "type": "person"
+        }
+      }
+    },
+    {
+      "at": 21203,
+      "event": {
+        "type": "tool_call",
+        "step": 7,
+        "tool": "search_entity",
+        "reason": "Resolve a plausible actor swap that keeps the horror-art tone while appealing to Gen Z streetwear.",
+        "args": {
+          "name": "Ayo Edebiri",
+          "type": "person"
+        }
+      }
+    },
+    {
+      "at": 21542,
+      "event": {
+        "type": "tool_result",
+        "step": 7,
+        "tool": "search_entity",
+        "summary": "Ayo Edebiri → 30CD87BA…"
+      }
+    },
+    {
+      "at": 21550,
+      "event": {
+        "type": "tool_result",
+        "step": 6,
+        "tool": "search_entity",
+        "summary": "Hunter Schafer → 85E456AC…"
+      }
+    },
+    {
+      "at": 21561,
+      "event": {
+        "type": "tool_result",
+        "step": 5,
+        "tool": "search_entity",
+        "summary": "Jenna Ortega → E303B31F…"
+      }
+    },
+    {
+      "at": 26199,
+      "event": {
+        "type": "tool_call",
+        "step": 8,
+        "tool": "evaluate_swaps",
+        "reason": "Measure a single movie swap toward a streetwear-leaning Gen Z bridge candidate.",
+        "args": {
+          "swaps": [
+            {
+              "slot": "film_ref_2",
+              "entity_id": "0D7FD186-0207-40BF-8AF1-0FD79ADA63E6"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "at": 26203,
+      "event": {
+        "type": "tool_call",
+        "step": 9,
+        "tool": "evaluate_swaps",
+        "reason": "Measure a single actor swap toward a streetwear-leaning Gen Z bridge candidate.",
+        "args": {
+          "swaps": [
+            {
+              "slot": "cast",
+              "entity_id": "E303B31F-E9F3-4C48-927F-F7D61728B0E8"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "at": 26203,
+      "event": {
+        "type": "tool_call",
+        "step": 10,
+        "tool": "evaluate_swaps",
+        "reason": "Measure a single actor swap toward a streetwear-leaning Gen Z bridge candidate.",
+        "args": {
+          "swaps": [
+            {
+              "slot": "cast",
+              "entity_id": "85E456AC-0325-4471-82A9-275B60CFF553"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "at": 26203,
+      "event": {
+        "type": "tool_call",
+        "step": 11,
+        "tool": "evaluate_swaps",
+        "reason": "Measure a single actor swap toward a streetwear-leaning Gen Z bridge candidate.",
+        "args": {
+          "swaps": [
+            {
+              "slot": "cast",
+              "entity_id": "30CD87BA-11B0-4C61-90EA-EA573D7A5BB1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "at": 26203,
+      "event": {
+        "type": "tool_call",
+        "step": 12,
+        "tool": "evaluate_swaps",
+        "reason": "Measure a single brand swap toward a streetwear-leaning Gen Z bridge candidate.",
+        "args": {
+          "swaps": [
+            {
+              "slot": "brand",
+              "entity_id": "AC8F9047-F23D-4A54-BBAA-A3CBD2991C02"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "at": 26203,
+      "event": {
+        "type": "tool_call",
+        "step": 13,
+        "tool": "evaluate_swaps",
+        "reason": "Measure a single artist swap toward a streetwear-leaning Gen Z bridge candidate.",
+        "args": {
+          "swaps": [
+            {
+              "slot": "music",
+              "entity_id": "E2E58680-EE3F-4D1D-88B6-B79F87205B2C"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "at": 30840,
+      "event": {
+        "type": "tool_result",
+        "step": 8,
+        "tool": "evaluate_swaps",
+        "summary": "v1: target 30% (base 20%), core kept 73%",
+        "evaluation": {
+          "versionId": "v1",
+          "swaps": [
+            {
+              "id": "0D7FD186-0207-40BF-8AF1-0FD79ADA63E6",
+              "name": "Mid90s",
+              "type": "movie",
+              "slot": "film_ref_2"
+            }
+          ],
+          "metrics": {
+            "targetOverlap": 0.3,
+            "coreRetention": 0.7333333333333334,
+            "perDomain": [
+              {
+                "domain": "movie",
+                "targetOverlap": 0.6,
+                "coreRetention": 0.78
+              },
+              {
+                "domain": "artist",
+                "targetOverlap": 0.1,
+                "coreRetention": 0.64
+              },
+              {
+                "domain": "brand",
+                "targetOverlap": 0.2,
+                "coreRetention": 0.78
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "at": 31859,
+      "event": {
+        "type": "tool_result",
+        "step": 9,
+        "tool": "evaluate_swaps",
+        "summary": "v2: target 18% (base 20%), core kept 76%",
+        "evaluation": {
+          "versionId": "v2",
+          "swaps": [
+            {
+              "id": "E303B31F-E9F3-4C48-927F-F7D61728B0E8",
+              "name": "Jenna Ortega",
+              "type": "person",
+              "slot": "cast"
+            }
+          ],
+          "metrics": {
+            "targetOverlap": 0.18000000000000002,
+            "coreRetention": 0.7600000000000001,
+            "perDomain": [
+              {
+                "domain": "movie",
+                "targetOverlap": 0.34,
+                "coreRetention": 0.72
+              },
+              {
+                "domain": "artist",
+                "targetOverlap": 0.02,
+                "coreRetention": 0.82
+              },
+              {
+                "domain": "brand",
+                "targetOverlap": 0.18,
+                "coreRetention": 0.74
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "at": 33843,
+      "event": {
+        "type": "tool_result",
+        "step": 10,
+        "tool": "evaluate_swaps",
+        "summary": "v3: target 23% (base 20%), core kept 90%",
+        "evaluation": {
+          "versionId": "v3",
+          "swaps": [
+            {
+              "id": "85E456AC-0325-4471-82A9-275B60CFF553",
+              "name": "Hunter Schafer",
+              "type": "person",
+              "slot": "cast"
+            }
+          ],
+          "metrics": {
+            "targetOverlap": 0.22666666666666668,
+            "coreRetention": 0.9,
+            "perDomain": [
+              {
+                "domain": "movie",
+                "targetOverlap": 0.56,
+                "coreRetention": 0.88
+              },
+              {
+                "domain": "artist",
+                "targetOverlap": 0,
+                "coreRetention": 0.88
+              },
+              {
+                "domain": "brand",
+                "targetOverlap": 0.12,
+                "coreRetention": 0.94
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "at": 35174,
+      "event": {
+        "type": "tool_result",
+        "step": 11,
+        "tool": "evaluate_swaps",
+        "summary": "v4: target 22% (base 20%), core kept 68%",
+        "evaluation": {
+          "versionId": "v4",
+          "swaps": [
+            {
+              "id": "30CD87BA-11B0-4C61-90EA-EA573D7A5BB1",
+              "name": "Ayo Edebiri",
+              "type": "person",
+              "slot": "cast"
+            }
+          ],
+          "metrics": {
+            "targetOverlap": 0.22,
+            "coreRetention": 0.68,
+            "perDomain": [
+              {
+                "domain": "movie",
+                "targetOverlap": 0.56,
+                "coreRetention": 0.74
+              },
+              {
+                "domain": "artist",
+                "targetOverlap": 0,
+                "coreRetention": 0.76
+              },
+              {
+                "domain": "brand",
+                "targetOverlap": 0.1,
+                "coreRetention": 0.54
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "at": 37430,
+      "event": {
+        "type": "tool_result",
+        "step": 12,
+        "tool": "evaluate_swaps",
+        "summary": "v5: target 19% (base 20%), core kept 63%",
+        "evaluation": {
+          "versionId": "v5",
+          "swaps": [
+            {
+              "id": "AC8F9047-F23D-4A54-BBAA-A3CBD2991C02",
+              "name": "Vans",
+              "type": "brand",
+              "slot": "brand"
+            }
+          ],
+          "metrics": {
+            "targetOverlap": 0.18666666666666668,
+            "coreRetention": 0.6266666666666667,
+            "perDomain": [
+              {
+                "domain": "movie",
+                "targetOverlap": 0.44,
+                "coreRetention": 0.76
+              },
+              {
+                "domain": "artist",
+                "targetOverlap": 0.02,
+                "coreRetention": 0.56
+              },
+              {
+                "domain": "brand",
+                "targetOverlap": 0.1,
+                "coreRetention": 0.56
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "at": 38761,
+      "event": {
+        "type": "tool_result",
+        "step": 13,
+        "tool": "evaluate_swaps",
+        "summary": "v6: target 18% (base 20%), core kept 62%",
+        "evaluation": {
+          "versionId": "v6",
+          "swaps": [
+            {
+              "id": "E2E58680-EE3F-4D1D-88B6-B79F87205B2C",
+              "name": "SZA",
+              "type": "artist",
+              "slot": "music"
+            }
+          ],
+          "metrics": {
+            "targetOverlap": 0.18000000000000002,
+            "coreRetention": 0.62,
+            "perDomain": [
+              {
+                "domain": "movie",
+                "targetOverlap": 0.42,
+                "coreRetention": 0.78
+              },
+              {
+                "domain": "artist",
+                "targetOverlap": 0.06,
+                "coreRetention": 0.48
+              },
+              {
+                "domain": "brand",
+                "targetOverlap": 0.06,
+                "coreRetention": 0.6
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "at": 41354,
+      "event": {
+        "type": "tool_call",
+        "step": 14,
+        "tool": "evaluate_swaps",
+        "reason": "Test the strongest single movie bridge combined with the strongest single cast bridge.",
+        "args": {
+          "swaps": [
+            {
+              "slot": "film_ref_2",
+              "entity_id": "0D7FD186-0207-40BF-8AF1-0FD79ADA63E6"
+            },
+            {
+              "slot": "cast",
+              "entity_id": "85E456AC-0325-4471-82A9-275B60CFF553"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "at": 41356,
+      "event": {
+        "type": "tool_call",
+        "step": 15,
+        "tool": "evaluate_swaps",
+        "reason": "Test the strongest single movie bridge combined with the strongest single brand bridge.",
+        "args": {
+          "swaps": [
+            {
+              "slot": "film_ref_2",
+              "entity_id": "0D7FD186-0207-40BF-8AF1-0FD79ADA63E6"
+            },
+            {
+              "slot": "brand",
+              "entity_id": "AC8F9047-F23D-4A54-BBAA-A3CBD2991C02"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "at": 41357,
+      "event": {
+        "type": "tool_call",
+        "step": 16,
+        "tool": "evaluate_swaps",
+        "reason": "Test the strongest single cast bridge combined with the strongest single brand bridge.",
+        "args": {
+          "swaps": [
+            {
+              "slot": "cast",
+              "entity_id": "85E456AC-0325-4471-82A9-275B60CFF553"
+            },
+            {
+              "slot": "brand",
+              "entity_id": "AC8F9047-F23C-4A54-BBAA-A3CBD2991C02"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "at": 41357,
+      "event": {
+        "type": "tool_result",
+        "step": 16,
+        "tool": "evaluate_swaps",
+        "summary": "Entity AC8F9047-F23C-4A54-BBAA-A3CBD2991C02 was not returned by any tool. Resolve it with search_entity first.",
+        "error": true
+      }
+    },
+    {
+      "at": 44597,
+      "event": {
+        "type": "tool_result",
+        "step": 14,
+        "tool": "evaluate_swaps",
+        "summary": "v7: target 33% (base 20%), core kept 71%",
+        "evaluation": {
+          "versionId": "v7",
+          "swaps": [
+            {
+              "id": "0D7FD186-0207-40BF-8AF1-0FD79ADA63E6",
+              "name": "Mid90s",
+              "type": "movie",
+              "slot": "film_ref_2"
+            },
+            {
+              "id": "85E456AC-0325-4471-82A9-275B60CFF553",
+              "name": "Hunter Schafer",
+              "type": "person",
+              "slot": "cast"
+            }
+          ],
+          "metrics": {
+            "targetOverlap": 0.3333333333333333,
+            "coreRetention": 0.7133333333333333,
+            "perDomain": [
+              {
+                "domain": "movie",
+                "targetOverlap": 0.64,
+                "coreRetention": 0.78
+              },
+              {
+                "domain": "artist",
+                "targetOverlap": 0.12,
+                "coreRetention": 0.6
+              },
+              {
+                "domain": "brand",
+                "targetOverlap": 0.24,
+                "coreRetention": 0.76
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "at": 46399,
+      "event": {
+        "type": "tool_result",
+        "step": 15,
+        "tool": "evaluate_swaps",
+        "summary": "v8: target 34% (base 20%), core kept 52%",
+        "evaluation": {
+          "versionId": "v8",
+          "swaps": [
+            {
+              "id": "0D7FD186-0207-40BF-8AF1-0FD79ADA63E6",
+              "name": "Mid90s",
+              "type": "movie",
+              "slot": "film_ref_2"
+            },
+            {
+              "id": "AC8F9047-F23D-4A54-BBAA-A3CBD2991C02",
+              "name": "Vans",
+              "type": "brand",
+              "slot": "brand"
+            }
+          ],
+          "metrics": {
+            "targetOverlap": 0.34,
+            "coreRetention": 0.52,
+            "perDomain": [
+              {
+                "domain": "movie",
+                "targetOverlap": 0.7,
+                "coreRetention": 0.68
+              },
+              {
+                "domain": "artist",
+                "targetOverlap": 0.1,
+                "coreRetention": 0.42
+              },
+              {
+                "domain": "brand",
+                "targetOverlap": 0.22,
+                "coreRetention": 0.46
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "at": 49101,
+      "event": {
+        "type": "tool_call",
+        "step": 17,
+        "tool": "search_entity",
+        "reason": "Resolve Vans to an entity ID so the final combination can be evaluated correctly.",
+        "args": {
+          "name": "Vans",
+          "type": "brand"
+        }
+      }
+    },
+    {
+      "at": 49348,
+      "event": {
+        "type": "tool_result",
+        "step": 17,
+        "tool": "search_entity",
+        "summary": "Vans → AC8F9047…"
+      }
+    },
+    {
+      "at": 51297,
+      "event": {
+        "type": "tool_call",
+        "step": 18,
+        "tool": "evaluate_swaps",
+        "reason": "Test the strongest cast bridge combined with the strongest brand bridge after resolving the brand ID.",
+        "args": {
+          "swaps": [
+            {
+              "slot": "cast",
+              "entity_id": "85E456AC-0325-4471-82A9-275B60CFF553"
+            },
+            {
+              "slot": "brand",
+              "entity_id": "AC8F9047-F23D-4A54-BBAA-A3CBD2991C02"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "at": 54699,
+      "event": {
+        "type": "tool_result",
+        "step": 18,
+        "tool": "evaluate_swaps",
+        "summary": "v9: target 25% (base 20%), core kept 64%",
+        "evaluation": {
+          "versionId": "v9",
+          "swaps": [
+            {
+              "id": "85E456AC-0325-4471-82A9-275B60CFF553",
+              "name": "Hunter Schafer",
+              "type": "person",
+              "slot": "cast"
+            },
+            {
+              "id": "AC8F9047-F23D-4A54-BBAA-A3CBD2991C02",
+              "name": "Vans",
+              "type": "brand",
+              "slot": "brand"
+            }
+          ],
+          "metrics": {
+            "targetOverlap": 0.2466666666666667,
+            "coreRetention": 0.64,
+            "perDomain": [
+              {
+                "domain": "movie",
+                "targetOverlap": 0.56,
+                "coreRetention": 0.72
+              },
+              {
+                "domain": "artist",
+                "targetOverlap": 0.02,
+                "coreRetention": 0.62
+              },
+              {
+                "domain": "brand",
+                "targetOverlap": 0.16,
+                "coreRetention": 0.58
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "at": 57261,
+      "event": {
+        "type": "tool_call",
+        "step": 19,
+        "tool": "submit_proposals",
+        "reason": "Submit the strongest qualifying versions that improve target overlap while keeping core retention at or above the required threshold.",
+        "args": {
+          "proposals": [
+            {
+              "version_id": "v7",
+              "title": "Swap film_ref_2 to Mid90s and cast to Hunter Schafer",
+              "rationale": "target_overlap 0.333 vs base 0.2, core_retention 0.713. The package gains movie overlap 0.64 and brand overlap 0.24, while keeping the core above 0.5."
+            },
+            {
+              "version_id": "v9",
+              "title": "Swap cast to Hunter Schafer and brand to Vans",
+              "rationale": "target_overlap 0.247 vs base 0.2, core_retention 0.64. The package lifts movie overlap to 0.56 and brand overlap to 0.16, and stays above the core threshold."
+            },
+            {
+              "version_id": "v1",
+              "title": "Swap film_ref_2 to Mid90s",
+              "rationale": "target_overlap 0.3 vs base 0.2, core_retention 0.733. Movie overlap rises to 0.6 and brand overlap to 0.2 while changing only one slot."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "at": 57261,
+      "event": {
+        "type": "tool_result",
+        "step": 19,
+        "tool": "submit_proposals",
+        "summary": "3 proposals submitted"
+      }
+    },
+    {
+      "at": 57261,
+      "event": {
+        "type": "proposals",
+        "proposals": [
+          {
+            "versionId": "v7",
+            "title": "Swap film_ref_2 to Mid90s and cast to Hunter Schafer",
+            "rationale": "target_overlap 0.333 vs base 0.2, core_retention 0.713. The package gains movie overlap 0.64 and brand overlap 0.24, while keeping the core above 0.5.",
+            "evaluation": {
+              "versionId": "v7",
+              "swaps": [
+                {
+                  "id": "0D7FD186-0207-40BF-8AF1-0FD79ADA63E6",
+                  "name": "Mid90s",
+                  "type": "movie",
+                  "slot": "film_ref_2"
+                },
+                {
+                  "id": "85E456AC-0325-4471-82A9-275B60CFF553",
+                  "name": "Hunter Schafer",
+                  "type": "person",
+                  "slot": "cast"
+                }
+              ],
+              "metrics": {
+                "targetOverlap": 0.3333333333333333,
+                "coreRetention": 0.7133333333333333,
+                "perDomain": [
+                  {
+                    "domain": "movie",
+                    "targetOverlap": 0.64,
+                    "coreRetention": 0.78
+                  },
+                  {
+                    "domain": "artist",
+                    "targetOverlap": 0.12,
+                    "coreRetention": 0.6
+                  },
+                  {
+                    "domain": "brand",
+                    "targetOverlap": 0.24,
+                    "coreRetention": 0.76
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "versionId": "v9",
+            "title": "Swap cast to Hunter Schafer and brand to Vans",
+            "rationale": "target_overlap 0.247 vs base 0.2, core_retention 0.64. The package lifts movie overlap to 0.56 and brand overlap to 0.16, and stays above the core threshold.",
+            "evaluation": {
+              "versionId": "v9",
+              "swaps": [
+                {
+                  "id": "85E456AC-0325-4471-82A9-275B60CFF553",
+                  "name": "Hunter Schafer",
+                  "type": "person",
+                  "slot": "cast"
+                },
+                {
+                  "id": "AC8F9047-F23D-4A54-BBAA-A3CBD2991C02",
+                  "name": "Vans",
+                  "type": "brand",
+                  "slot": "brand"
+                }
+              ],
+              "metrics": {
+                "targetOverlap": 0.2466666666666667,
+                "coreRetention": 0.64,
+                "perDomain": [
+                  {
+                    "domain": "movie",
+                    "targetOverlap": 0.56,
+                    "coreRetention": 0.72
+                  },
+                  {
+                    "domain": "artist",
+                    "targetOverlap": 0.02,
+                    "coreRetention": 0.62
+                  },
+                  {
+                    "domain": "brand",
+                    "targetOverlap": 0.16,
+                    "coreRetention": 0.58
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "versionId": "v1",
+            "title": "Swap film_ref_2 to Mid90s",
+            "rationale": "target_overlap 0.3 vs base 0.2, core_retention 0.733. Movie overlap rises to 0.6 and brand overlap to 0.2 while changing only one slot.",
+            "evaluation": {
+              "versionId": "v1",
+              "swaps": [
+                {
+                  "id": "0D7FD186-0207-40BF-8AF1-0FD79ADA63E6",
+                  "name": "Mid90s",
+                  "type": "movie",
+                  "slot": "film_ref_2"
+                }
+              ],
+              "metrics": {
+                "targetOverlap": 0.3,
+                "coreRetention": 0.7333333333333334,
+                "perDomain": [
+                  {
+                    "domain": "movie",
+                    "targetOverlap": 0.6,
+                    "coreRetention": 0.78
+                  },
+                  {
+                    "domain": "artist",
+                    "targetOverlap": 0.1,
+                    "coreRetention": 0.64
+                  },
+                  {
+                    "domain": "brand",
+                    "targetOverlap": 0.2,
+                    "coreRetention": 0.78
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "at": 57261,
+      "event": {
+        "type": "done",
+        "ms": 57260,
+        "toolCalls": 19
+      }
+    }
+  ]
+}

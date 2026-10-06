@@ -7,10 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "snapshot": "tsx --env-file=.env.local scripts/snapshot.mts"
+    "snapshot": "tsx --env-file=.env.local scripts/snapshot.mts",
+    "agent:record": "tsx --env-file=.env.local scripts/agent-run.mts"
   },
   "dependencies": {
     "next": "16.3.8",
+    "openai": "^7.28.0",
     "react": "19.2.8",
     "react-dom": "19.2.8"
   },

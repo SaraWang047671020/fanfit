@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { DEMO_PROJECT, DEMO_SWAP, PACKAGE_A, TARGET_AUDIENCE } from "@/lib/demo";
 import type { DemoSnapshot } from "@/lib/demo-analysis";
 import type { Domain } from "@/lib/qloo";
@@ -16,9 +17,14 @@ export default function Home() {
         <p className="text-xs font-bold uppercase tracking-[0.14em] text-gain">TasteFrame · Demo project</p>
         <h1 className="mt-2 text-4xl font-bold sm:text-5xl">{DEMO_PROJECT.title}</h1>
         <p className="mt-3 max-w-3xl text-lg text-muted">{DEMO_PROJECT.logline}</p>
-        <p className="mt-4 rounded-xl border-l-4 border-accent bg-panel-2 px-4 py-3 text-sm">
-          <span className="font-semibold">Goal:</span> {DEMO_PROJECT.goal}
-        </p>
+        <div className="mt-4 flex flex-wrap items-center gap-3">
+          <p className="flex-1 rounded-xl border-l-4 border-accent bg-panel-2 px-4 py-3 text-sm">
+            <span className="font-semibold">Goal:</span> {DEMO_PROJECT.goal}
+          </p>
+          <Link href="/agent" className="rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-bg">
+            Let the agent find options →
+          </Link>
+        </div>
         <div className="mt-6 flex flex-wrap items-center gap-2 text-sm">
           {PACKAGE_A.entities.map((e) => (
             <span
