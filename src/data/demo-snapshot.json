@@ -1,0 +1,3374 @@
+{
+  "generatedAt": "2026-10-06T08:13:42.463Z",
+  "comparisons": [
+    {
+      "domain": "movie",
+      "overlap": 0.72,
+      "a": [
+        {
+          "id": "AB71C7D1-83C9-4A51-BA17-4328A8A8EBF4",
+          "name": "Us",
+          "rank": 1,
+          "affinity": 0.9381099882178838,
+          "image": "https://m.media-amazon.com/images/M/MV5BMzhkMjFkN2YtODU2Ni00YWYwLWExN2MtOWNjZmQxM2U4YTM5XkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "5444BFF4-CA5B-4EF2-9759-1323E99CC3C4",
+          "name": "Suspiria",
+          "rank": 2,
+          "affinity": 0.9374067419804252,
+          "image": "https://m.media-amazon.com/images/M/MV5BMjQ2MTIyNjM2MF5BMl5BanBnXkFtZTgwMDE3NDMyNjM@._V1_.jpg"
+        },
+        {
+          "id": "EED85EBE-8C79-4116-8218-1864766FD78F",
+          "name": "The Lighthouse",
+          "rank": 3,
+          "affinity": 0.9358886391103409,
+          "image": "https://m.media-amazon.com/images/M/MV5BMTI4MjFhMjAtNmQxYi00N2IxLWJjMGEtYWY1YmU3OTQ0Zjk3XkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "2E20280C-3E6F-4D69-89EA-DEF4BDBAFBB9",
+          "name": "The Favourite",
+          "rank": 4,
+          "affinity": 0.933620374423352,
+          "image": "https://m.media-amazon.com/images/M/MV5BMTg1NzQwMDQxNV5BMl5BanBnXkFtZTgwNDg2NDYyNjM@._V1_.jpg"
+        },
+        {
+          "id": "7E0F4C67-399A-4A93-95FC-BBC6C4FE0F1D",
+          "name": "I'm Thinking of Ending Things",
+          "rank": 5,
+          "affinity": 0.9323109068865939,
+          "image": "https://m.media-amazon.com/images/M/MV5BYTgxNWU0MGMtMDI1Ny00NDIwLTllYzYtZDkyOTVmYmFhZGM0XkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "F785F422-BE87-42CD-AC87-AB427882F917",
+          "name": "The Killing of a Sacred Deer",
+          "rank": 6,
+          "affinity": 0.9319035302135815,
+          "image": "https://m.media-amazon.com/images/M/MV5BMjU4NDcwOTA2NF5BMl5BanBnXkFtZTgwMjE2OTg4MzI@._V1_.jpg"
+        },
+        {
+          "id": "FB052F84-01CF-48BB-A30A-51C45F183777",
+          "name": "Roma",
+          "rank": 7,
+          "affinity": 0.9232922066430211,
+          "image": "https://m.media-amazon.com/images/M/MV5BMTU0OTc3ODk4Ml5BMl5BanBnXkFtZTgwMzM4NzI5NjM@._V1_.jpg"
+        },
+        {
+          "id": "9E661A87-6EB9-4138-8795-27284CD8E249",
+          "name": "Marriage Story",
+          "rank": 8,
+          "affinity": 0.9212219949219801,
+          "image": "https://m.media-amazon.com/images/M/MV5BNmE0OWJlM2MtNzhmMi00YmQyLTlmY2EtZmUzNzBiNGRlN2JkXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "76B265B7-542F-431F-962F-3257E9644623",
+          "name": "Burning",
+          "rank": 9,
+          "affinity": 0.9210425656435799,
+          "image": "https://m.media-amazon.com/images/M/MV5BZWU3YzgzMTgtOTIwYi00MmNkLWExYWEtZTEyOTAzYzEwM2Q2XkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "66E1023F-745C-44AC-BC65-15AE2E13CC10",
+          "name": "Swallow",
+          "rank": 10,
+          "affinity": 0.917690768962387,
+          "image": "https://m.media-amazon.com/images/M/MV5BMzAzMmE0ZjktZmExNS00OWU1LThmNGQtN2E0YTM4ZDYwYjMyXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "B1E9C8A6-DB42-45F3-910B-B1AF94376165",
+          "name": "The Tale",
+          "rank": 11,
+          "affinity": 0.9175627824889632,
+          "image": "https://m.media-amazon.com/images/M/MV5BNzMxYTNhMTAtMWExNC00MzdhLWJlYTAtMTY5NDE2NjQ5MGNlXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "66EBD81E-3F1B-4913-AF28-FD197DC49EE9",
+          "name": "Portrait of a Lady on Fire",
+          "rank": 12,
+          "affinity": 0.9168356006292825,
+          "image": "https://m.media-amazon.com/images/M/MV5BZjJlYWJlYmMtNjMyMS00ZDgxLTlmNjAtOTJhMzBiZWM5N2VmXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "969911E8-7092-43D9-8C7D-C7547EAE3C00",
+          "name": "Little Women",
+          "rank": 13,
+          "affinity": 0.9158233437020971,
+          "image": "https://m.media-amazon.com/images/M/MV5BMWMzYjNiZWMtMDg4NS00MDgyLTk5MWItOTFmNjg4NzRhZmExXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "07D5FF8D-EBF3-453F-B888-D66BDF1A6187",
+          "name": "Velvet Buzzsaw",
+          "rank": 14,
+          "affinity": 0.9158185891760979,
+          "image": "https://m.media-amazon.com/images/M/MV5BMjExMDQ1NjMzOV5BMl5BanBnXkFtZTgwMjkxMzMyNzM@._V1_.jpg"
+        },
+        {
+          "id": "E32596FE-ABE3-41E9-B51B-3B741936DAA1",
+          "name": "Border",
+          "rank": 15,
+          "affinity": 0.9153851061514403,
+          "image": "https://m.media-amazon.com/images/M/MV5BMzc5MWVlZWYtM2E2MS00OWM5LTg5ODgtZDJmMzM0ZTc0YzFlXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "34692893-D526-4029-8921-8583A373005C",
+          "name": "The Kindergarten Teacher",
+          "rank": 16,
+          "affinity": 0.9151115767686137,
+          "image": "https://m.media-amazon.com/images/M/MV5BZDg3OWZjZTMtZDBjNS00N2UxLTkzZjktZjBiOWM1ZTU2YWJiXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "4BE414CF-375F-4566-AA66-9AC6150A6B7F",
+          "name": "Lady Bird",
+          "rank": 17,
+          "affinity": 0.9150742049852463,
+          "image": "https://m.media-amazon.com/images/M/MV5BNjk5MzcyOWQtNzE1Mi00NzdmLTlkM2QtOTdjZThhMDc2Y2NjXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "32F8BE16-CE80-4885-8E62-BBB11CCE5DBE",
+          "name": "First Reformed",
+          "rank": 18,
+          "affinity": 0.914773813578435,
+          "image": "https://m.media-amazon.com/images/M/MV5BYTRkOTUxZDItNDU0OC00ODQzLWJkMWEtYjBiODViNGMyYjhjXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "54C5E3F0-402C-42DD-8E24-7389CE5D44CF",
+          "name": "Eighth Grade",
+          "rank": 19,
+          "affinity": 0.9141399734849165,
+          "image": "https://m.media-amazon.com/images/M/MV5BMTUyYzNiZTQtZGEwYi00ZjdiLTk5ZjctYTAxZTY3YmY0OThlXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "B411575F-057B-4913-BD80-F189FFA6570F",
+          "name": "The Farewell",
+          "rank": 20,
+          "affinity": 0.9139161500196873,
+          "image": "https://m.media-amazon.com/images/M/MV5BYjdlZDI1OWYtZWU4MC00NDhkLThmOWEtMTZiODFhZThkMjA4XkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "878ABC58-9E83-4FB1-A061-6BB09FD2F480",
+          "name": "Doctor Sleep",
+          "rank": 21,
+          "affinity": 0.9123342228134345,
+          "image": "https://m.media-amazon.com/images/M/MV5BNGUyNTg0NWItODdkZS00YWY0LTljNjItMDYwMTI1ZmZkMjExXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "70DFA686-8D9F-4DCA-B76F-2014DC59ACED",
+          "name": "Thoroughbreds",
+          "rank": 22,
+          "affinity": 0.9122415546704975,
+          "image": "https://m.media-amazon.com/images/M/MV5BMTczOTIxNDMxOV5BMl5BanBnXkFtZTgwMDk5OTg4NDM@._V1_.jpg"
+        },
+        {
+          "id": "9754326F-D73D-4C46-BF79-7127AE0222E9",
+          "name": "Waves",
+          "rank": 23,
+          "affinity": 0.9122127494784654,
+          "image": "https://m.media-amazon.com/images/M/MV5BNmFlNmQyYzctMzE3Ni00NjRkLWFiYzctYmZjMDllZTdkY2VjXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "FC877810-FE6F-4D25-83B5-015B43E2018F",
+          "name": "Beautiful Boy",
+          "rank": 24,
+          "affinity": 0.9116069103847433,
+          "image": "https://m.media-amazon.com/images/M/MV5BNTRhNjg3NGMtMDM3Mi00ZmRmLTg0ZDMtYTBhMThiN2YxMTdjXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "24A2FD28-FC76-4CCD-AC43-A015B539DBAA",
+          "name": "Uncut Gems",
+          "rank": 25,
+          "affinity": 0.9111112450702357,
+          "image": "https://m.media-amazon.com/images/M/MV5BNmI0YjA5NjItYzExYi00NzkxLTkxNDctNGJjYTZhM2M0NDQ0XkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "93A9B8E6-B228-41A5-ACA4-F4CEF85AB6D6",
+          "name": "The Invisible Man",
+          "rank": 26,
+          "affinity": 0.9107147110630732,
+          "image": "https://m.media-amazon.com/images/M/MV5BYTM3NDJhZWUtZWM1Yy00ODk4LThjNmMtNDg3OGYzMGM2OGYzXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "80606DEF-BB3C-4704-8C1C-AC6D5178AF95",
+          "name": "You Were Never Really Here",
+          "rank": 27,
+          "affinity": 0.9101515603402506,
+          "image": "https://m.media-amazon.com/images/M/MV5BYzM0MjBhYTUtMzY1My00OGQ5LTk4OWMtNWYwNmY3ZGFjMjViXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "DE02F90E-EF5E-4860-9D19-18BCFCD47F38",
+          "name": "Pain and Glory",
+          "rank": 28,
+          "affinity": 0.9100270800381106,
+          "image": "https://m.media-amazon.com/images/M/MV5BNmIxMTRhMjAtYzE2ZS00NDJiLTllYjktMzRlN2FiMGI2MmI4XkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "9AABDCA0-BBC1-4A14-8071-FBF31EA488D6",
+          "name": "Shoplifters",
+          "rank": 29,
+          "affinity": 0.9099117283908165,
+          "image": "https://m.media-amazon.com/images/M/MV5BMjY2NGZlZDUtMDUwMi00YTUxLTljNzEtZTE3YjAyNTQyNzU5XkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "28AE71FF-CA69-4129-9B57-6F3EF9A07824",
+          "name": "The House That Jack Built",
+          "rank": 30,
+          "affinity": 0.9090181789267632,
+          "image": "https://m.media-amazon.com/images/M/MV5BY2Q3MDFiZGQtMjc4NS00MDJiLWFmYjgtNmI0MTQwMzUyOWNmXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "E39A5CE6-5991-46B9-897D-4B23A494804A",
+          "name": "Promising Young Woman",
+          "rank": 31,
+          "affinity": 0.9086008943067417,
+          "image": "https://m.media-amazon.com/images/M/MV5BZDMyNTQ5ODYtMjU3YS00MjM3LWFmOGMtZjZlNDA3YWE3YjM0XkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "B61E9F72-4380-46D9-ACEC-05DC6D3E5338",
+          "name": "Wildlife",
+          "rank": 32,
+          "affinity": 0.9081911009443725,
+          "image": "https://m.media-amazon.com/images/M/MV5BOTliYzZkZmItODdhZi00YTcyLTkzYzQtZWJlNjE0NTUzMGU1XkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "C5931DB9-526D-47C4-8157-6D6E6FDFAD0B",
+          "name": "Phantom Thread",
+          "rank": 33,
+          "affinity": 0.9071698398652535,
+          "image": "https://m.media-amazon.com/images/M/MV5BOTMzNWNhNDctMTM2MC00N2EwLThjYTEtMmQ2ZDAyNDVlNzgyXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "89C858E2-02E7-44B5-8FCF-F9521C51B666",
+          "name": "High Life",
+          "rank": 34,
+          "affinity": 0.9061616114131686,
+          "image": "https://m.media-amazon.com/images/M/MV5BNDRhYjdiMDEtN2UzZC00ZGQyLTk3OTQtMTFkZGQ0YmM5NDk4XkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "A5476327-8C5F-45CE-A247-5FE25F5E4414",
+          "name": "Mother!",
+          "rank": 35,
+          "affinity": 0.9061061794582256,
+          "image": "https://m.media-amazon.com/images/M/MV5BMzc5ODExODE0MV5BMl5BanBnXkFtZTgwNDkzNDUxMzI@._V1_.jpg"
+        },
+        {
+          "id": "A499EC25-7FF6-46DE-9DA5-3E78E99B9E26",
+          "name": "Parasite",
+          "rank": 36,
+          "affinity": 0.9050642847010122,
+          "image": "https://m.media-amazon.com/images/M/MV5BYjk1Y2U4MjQtY2ZiNS00OWQyLWI3MmYtZWUwNmRjYWRiNWNhXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "D1B3AD33-5D48-40D0-AE5F-B870078DBC09",
+          "name": "Jojo Rabbit",
+          "rank": 37,
+          "affinity": 0.9048857994570941,
+          "image": "https://m.media-amazon.com/images/M/MV5BYmFmNmUyMjYtZTFjNS00OWQyLThhZmMtMGZkYTQ3YjY0ZDQ1XkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "0618DA0C-8734-4B96-8214-631DEA5A2CE5",
+          "name": "In Fabric",
+          "rank": 38,
+          "affinity": 0.902578664007354,
+          "image": "https://m.media-amazon.com/images/M/MV5BNzE5MGE2MTItMmM2Zi00NTI4LTg0MjItMjc2ZDU0MjJkOGIwXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "380AEFF3-6D3E-49D1-B2BD-DD3145A683F6",
+          "name": "Monos",
+          "rank": 39,
+          "affinity": 0.9022446880312284,
+          "image": "https://m.media-amazon.com/images/M/MV5BN2VhMmY2YmMtZGY4OS00YmFlLTk3YTctNTE4NjVmMGEwOWI3XkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "7D6E66D9-2E1B-43F7-85EE-1F4AB4552865",
+          "name": "Babyteeth",
+          "rank": 40,
+          "affinity": 0.9020288622303813,
+          "image": "https://m.media-amazon.com/images/M/MV5BN2YyNmQ3NTgtZjM4ZC00MGFlLTgyM2ItMDg0NGI4YTE0MzJmXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "C701C358-C692-4539-B9B6-D227A3076219",
+          "name": "If Beale Street Could Talk",
+          "rank": 41,
+          "affinity": 0.9018878300593147,
+          "image": "https://m.media-amazon.com/images/M/MV5BYmJlMWY1ZDMtMmU3ZS00MzVmLWE2MjQtYWVhNDAxOWY2MWI0XkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "BC8F2B7A-B588-4B33-AC32-54FE7494647A",
+          "name": "Happy as Lazzaro",
+          "rank": 42,
+          "affinity": 0.9013117518554887,
+          "image": "https://m.media-amazon.com/images/M/MV5BZGRhNWJjNDUtNTJmYi00NDY3LTgyMGEtMjMyOGE5MDE5ZDMyXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "71E75CE5-D48B-45FF-9A9D-060D676DFD48",
+          "name": "Honey Boy",
+          "rank": 43,
+          "affinity": 0.9010893128245732,
+          "image": "https://m.media-amazon.com/images/M/MV5BMmE2ZWU0NzUtMWZlOS00OWEzLWJiNjUtMDAwZWEyY2MzYjc2XkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "5391CAF9-1664-42D5-9B2B-93352891897C",
+          "name": "The Souvenir",
+          "rank": 44,
+          "affinity": 0.9010181896765382,
+          "image": "https://m.media-amazon.com/images/M/MV5BMTk2NjY3NDYzN15BMl5BanBnXkFtZTgwOTUxNzg0NzM@._V1_.jpg"
+        },
+        {
+          "id": "EA4E5D0D-A186-4C60-A898-84EA60AD8CAA",
+          "name": "Leave No Trace",
+          "rank": 45,
+          "affinity": 0.9010063400639279,
+          "image": "https://m.media-amazon.com/images/M/MV5BMjE3OTI1MTU0OV5BMl5BanBnXkFtZTgwNTg1MzkzNTM@._V1_.jpg"
+        },
+        {
+          "id": "960F3839-F838-4163-8257-772945DE9BD5",
+          "name": "The Florida Project",
+          "rank": 46,
+          "affinity": 0.9008407397970579,
+          "image": "https://m.media-amazon.com/images/M/MV5BNDBhM2MxYjAtMWFiYy00MWMwLThkMDYtN2M1ZWY3NjkxNGExXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "88044159-1A80-4539-9065-2AFB61659467",
+          "name": "Saint Maud",
+          "rank": 47,
+          "affinity": 0.9007173252072512,
+          "image": "https://m.media-amazon.com/images/M/MV5BNzIwMjVlMWMtMGRiYi00OTQyLThhYjEtMDQxMThjMmQ2ODBiXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "85C499B8-4E79-49C0-90F0-19C33C1D32D8",
+          "name": "Booksmart",
+          "rank": 48,
+          "affinity": 0.9005007362220269,
+          "image": "https://m.media-amazon.com/images/M/MV5BMjEzMjcxNjA2Nl5BMl5BanBnXkFtZTgwMjAxMDM2NzM@._V1_.jpg"
+        },
+        {
+          "id": "B3B71D65-B9F5-48A5-AE2A-42D4CC2384EA",
+          "name": "The Last Black Man in San Francisco",
+          "rank": 49,
+          "affinity": 0.9003677704461189,
+          "image": "https://m.media-amazon.com/images/M/MV5BYTUyNTdhNmUtYzU5Zi00ZTI0LTg3NzQtNjM5ZmFkZWNiOTYwXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "6EF10D54-2732-4A20-9239-7AB6B411AA3C",
+          "name": "Climax",
+          "rank": 50,
+          "affinity": 0.900329475484692,
+          "image": "https://m.media-amazon.com/images/M/MV5BYWQwOTVmNGQtNGU1Ny00ODNkLTkzMmMtYzY1ZWQyMzk0Y2ZiXkEyXkFqcGc@._V1_.jpg"
+        }
+      ],
+      "b": [
+        {
+          "id": "AB71C7D1-83C9-4A51-BA17-4328A8A8EBF4",
+          "name": "Us",
+          "rank": 1,
+          "affinity": 0.9447228753290917,
+          "image": "https://m.media-amazon.com/images/M/MV5BMzhkMjFkN2YtODU2Ni00YWYwLWExN2MtOWNjZmQxM2U4YTM5XkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "7E0F4C67-399A-4A93-95FC-BBC6C4FE0F1D",
+          "name": "I'm Thinking of Ending Things",
+          "rank": 2,
+          "affinity": 0.935700808814424,
+          "image": "https://m.media-amazon.com/images/M/MV5BYTgxNWU0MGMtMDI1Ny00NDIwLTllYzYtZDkyOTVmYmFhZGM0XkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "5444BFF4-CA5B-4EF2-9759-1323E99CC3C4",
+          "name": "Suspiria",
+          "rank": 3,
+          "affinity": 0.9348932383300896,
+          "image": "https://m.media-amazon.com/images/M/MV5BMjQ2MTIyNjM2MF5BMl5BanBnXkFtZTgwMDE3NDMyNjM@._V1_.jpg"
+        },
+        {
+          "id": "EED85EBE-8C79-4116-8218-1864766FD78F",
+          "name": "The Lighthouse",
+          "rank": 4,
+          "affinity": 0.9320262924756851,
+          "image": "https://m.media-amazon.com/images/M/MV5BMTI4MjFhMjAtNmQxYi00N2IxLWJjMGEtYWY1YmU3OTQ0Zjk3XkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "66E1023F-745C-44AC-BC65-15AE2E13CC10",
+          "name": "Swallow",
+          "rank": 5,
+          "affinity": 0.9275733917181944,
+          "image": "https://m.media-amazon.com/images/M/MV5BMzAzMmE0ZjktZmExNS00OWU1LThmNGQtN2E0YTM4ZDYwYjMyXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "93A9B8E6-B228-41A5-ACA4-F4CEF85AB6D6",
+          "name": "The Invisible Man",
+          "rank": 6,
+          "affinity": 0.9231819777803482,
+          "image": "https://m.media-amazon.com/images/M/MV5BYTM3NDJhZWUtZWM1Yy00ODk4LThjNmMtNDg3OGYzMGM2OGYzXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "F785F422-BE87-42CD-AC87-AB427882F917",
+          "name": "The Killing of a Sacred Deer",
+          "rank": 7,
+          "affinity": 0.9192523084590578,
+          "image": "https://m.media-amazon.com/images/M/MV5BMjU4NDcwOTA2NF5BMl5BanBnXkFtZTgwMjE2OTg4MzI@._V1_.jpg"
+        },
+        {
+          "id": "878ABC58-9E83-4FB1-A061-6BB09FD2F480",
+          "name": "Doctor Sleep",
+          "rank": 8,
+          "affinity": 0.918436790389102,
+          "image": "https://m.media-amazon.com/images/M/MV5BNGUyNTg0NWItODdkZS00YWY0LTljNjItMDYwMTI1ZmZkMjExXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "E39A5CE6-5991-46B9-897D-4B23A494804A",
+          "name": "Promising Young Woman",
+          "rank": 9,
+          "affinity": 0.91679166456037,
+          "image": "https://m.media-amazon.com/images/M/MV5BZDMyNTQ5ODYtMjU3YS00MjM3LWFmOGMtZjZlNDA3YWE3YjM0XkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "9DC73A1B-12BD-431B-A2A5-57F47B977634",
+          "name": "Ready or Not",
+          "rank": 10,
+          "affinity": 0.9155728397315587,
+          "image": "https://m.media-amazon.com/images/M/MV5BMTViMDA4YjgtZDQ4NC00ZDk2LTg0MWItOTc4MTkwMmVkZWRmXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "07D5FF8D-EBF3-453F-B888-D66BDF1A6187",
+          "name": "Velvet Buzzsaw",
+          "rank": 11,
+          "affinity": 0.9139592830284973,
+          "image": "https://m.media-amazon.com/images/M/MV5BMjExMDQ1NjMzOV5BMl5BanBnXkFtZTgwMjkxMzMyNzM@._V1_.jpg"
+        },
+        {
+          "id": "88044159-1A80-4539-9065-2AFB61659467",
+          "name": "Saint Maud",
+          "rank": 12,
+          "affinity": 0.913574362109323,
+          "image": "https://m.media-amazon.com/images/M/MV5BNzIwMjVlMWMtMGRiYi00OTQyLThhYjEtMDQxMThjMmQ2ODBiXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "2E20280C-3E6F-4D69-89EA-DEF4BDBAFBB9",
+          "name": "The Favourite",
+          "rank": 13,
+          "affinity": 0.9130670494349794,
+          "image": "https://m.media-amazon.com/images/M/MV5BMTg1NzQwMDQxNV5BMl5BanBnXkFtZTgwNDg2NDYyNjM@._V1_.jpg"
+        },
+        {
+          "id": "9E661A87-6EB9-4138-8795-27284CD8E249",
+          "name": "Marriage Story",
+          "rank": 14,
+          "affinity": 0.9110022869568913,
+          "image": "https://m.media-amazon.com/images/M/MV5BNmE0OWJlM2MtNzhmMi00YmQyLTlmY2EtZmUzNzBiNGRlN2JkXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "76B265B7-542F-431F-962F-3257E9644623",
+          "name": "Burning",
+          "rank": 15,
+          "affinity": 0.9106844621181118,
+          "image": "https://m.media-amazon.com/images/M/MV5BZWU3YzgzMTgtOTIwYi00MmNkLWExYWEtZTEyOTAzYzEwM2Q2XkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "24A2FD28-FC76-4CCD-AC43-A015B539DBAA",
+          "name": "Uncut Gems",
+          "rank": 16,
+          "affinity": 0.9100315535959793,
+          "image": "https://m.media-amazon.com/images/M/MV5BNmI0YjA5NjItYzExYi00NzkxLTkxNDctNGJjYTZhM2M0NDQ0XkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "59957EBB-FB4E-4673-9359-A0136A919A69",
+          "name": "His House",
+          "rank": 17,
+          "affinity": 0.9096315749500452,
+          "image": "https://m.media-amazon.com/images/M/MV5BMDBjNmYxMjctMjViNC00NmRlLWJkZWYtOTE2ZmY4ZDg3NmMyXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "4A018111-77ED-435E-A4D1-88A4933BD7BF",
+          "name": "Horse Girl",
+          "rank": 18,
+          "affinity": 0.907336095931014,
+          "image": "https://m.media-amazon.com/images/M/MV5BMmZmODVkNzQtYzkwMC00ODkxLTk1MTgtMTBmYmFiYWMzYWQzXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "2F9D498B-1FBF-48B3-AC21-5FCFA98803FB",
+          "name": "The Perfection",
+          "rank": 19,
+          "affinity": 0.9070405725426146,
+          "image": "https://m.media-amazon.com/images/M/MV5BMTA3NzkzMDUxODBeQTJeQWpwZ15BbWU4MDM0ODc5ODcz._V1_.jpg"
+        },
+        {
+          "id": "B411575F-057B-4913-BD80-F189FFA6570F",
+          "name": "The Farewell",
+          "rank": 20,
+          "affinity": 0.9069877821863803,
+          "image": "https://m.media-amazon.com/images/M/MV5BYjdlZDI1OWYtZWU4MC00NDhkLThmOWEtMTZiODFhZThkMjA4XkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "DC02C8BA-FCBD-4FEC-ABFF-7BE7017B771A",
+          "name": "The Devil All the Time",
+          "rank": 21,
+          "affinity": 0.9062678144325251,
+          "image": "https://m.media-amazon.com/images/M/MV5BYmExOWUxZDMtZmM1ZS00NjQ4LWEwODAtY2E0N2Y1Y2MzZTkwXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "2E30BE3E-1619-4A14-8AB5-DB3D1F41CE4D",
+          "name": "Gerald's Game",
+          "rank": 22,
+          "affinity": 0.9057144006786897,
+          "image": "https://m.media-amazon.com/images/M/MV5BNDA2ZjU5ZWMtMmQ4OS00ZTQzLWIwOWMtYTBmOTljYTIwNjM3XkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "A499EC25-7FF6-46DE-9DA5-3E78E99B9E26",
+          "name": "Parasite",
+          "rank": 23,
+          "affinity": 0.9055142520242571,
+          "image": "https://m.media-amazon.com/images/M/MV5BYjk1Y2U4MjQtY2ZiNS00OWQyLWI3MmYtZWUwNmRjYWRiNWNhXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "54C5E3F0-402C-42DD-8E24-7389CE5D44CF",
+          "name": "Eighth Grade",
+          "rank": 24,
+          "affinity": 0.9050653937415455,
+          "image": "https://m.media-amazon.com/images/M/MV5BMTUyYzNiZTQtZGEwYi00ZjdiLTk5ZjctYTAxZTY3YmY0OThlXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "9754326F-D73D-4C46-BF79-7127AE0222E9",
+          "name": "Waves",
+          "rank": 25,
+          "affinity": 0.904820881814502,
+          "image": "https://m.media-amazon.com/images/M/MV5BNmFlNmQyYzctMzE3Ni00NjRkLWFiYzctYmZjMDllZTdkY2VjXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "70DFA686-8D9F-4DCA-B76F-2014DC59ACED",
+          "name": "Thoroughbreds",
+          "rank": 26,
+          "affinity": 0.9047004937396447,
+          "image": "https://m.media-amazon.com/images/M/MV5BMTczOTIxNDMxOV5BMl5BanBnXkFtZTgwMDk5OTg4NDM@._V1_.jpg"
+        },
+        {
+          "id": "1E349A6C-B8F9-4521-80D7-FEC8AC0CC551",
+          "name": "The Ritual",
+          "rank": 27,
+          "affinity": 0.9042904324030612,
+          "image": "https://m.media-amazon.com/images/M/MV5BMjAzMzAyMDI4Ml5BMl5BanBnXkFtZTgwODMwOTY2NDM@._V1_.jpg"
+        },
+        {
+          "id": "969911E8-7092-43D9-8C7D-C7547EAE3C00",
+          "name": "Little Women",
+          "rank": 28,
+          "affinity": 0.9042184087732223,
+          "image": "https://m.media-amazon.com/images/M/MV5BMWMzYjNiZWMtMDg4NS00MDgyLTk5MWItOTFmNjg4NzRhZmExXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "66EBD81E-3F1B-4913-AF28-FD197DC49EE9",
+          "name": "Portrait of a Lady on Fire",
+          "rank": 29,
+          "affinity": 0.9033920867227906,
+          "image": "https://m.media-amazon.com/images/M/MV5BZjJlYWJlYmMtNjMyMS00ZDgxLTlmNjAtOTJhMzBiZWM5N2VmXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "7D6E66D9-2E1B-43F7-85EE-1F4AB4552865",
+          "name": "Babyteeth",
+          "rank": 30,
+          "affinity": 0.9033410845679533,
+          "image": "https://m.media-amazon.com/images/M/MV5BN2YyNmQ3NTgtZjM4ZC00MGFlLTgyM2ItMDg0NGI4YTE0MzJmXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "E32596FE-ABE3-41E9-B51B-3B741936DAA1",
+          "name": "Border",
+          "rank": 31,
+          "affinity": 0.9028827769772446,
+          "image": "https://m.media-amazon.com/images/M/MV5BMzc5MWVlZWYtM2E2MS00OWM5LTg5ODgtZDJmMzM0ZTc0YzFlXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "0618DA0C-8734-4B96-8214-631DEA5A2CE5",
+          "name": "In Fabric",
+          "rank": 32,
+          "affinity": 0.902671561299033,
+          "image": "https://m.media-amazon.com/images/M/MV5BNzE5MGE2MTItMmM2Zi00NTI4LTg0MjItMjc2ZDU0MjJkOGIwXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "85C499B8-4E79-49C0-90F0-19C33C1D32D8",
+          "name": "Booksmart",
+          "rank": 33,
+          "affinity": 0.9022006977088852,
+          "image": "https://m.media-amazon.com/images/M/MV5BMjEzMjcxNjA2Nl5BMl5BanBnXkFtZTgwMjAxMDM2NzM@._V1_.jpg"
+        },
+        {
+          "id": "FB052F84-01CF-48BB-A30A-51C45F183777",
+          "name": "Roma",
+          "rank": 34,
+          "affinity": 0.9020542096515812,
+          "image": "https://m.media-amazon.com/images/M/MV5BMTU0OTc3ODk4Ml5BMl5BanBnXkFtZTgwMzM4NzI5NjM@._V1_.jpg"
+        },
+        {
+          "id": "D1B3AD33-5D48-40D0-AE5F-B870078DBC09",
+          "name": "Jojo Rabbit",
+          "rank": 35,
+          "affinity": 0.9013898659601094,
+          "image": "https://m.media-amazon.com/images/M/MV5BYmFmNmUyMjYtZTFjNS00OWQyLThhZmMtMGZkYTQ3YjY0ZDQ1XkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "28AE71FF-CA69-4129-9B57-6F3EF9A07824",
+          "name": "The House That Jack Built",
+          "rank": 36,
+          "affinity": 0.9011492233790321,
+          "image": "https://m.media-amazon.com/images/M/MV5BY2Q3MDFiZGQtMjc4NS00MDJiLWFmYjgtNmI0MTQwMzUyOWNmXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "0830CB37-30D2-40C3-AF3C-ED0DCE85E026",
+          "name": "Marrowbone",
+          "rank": 37,
+          "affinity": 0.9008787132250378,
+          "image": "https://m.media-amazon.com/images/M/MV5BMzA5NDM1MjMzNl5BMl5BanBnXkFtZTgwNDUyMTA4NDM@._V1_.jpg"
+        },
+        {
+          "id": "4BE414CF-375F-4566-AA66-9AC6150A6B7F",
+          "name": "Lady Bird",
+          "rank": 38,
+          "affinity": 0.9005106426966287,
+          "image": "https://m.media-amazon.com/images/M/MV5BNjk5MzcyOWQtNzE1Mi00NzdmLTlkM2QtOTdjZThhMDc2Y2NjXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "B1E9C8A6-DB42-45F3-910B-B1AF94376165",
+          "name": "The Tale",
+          "rank": 39,
+          "affinity": 0.9004709606754826,
+          "image": "https://m.media-amazon.com/images/M/MV5BNzMxYTNhMTAtMWExNC00MzdhLWJlYTAtMTY5NDE2NjQ5MGNlXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "6EF10D54-2732-4A20-9239-7AB6B411AA3C",
+          "name": "Climax",
+          "rank": 40,
+          "affinity": 0.8989613394683141,
+          "image": "https://m.media-amazon.com/images/M/MV5BYWQwOTVmNGQtNGU1Ny00ODNkLTkzMmMtYzY1ZWQyMzk0Y2ZiXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "01F5E88E-013F-42FB-BE67-E1A01ECFF0C8",
+          "name": "It: Chapter Two",
+          "rank": 41,
+          "affinity": 0.8986387216495549,
+          "image": "https://m.media-amazon.com/images/M/MV5BYzUxM2VhOGItZTY2My00OTA4LWI4NjUtMDA5YWJjM2M2NDJjXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "32F8BE16-CE80-4885-8E62-BBB11CCE5DBE",
+          "name": "First Reformed",
+          "rank": 42,
+          "affinity": 0.8976850180524331,
+          "image": "https://m.media-amazon.com/images/M/MV5BYTRkOTUxZDItNDU0OC00ODQzLWJkMWEtYjBiODViNGMyYjhjXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "34692893-D526-4029-8921-8583A373005C",
+          "name": "The Kindergarten Teacher",
+          "rank": 43,
+          "affinity": 0.8975708345881963,
+          "image": "https://m.media-amazon.com/images/M/MV5BZDg3OWZjZTMtZDBjNS00N2UxLTkzZjktZjBiOWM1ZTU2YWJiXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "420FB192-4E28-4035-B8F8-9FBD7BA7F81F",
+          "name": "Bird Box",
+          "rank": 44,
+          "affinity": 0.8971929298049782,
+          "image": "https://m.media-amazon.com/images/M/MV5BMjAzMTI1MjMyN15BMl5BanBnXkFtZTgwNzU5MTE2NjM@._V1_.jpg"
+        },
+        {
+          "id": "A5476327-8C5F-45CE-A247-5FE25F5E4414",
+          "name": "Mother!",
+          "rank": 45,
+          "affinity": 0.8970384383468178,
+          "image": "https://m.media-amazon.com/images/M/MV5BMzc5ODExODE0MV5BMl5BanBnXkFtZTgwNDkzNDUxMzI@._V1_.jpg"
+        },
+        {
+          "id": "99569C1E-8E19-4DE8-8550-00BA1DA019F4",
+          "name": "Vivarium",
+          "rank": 46,
+          "affinity": 0.8962371936180471,
+          "image": "https://m.media-amazon.com/images/M/MV5BZjdlZmRmOTUtN2IxZi00ZmY2LWE5MWMtOTYxNTkyNzA3ZGFjXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "4B9EE4B1-EF5B-4B7D-ADD0-BFDDFE7B8688",
+          "name": "I Lost My Body",
+          "rank": 47,
+          "affinity": 0.8956650512816968,
+          "image": "https://m.media-amazon.com/images/M/MV5BMDY0YThlZGEtNmFjNi00ZDQ0LWE0OWMtZmI5MGQ5MjgyNGU0XkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "D37BE372-16D3-4651-BDFF-2928EF66F218",
+          "name": "Relic",
+          "rank": 48,
+          "affinity": 0.8955895173289482,
+          "image": "https://m.media-amazon.com/images/M/MV5BMTNjYzA3OTItNzQ2NC00OTZjLWJiMzYtNWQ1YWQ5YTc0YjI2XkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "9AABDCA0-BBC1-4A14-8071-FBF31EA488D6",
+          "name": "Shoplifters",
+          "rank": 49,
+          "affinity": 0.8955877853591907,
+          "image": "https://m.media-amazon.com/images/M/MV5BMjY2NGZlZDUtMDUwMi00YTUxLTljNzEtZTE3YjAyNTQyNzU5XkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "9B537F46-4963-41C9-A145-5C707D004961",
+          "name": "Scary Stories to Tell in the Dark",
+          "rank": 50,
+          "affinity": 0.8954598366062196,
+          "image": "https://m.media-amazon.com/images/M/MV5BMDBiOTEwM2MtNTQ5NC00NGVhLWI1MTgtY2E3YmIzMTdlMjI3XkEyXkFqcGc@._V1_.jpg"
+        }
+      ],
+      "gained": [
+        {
+          "id": "9DC73A1B-12BD-431B-A2A5-57F47B977634",
+          "name": "Ready or Not",
+          "rank": 10,
+          "affinity": 0.9155728397315587,
+          "image": "https://m.media-amazon.com/images/M/MV5BMTViMDA4YjgtZDQ4NC00ZDk2LTg0MWItOTc4MTkwMmVkZWRmXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "59957EBB-FB4E-4673-9359-A0136A919A69",
+          "name": "His House",
+          "rank": 17,
+          "affinity": 0.9096315749500452,
+          "image": "https://m.media-amazon.com/images/M/MV5BMDBjNmYxMjctMjViNC00NmRlLWJkZWYtOTE2ZmY4ZDg3NmMyXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "4A018111-77ED-435E-A4D1-88A4933BD7BF",
+          "name": "Horse Girl",
+          "rank": 18,
+          "affinity": 0.907336095931014,
+          "image": "https://m.media-amazon.com/images/M/MV5BMmZmODVkNzQtYzkwMC00ODkxLTk1MTgtMTBmYmFiYWMzYWQzXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "2F9D498B-1FBF-48B3-AC21-5FCFA98803FB",
+          "name": "The Perfection",
+          "rank": 19,
+          "affinity": 0.9070405725426146,
+          "image": "https://m.media-amazon.com/images/M/MV5BMTA3NzkzMDUxODBeQTJeQWpwZ15BbWU4MDM0ODc5ODcz._V1_.jpg"
+        },
+        {
+          "id": "DC02C8BA-FCBD-4FEC-ABFF-7BE7017B771A",
+          "name": "The Devil All the Time",
+          "rank": 21,
+          "affinity": 0.9062678144325251,
+          "image": "https://m.media-amazon.com/images/M/MV5BYmExOWUxZDMtZmM1ZS00NjQ4LWEwODAtY2E0N2Y1Y2MzZTkwXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "2E30BE3E-1619-4A14-8AB5-DB3D1F41CE4D",
+          "name": "Gerald's Game",
+          "rank": 22,
+          "affinity": 0.9057144006786897,
+          "image": "https://m.media-amazon.com/images/M/MV5BNDA2ZjU5ZWMtMmQ4OS00ZTQzLWIwOWMtYTBmOTljYTIwNjM3XkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "1E349A6C-B8F9-4521-80D7-FEC8AC0CC551",
+          "name": "The Ritual",
+          "rank": 27,
+          "affinity": 0.9042904324030612,
+          "image": "https://m.media-amazon.com/images/M/MV5BMjAzMzAyMDI4Ml5BMl5BanBnXkFtZTgwODMwOTY2NDM@._V1_.jpg"
+        },
+        {
+          "id": "0830CB37-30D2-40C3-AF3C-ED0DCE85E026",
+          "name": "Marrowbone",
+          "rank": 37,
+          "affinity": 0.9008787132250378,
+          "image": "https://m.media-amazon.com/images/M/MV5BMzA5NDM1MjMzNl5BMl5BanBnXkFtZTgwNDUyMTA4NDM@._V1_.jpg"
+        },
+        {
+          "id": "01F5E88E-013F-42FB-BE67-E1A01ECFF0C8",
+          "name": "It: Chapter Two",
+          "rank": 41,
+          "affinity": 0.8986387216495549,
+          "image": "https://m.media-amazon.com/images/M/MV5BYzUxM2VhOGItZTY2My00OTA4LWI4NjUtMDA5YWJjM2M2NDJjXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "420FB192-4E28-4035-B8F8-9FBD7BA7F81F",
+          "name": "Bird Box",
+          "rank": 44,
+          "affinity": 0.8971929298049782,
+          "image": "https://m.media-amazon.com/images/M/MV5BMjAzMTI1MjMyN15BMl5BanBnXkFtZTgwNzU5MTE2NjM@._V1_.jpg"
+        },
+        {
+          "id": "99569C1E-8E19-4DE8-8550-00BA1DA019F4",
+          "name": "Vivarium",
+          "rank": 46,
+          "affinity": 0.8962371936180471,
+          "image": "https://m.media-amazon.com/images/M/MV5BZjdlZmRmOTUtN2IxZi00ZmY2LWE5MWMtOTYxNTkyNzA3ZGFjXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "4B9EE4B1-EF5B-4B7D-ADD0-BFDDFE7B8688",
+          "name": "I Lost My Body",
+          "rank": 47,
+          "affinity": 0.8956650512816968,
+          "image": "https://m.media-amazon.com/images/M/MV5BMDY0YThlZGEtNmFjNi00ZDQ0LWE0OWMtZmI5MGQ5MjgyNGU0XkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "D37BE372-16D3-4651-BDFF-2928EF66F218",
+          "name": "Relic",
+          "rank": 48,
+          "affinity": 0.8955895173289482,
+          "image": "https://m.media-amazon.com/images/M/MV5BMTNjYzA3OTItNzQ2NC00OTZjLWJiMzYtNWQ1YWQ5YTc0YjI2XkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "9B537F46-4963-41C9-A145-5C707D004961",
+          "name": "Scary Stories to Tell in the Dark",
+          "rank": 50,
+          "affinity": 0.8954598366062196,
+          "image": "https://m.media-amazon.com/images/M/MV5BMDBiOTEwM2MtNTQ5NC00NGVhLWI1MTgtY2E3YmIzMTdlMjI3XkEyXkFqcGc@._V1_.jpg"
+        }
+      ],
+      "lost": [
+        {
+          "id": "FC877810-FE6F-4D25-83B5-015B43E2018F",
+          "name": "Beautiful Boy",
+          "rank": 24,
+          "affinity": 0.9116069103847433,
+          "image": "https://m.media-amazon.com/images/M/MV5BNTRhNjg3NGMtMDM3Mi00ZmRmLTg0ZDMtYTBhMThiN2YxMTdjXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "80606DEF-BB3C-4704-8C1C-AC6D5178AF95",
+          "name": "You Were Never Really Here",
+          "rank": 27,
+          "affinity": 0.9101515603402506,
+          "image": "https://m.media-amazon.com/images/M/MV5BYzM0MjBhYTUtMzY1My00OGQ5LTk4OWMtNWYwNmY3ZGFjMjViXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "DE02F90E-EF5E-4860-9D19-18BCFCD47F38",
+          "name": "Pain and Glory",
+          "rank": 28,
+          "affinity": 0.9100270800381106,
+          "image": "https://m.media-amazon.com/images/M/MV5BNmIxMTRhMjAtYzE2ZS00NDJiLTllYjktMzRlN2FiMGI2MmI4XkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "B61E9F72-4380-46D9-ACEC-05DC6D3E5338",
+          "name": "Wildlife",
+          "rank": 32,
+          "affinity": 0.9081911009443725,
+          "image": "https://m.media-amazon.com/images/M/MV5BOTliYzZkZmItODdhZi00YTcyLTkzYzQtZWJlNjE0NTUzMGU1XkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "C5931DB9-526D-47C4-8157-6D6E6FDFAD0B",
+          "name": "Phantom Thread",
+          "rank": 33,
+          "affinity": 0.9071698398652535,
+          "image": "https://m.media-amazon.com/images/M/MV5BOTMzNWNhNDctMTM2MC00N2EwLThjYTEtMmQ2ZDAyNDVlNzgyXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "89C858E2-02E7-44B5-8FCF-F9521C51B666",
+          "name": "High Life",
+          "rank": 34,
+          "affinity": 0.9061616114131686,
+          "image": "https://m.media-amazon.com/images/M/MV5BNDRhYjdiMDEtN2UzZC00ZGQyLTk3OTQtMTFkZGQ0YmM5NDk4XkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "380AEFF3-6D3E-49D1-B2BD-DD3145A683F6",
+          "name": "Monos",
+          "rank": 39,
+          "affinity": 0.9022446880312284,
+          "image": "https://m.media-amazon.com/images/M/MV5BN2VhMmY2YmMtZGY4OS00YmFlLTk3YTctNTE4NjVmMGEwOWI3XkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "C701C358-C692-4539-B9B6-D227A3076219",
+          "name": "If Beale Street Could Talk",
+          "rank": 41,
+          "affinity": 0.9018878300593147,
+          "image": "https://m.media-amazon.com/images/M/MV5BYmJlMWY1ZDMtMmU3ZS00MzVmLWE2MjQtYWVhNDAxOWY2MWI0XkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "BC8F2B7A-B588-4B33-AC32-54FE7494647A",
+          "name": "Happy as Lazzaro",
+          "rank": 42,
+          "affinity": 0.9013117518554887,
+          "image": "https://m.media-amazon.com/images/M/MV5BZGRhNWJjNDUtNTJmYi00NDY3LTgyMGEtMjMyOGE5MDE5ZDMyXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "71E75CE5-D48B-45FF-9A9D-060D676DFD48",
+          "name": "Honey Boy",
+          "rank": 43,
+          "affinity": 0.9010893128245732,
+          "image": "https://m.media-amazon.com/images/M/MV5BMmE2ZWU0NzUtMWZlOS00OWEzLWJiNjUtMDAwZWEyY2MzYjc2XkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "5391CAF9-1664-42D5-9B2B-93352891897C",
+          "name": "The Souvenir",
+          "rank": 44,
+          "affinity": 0.9010181896765382,
+          "image": "https://m.media-amazon.com/images/M/MV5BMTk2NjY3NDYzN15BMl5BanBnXkFtZTgwOTUxNzg0NzM@._V1_.jpg"
+        },
+        {
+          "id": "EA4E5D0D-A186-4C60-A898-84EA60AD8CAA",
+          "name": "Leave No Trace",
+          "rank": 45,
+          "affinity": 0.9010063400639279,
+          "image": "https://m.media-amazon.com/images/M/MV5BMjE3OTI1MTU0OV5BMl5BanBnXkFtZTgwNTg1MzkzNTM@._V1_.jpg"
+        },
+        {
+          "id": "960F3839-F838-4163-8257-772945DE9BD5",
+          "name": "The Florida Project",
+          "rank": 46,
+          "affinity": 0.9008407397970579,
+          "image": "https://m.media-amazon.com/images/M/MV5BNDBhM2MxYjAtMWFiYy00MWMwLThkMDYtN2M1ZWY3NjkxNGExXkEyXkFqcGc@._V1_.jpg"
+        },
+        {
+          "id": "B3B71D65-B9F5-48A5-AE2A-42D4CC2384EA",
+          "name": "The Last Black Man in San Francisco",
+          "rank": 49,
+          "affinity": 0.9003677704461189,
+          "image": "https://m.media-amazon.com/images/M/MV5BYTUyNTdhNmUtYzU5Zi00ZTI0LTg3NzQtNjM5ZmFkZWNiOTYwXkEyXkFqcGc@._V1_.jpg"
+        }
+      ],
+      "tags": {
+        "rising": [
+          {
+            "tag": "Horror",
+            "before": 24,
+            "after": 46,
+            "delta": 22
+          },
+          {
+            "tag": "Mystery",
+            "before": 31,
+            "after": 45,
+            "delta": 14
+          },
+          {
+            "tag": "Thriller",
+            "before": 50,
+            "after": 62,
+            "delta": 12
+          },
+          {
+            "tag": "Moody",
+            "before": 29,
+            "after": 35,
+            "delta": 6
+          },
+          {
+            "tag": "Psychological horror",
+            "before": 10,
+            "after": 16,
+            "delta": 6
+          },
+          {
+            "tag": "Stylized",
+            "before": 17,
+            "after": 22,
+            "delta": 5
+          },
+          {
+            "tag": "Grief",
+            "before": 8,
+            "after": 13,
+            "delta": 5
+          },
+          {
+            "tag": "Trauma",
+            "before": 10,
+            "after": 14,
+            "delta": 4
+          }
+        ],
+        "falling": [
+          {
+            "tag": "Drama",
+            "before": 94,
+            "after": 84,
+            "delta": -10
+          },
+          {
+            "tag": "Naturalistic",
+            "before": 25,
+            "after": 16,
+            "delta": -9
+          },
+          {
+            "tag": "Art house",
+            "before": 13,
+            "after": 8,
+            "delta": -5
+          },
+          {
+            "tag": "Coming of age",
+            "before": 20,
+            "after": 15,
+            "delta": -5
+          },
+          {
+            "tag": "Romance",
+            "before": 18,
+            "after": 14,
+            "delta": -4
+          },
+          {
+            "tag": "Independent",
+            "before": 4,
+            "after": 0,
+            "delta": -4
+          },
+          {
+            "tag": "Lyrical",
+            "before": 15,
+            "after": 12,
+            "delta": -3
+          },
+          {
+            "tag": "Intimate",
+            "before": 34,
+            "after": 31,
+            "delta": -3
+          }
+        ]
+      }
+    },
+    {
+      "domain": "artist",
+      "overlap": 0.82,
+      "a": [
+        {
+          "id": "FD7E4822-C2DA-4F78-896E-D5F2E22CFFC8",
+          "name": "FKA twigs",
+          "rank": 1,
+          "affinity": 0.9564374128192492,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/252b35abff022c8b4403154be3098485.jpg"
+        },
+        {
+          "id": "DD692BAE-4DA3-4E42-8331-EBB59A5634E5",
+          "name": "Ethel Cain",
+          "rank": 2,
+          "affinity": 0.9521788130598768,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/6a0b1d994053df6e821af7146768d787.jpg"
+        },
+        {
+          "id": "B4A3F0F0-354D-4CAD-9F96-11A20709CB9C",
+          "name": "Charli XCX",
+          "rank": 3,
+          "affinity": 0.9508655602296762,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/2a96cbd8b46e442.jpg"
+        },
+        {
+          "id": "799DB38D-E3C7-460B-9B4E-6E327345EDA5",
+          "name": "Arca",
+          "rank": 4,
+          "affinity": 0.9462304401078914,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/09ab59f75fabe3bb620bc1821cf21398.jpg"
+        },
+        {
+          "id": "42AF15D5-E1BD-4291-9B0F-C829A8274843",
+          "name": "Caroline Polachek",
+          "rank": 5,
+          "affinity": 0.9462059537484463,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/7c3978468590c532f6999bfaa3ffc73e.jpg"
+        },
+        {
+          "id": "0CD4E0AE-E657-4C2F-B37B-FD8FEBDDD3B1",
+          "name": "Grimes",
+          "rank": 6,
+          "affinity": 0.9452245479690728,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/8c7d03479bd9f30be54983c440701dce.jpg"
+        },
+        {
+          "id": "2500BC06-F6E9-4AD6-8B6C-9B5DC8BAD3E6",
+          "name": "Perfume Genius",
+          "rank": 7,
+          "affinity": 0.9390876429594361,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/ad53fad75783f77d66b8dcf57756d415.jpg"
+        },
+        {
+          "id": "3DECEC68-DDB4-4550-9B5D-86C78FD82978",
+          "name": "Julia Holter",
+          "rank": 8,
+          "affinity": 0.9360767081240333,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/9dc2dbe758c908a58db4fdfdea6d6de1.jpg"
+        },
+        {
+          "id": "7E57EBD1-1839-464F-A0B8-A3191ED9E804",
+          "name": "Weyes Blood",
+          "rank": 9,
+          "affinity": 0.9352199198883818,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/ef145f7fa2b35286a8352a59b8472e74.jpg"
+        },
+        {
+          "id": "E94C6A53-6B53-4E08-AADF-13E32E0935C7",
+          "name": "Jessie Ware",
+          "rank": 10,
+          "affinity": 0.933601346618624,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/1d119b21d48f7c684eb92f24d4ccada1.jpg"
+        },
+        {
+          "id": "A2E18023-3627-4366-89B1-497DDF610D5C",
+          "name": "Sky Ferreira",
+          "rank": 11,
+          "affinity": 0.9331207548330817,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/1d7c5118e0824927bec91b4610f2d3db.jpg"
+        },
+        {
+          "id": "0288F675-5109-41F6-9026-40E7855F664B",
+          "name": "Kelela",
+          "rank": 12,
+          "affinity": 0.9304836351515529,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/3c4b388738f09a7b3f74ae329691106e.jpg"
+        },
+        {
+          "id": "8353726B-9B6B-463B-9D0A-65BB10158F81",
+          "name": "Eartheater",
+          "rank": 13,
+          "affinity": 0.9303402945065355,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/539723b6c1211596e0eb89c713cecd1b.jpg"
+        },
+        {
+          "id": "42618FEB-68FB-49DB-B75D-7E2272FA1F5B",
+          "name": "Yves Tumor",
+          "rank": 14,
+          "affinity": 0.9296577622813129,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/9d9acb7aad07f3971b328a735a9bbb3b.jpg"
+        },
+        {
+          "id": "7B1274C6-1943-4951-B007-CFAFA6650896",
+          "name": "Magdalena Bay",
+          "rank": 15,
+          "affinity": 0.92955134221075,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/67b506f18aebbf1158a8f08a9c5c89eb.jpg"
+        },
+        {
+          "id": "B58591B3-EB73-4828-B814-6DF4C3DB79A6",
+          "name": "Oklou",
+          "rank": 16,
+          "affinity": 0.9294629229331514,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/6f8d5516dbe69a98ff7e6beedf287364.jpg"
+        },
+        {
+          "id": "6D9CE38F-9D9F-4D81-B069-2239FCEA40A3",
+          "name": "Jenny Hval",
+          "rank": 17,
+          "affinity": 0.9292071885626173,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/27df163d01ed01a6f1dcdbf297d82860.jpg"
+        },
+        {
+          "id": "5C8CAB95-F76F-43E0-A975-4B2859C2F75D",
+          "name": "Empress Of",
+          "rank": 18,
+          "affinity": 0.9287305062966272,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/03748f0f0a5e7e062e4877b32a00469f.jpg"
+        },
+        {
+          "id": "ECF249B7-4719-4192-85A4-1B0E79C52834",
+          "name": "Spellling",
+          "rank": 19,
+          "affinity": 0.9278973876731506,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/f084ed41a711a3cebbec60eae405b818.jpg"
+        },
+        {
+          "id": "C1A3D5EA-56E7-4EBD-B48E-607B8922FDD6",
+          "name": "U.S. Girls",
+          "rank": 20,
+          "affinity": 0.9277041001619345,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/eb8679896ce93ed5e2e8739b565dbebd.jpg"
+        },
+        {
+          "id": "903722DD-1F43-443A-B449-517866708D54",
+          "name": "Blood Orange",
+          "rank": 21,
+          "affinity": 0.9271950864896674,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/9b5d1f3c0c64bd1a502c003323eb5242.jpg"
+        },
+        {
+          "id": "83E5FF5D-CAF1-40FB-9EFB-43C8B2B57020",
+          "name": "Sevdaliza",
+          "rank": 22,
+          "affinity": 0.9270496478403779,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/b01f7e9eb6c3c950b2fb57ecd8af27d1.jpg"
+        },
+        {
+          "id": "2EBF3560-57CB-46F8-A74F-47AF257E3310",
+          "name": "Sophie",
+          "rank": 23,
+          "affinity": 0.9268022812195966,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/9f3fdf92c018c55285e298cf9ee8bb21.jpg"
+        },
+        {
+          "id": "B7D993E4-60CE-4D08-B997-D628E51770E3",
+          "name": "Shygirl",
+          "rank": 24,
+          "affinity": 0.9250744989741044,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/fb2a08bf7fcd902ec758960670649a90.jpg"
+        },
+        {
+          "id": "9F825BDE-AB04-4043-9DC8-9D712DBC5B80",
+          "name": "ANOHNI",
+          "rank": 25,
+          "affinity": 0.9234563017031502,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/a07423534573d3f26ce4cacd93536223.jpg"
+        },
+        {
+          "id": "0A33BB65-2C12-4B1D-AB78-33D78C9386B6",
+          "name": "Kelly Lee Owens",
+          "rank": 26,
+          "affinity": 0.923145023117246,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/7ac435dd8c04ba88b6112fdf15813cab.jpg"
+        },
+        {
+          "id": "2BC8F376-508A-4F87-95A6-229F619739D6",
+          "name": "Rina Sawayama",
+          "rank": 27,
+          "affinity": 0.9223412647675431,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/9c986c7db5e06b6bc4d6bc44c7b240ea.jpg"
+        },
+        {
+          "id": "8282575C-E987-4265-A3F9-E137D0692F5C",
+          "name": "Sampha",
+          "rank": 28,
+          "affinity": 0.9217449692465471,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/b6dbab944db8cc773ba370193b653fd6.jpg"
+        },
+        {
+          "id": "D9C32917-357D-4E21-A03A-2537B110FC5F",
+          "name": "ionnalee",
+          "rank": 29,
+          "affinity": 0.9210865362763517,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/cae2432f3daa88c8f690bc8b15f06e1d.jpg"
+        },
+        {
+          "id": "DF9A28F4-DB32-47A1-83B9-E9FEEFE9D04A",
+          "name": "Kacy Hill",
+          "rank": 30,
+          "affinity": 0.9208261635703316,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/f659d7ed4f163d9c46a44d377cce992b.jpg"
+        },
+        {
+          "id": "03949481-CD75-4482-B632-2046F3ED73D4",
+          "name": "yeule",
+          "rank": 31,
+          "affinity": 0.9197823455085269,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/234339b72b647ba909d23095b3bcfc18.jpg"
+        },
+        {
+          "id": "8A65DD07-F4CF-490E-B7F9-625A420A2288",
+          "name": "Yaeji",
+          "rank": 32,
+          "affinity": 0.9190608494885248,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/cc18f809e68330285a087976e3c1bbd4.jpg"
+        },
+        {
+          "id": "1C7E1074-675B-4399-A257-6A084C60DB86",
+          "name": "Banoffee",
+          "rank": 33,
+          "affinity": 0.918976264449464,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/f9d0eba1189dd2146b2fd734dadaf109.jpg"
+        },
+        {
+          "id": "1B3FFFDF-8504-4B6D-8232-F06652276F1F",
+          "name": "serpentwithfeet",
+          "rank": 34,
+          "affinity": 0.9181240756800506,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/5d3d22b7531074a8a5d0e592afe79f99.jpg"
+        },
+        {
+          "id": "66E202FD-9F73-4E20-9F7A-99CEE6FC01BF",
+          "name": "Ramona Lisa",
+          "rank": 35,
+          "affinity": 0.9180723143230124,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/9194e1771b7f4907c92336d5a71294df.jpg"
+        },
+        {
+          "id": "5B855CE4-A9B4-4D78-A0C8-E7B36C9E17EA",
+          "name": "Kelsey Lu",
+          "rank": 36,
+          "affinity": 0.9179675503530569,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/2501e647e798396a12ecb2412c7debec.jpg"
+        },
+        {
+          "id": "0D01AB41-2D81-4394-B95B-384B1BFA96CD",
+          "name": "Tirzah",
+          "rank": 37,
+          "affinity": 0.9174639567803656,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/7514a8df4af9c688e24aee7e430a9ced.jpg"
+        },
+        {
+          "id": "E2E58680-EE3F-4D1D-88B6-B79F87205B2C",
+          "name": "SZA",
+          "rank": 38,
+          "affinity": 0.9170559431206075,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/6e9a7fd0a4177ad62c9a961e2058dc26.jpg"
+        },
+        {
+          "id": "27B2B13A-51A6-45A5-845E-CCBEA125FB5F",
+          "name": "Lyra Pramuk",
+          "rank": 39,
+          "affinity": 0.9169538630134103,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/320f05c889b59b41ddd8cb0ea8f38567.jpg"
+        },
+        {
+          "id": "A37B17AE-15C7-48A3-AADD-6CE50BE3FF74",
+          "name": "Lorde",
+          "rank": 40,
+          "affinity": 0.9169425507489705,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/2a96cbd8b46e442.jpg"
+        },
+        {
+          "id": "490EECFD-E28E-46BF-96E5-0F1DF356D3B3",
+          "name": "iamamiwhoami",
+          "rank": 41,
+          "affinity": 0.9169166858975054,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/9e7a91afee9947e0810d334ba2b25f74.jpg"
+        },
+        {
+          "id": "2798A2A2-0055-4B05-9117-8AD189A802A0",
+          "name": "Sega Bodega",
+          "rank": 42,
+          "affinity": 0.9169091350126206,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/1dbc1b56251ae1a8b3801d69033c9da0.jpg"
+        },
+        {
+          "id": "9896F365-B597-4486-8C00-3DD596262ABE",
+          "name": "Allie X",
+          "rank": 43,
+          "affinity": 0.9168359026841694,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/1c84a33a5f3394f24d0b3c912f2627f1.jpg"
+        },
+        {
+          "id": "E3BD2650-8E5C-43FB-B5A7-C1C7753A6293",
+          "name": "Mitski",
+          "rank": 44,
+          "affinity": 0.9165794031584586,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/a600f8d23d7e2f262f2962a399e6c401.jpg"
+        },
+        {
+          "id": "13562DDC-E8CD-4B54-B057-E9B9601D8533",
+          "name": "Okay Kaya",
+          "rank": 45,
+          "affinity": 0.9163341393017078,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/78389d111c1746ed48264bd1f8c91a25.jpg"
+        },
+        {
+          "id": "8081E76C-45EF-4D31-90EF-E8D9D14AFAA7",
+          "name": "Bianca Casady & The C.i.A",
+          "rank": 46,
+          "affinity": 0.9156963116854046,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/77b832fc518911a080ffe638182aef93.jpg"
+        },
+        {
+          "id": "64AD0902-0A1A-4121-9BB2-7AA76E380AAB",
+          "name": "Angel Olsen",
+          "rank": 47,
+          "affinity": 0.9154276092502556,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/5a92c5a736a03e1e46795c8e71251dbc.jpg"
+        },
+        {
+          "id": "809668F2-63AB-4512-B201-3AFF325C282B",
+          "name": "Hannah Diamond",
+          "rank": 48,
+          "affinity": 0.915425189968045,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/0fcf93037d2373768dc1010fb3d625cf.jpg"
+        },
+        {
+          "id": "C8D4270D-47F4-4022-BE32-305A32DDB69C",
+          "name": "A. G. Cook",
+          "rank": 49,
+          "affinity": 0.9153945911259526,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/9ff83e8fda82de9db18834731810709f.jpg"
+        },
+        {
+          "id": "03799700-A776-426A-822B-1242B7849970",
+          "name": "Helado Negro",
+          "rank": 50,
+          "affinity": 0.9152355085788466,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/a0cf38c4c87141f198132cf00d3381ee.jpg"
+        }
+      ],
+      "b": [
+        {
+          "id": "FD7E4822-C2DA-4F78-896E-D5F2E22CFFC8",
+          "name": "FKA twigs",
+          "rank": 1,
+          "affinity": 0.9560221789578132,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/252b35abff022c8b4403154be3098485.jpg"
+        },
+        {
+          "id": "B4A3F0F0-354D-4CAD-9F96-11A20709CB9C",
+          "name": "Charli XCX",
+          "rank": 2,
+          "affinity": 0.95341905513797,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/2a96cbd8b46e442.jpg"
+        },
+        {
+          "id": "DD692BAE-4DA3-4E42-8331-EBB59A5634E5",
+          "name": "Ethel Cain",
+          "rank": 3,
+          "affinity": 0.9511522351776536,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/6a0b1d994053df6e821af7146768d787.jpg"
+        },
+        {
+          "id": "799DB38D-E3C7-460B-9B4E-6E327345EDA5",
+          "name": "Arca",
+          "rank": 4,
+          "affinity": 0.949787953188619,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/09ab59f75fabe3bb620bc1821cf21398.jpg"
+        },
+        {
+          "id": "0CD4E0AE-E657-4C2F-B37B-FD8FEBDDD3B1",
+          "name": "Grimes",
+          "rank": 5,
+          "affinity": 0.9451720204447003,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/8c7d03479bd9f30be54983c440701dce.jpg"
+        },
+        {
+          "id": "42AF15D5-E1BD-4291-9B0F-C829A8274843",
+          "name": "Caroline Polachek",
+          "rank": 6,
+          "affinity": 0.9446404423617173,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/7c3978468590c532f6999bfaa3ffc73e.jpg"
+        },
+        {
+          "id": "3DECEC68-DDB4-4550-9B5D-86C78FD82978",
+          "name": "Julia Holter",
+          "rank": 7,
+          "affinity": 0.9342884996083399,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/9dc2dbe758c908a58db4fdfdea6d6de1.jpg"
+        },
+        {
+          "id": "A2E18023-3627-4366-89B1-497DDF610D5C",
+          "name": "Sky Ferreira",
+          "rank": 8,
+          "affinity": 0.9316304729660152,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/1d7c5118e0824927bec91b4610f2d3db.jpg"
+        },
+        {
+          "id": "7E57EBD1-1839-464F-A0B8-A3191ED9E804",
+          "name": "Weyes Blood",
+          "rank": 9,
+          "affinity": 0.931307610659742,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/ef145f7fa2b35286a8352a59b8472e74.jpg"
+        },
+        {
+          "id": "8353726B-9B6B-463B-9D0A-65BB10158F81",
+          "name": "Eartheater",
+          "rank": 10,
+          "affinity": 0.930996973561011,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/539723b6c1211596e0eb89c713cecd1b.jpg"
+        },
+        {
+          "id": "42618FEB-68FB-49DB-B75D-7E2272FA1F5B",
+          "name": "Yves Tumor",
+          "rank": 11,
+          "affinity": 0.929866689566849,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/9d9acb7aad07f3971b328a735a9bbb3b.jpg"
+        },
+        {
+          "id": "2500BC06-F6E9-4AD6-8B6C-9B5DC8BAD3E6",
+          "name": "Perfume Genius",
+          "rank": 12,
+          "affinity": 0.9295152962183975,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/ad53fad75783f77d66b8dcf57756d415.jpg"
+        },
+        {
+          "id": "0288F675-5109-41F6-9026-40E7855F664B",
+          "name": "Kelela",
+          "rank": 13,
+          "affinity": 0.9292965241107467,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/3c4b388738f09a7b3f74ae329691106e.jpg"
+        },
+        {
+          "id": "B58591B3-EB73-4828-B814-6DF4C3DB79A6",
+          "name": "Oklou",
+          "rank": 14,
+          "affinity": 0.928158335656797,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/6f8d5516dbe69a98ff7e6beedf287364.jpg"
+        },
+        {
+          "id": "2EBF3560-57CB-46F8-A74F-47AF257E3310",
+          "name": "Sophie",
+          "rank": 15,
+          "affinity": 0.9278706476426615,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/9f3fdf92c018c55285e298cf9ee8bb21.jpg"
+        },
+        {
+          "id": "83E5FF5D-CAF1-40FB-9EFB-43C8B2B57020",
+          "name": "Sevdaliza",
+          "rank": 16,
+          "affinity": 0.927299220542087,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/b01f7e9eb6c3c950b2fb57ecd8af27d1.jpg"
+        },
+        {
+          "id": "7B1274C6-1943-4951-B007-CFAFA6650896",
+          "name": "Magdalena Bay",
+          "rank": 17,
+          "affinity": 0.9269842856825932,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/67b506f18aebbf1158a8f08a9c5c89eb.jpg"
+        },
+        {
+          "id": "2BC8F376-508A-4F87-95A6-229F619739D6",
+          "name": "Rina Sawayama",
+          "rank": 18,
+          "affinity": 0.9267632629264277,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/9c986c7db5e06b6bc4d6bc44c7b240ea.jpg"
+        },
+        {
+          "id": "B7D993E4-60CE-4D08-B997-D628E51770E3",
+          "name": "Shygirl",
+          "rank": 19,
+          "affinity": 0.9267153663786627,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/fb2a08bf7fcd902ec758960670649a90.jpg"
+        },
+        {
+          "id": "6D9CE38F-9D9F-4D81-B069-2239FCEA40A3",
+          "name": "Jenny Hval",
+          "rank": 20,
+          "affinity": 0.9256414634211043,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/27df163d01ed01a6f1dcdbf297d82860.jpg"
+        },
+        {
+          "id": "E94C6A53-6B53-4E08-AADF-13E32E0935C7",
+          "name": "Jessie Ware",
+          "rank": 21,
+          "affinity": 0.9255917761396263,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/1d119b21d48f7c684eb92f24d4ccada1.jpg"
+        },
+        {
+          "id": "5C8CAB95-F76F-43E0-A975-4B2859C2F75D",
+          "name": "Empress Of",
+          "rank": 22,
+          "affinity": 0.9241123972994474,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/03748f0f0a5e7e062e4877b32a00469f.jpg"
+        },
+        {
+          "id": "C1A3D5EA-56E7-4EBD-B48E-607B8922FDD6",
+          "name": "U.S. Girls",
+          "rank": 23,
+          "affinity": 0.9239203348616287,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/eb8679896ce93ed5e2e8739b565dbebd.jpg"
+        },
+        {
+          "id": "ECF249B7-4719-4192-85A4-1B0E79C52834",
+          "name": "Spellling",
+          "rank": 24,
+          "affinity": 0.923622694470601,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/f084ed41a711a3cebbec60eae405b818.jpg"
+        },
+        {
+          "id": "03949481-CD75-4482-B632-2046F3ED73D4",
+          "name": "yeule",
+          "rank": 25,
+          "affinity": 0.9211530773898113,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/234339b72b647ba909d23095b3bcfc18.jpg"
+        },
+        {
+          "id": "903722DD-1F43-443A-B449-517866708D54",
+          "name": "Blood Orange",
+          "rank": 26,
+          "affinity": 0.9204600669869498,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/9b5d1f3c0c64bd1a502c003323eb5242.jpg"
+        },
+        {
+          "id": "D9C32917-357D-4E21-A03A-2537B110FC5F",
+          "name": "ionnalee",
+          "rank": 27,
+          "affinity": 0.9203100098894326,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/cae2432f3daa88c8f690bc8b15f06e1d.jpg"
+        },
+        {
+          "id": "8A65DD07-F4CF-490E-B7F9-625A420A2288",
+          "name": "Yaeji",
+          "rank": 28,
+          "affinity": 0.9198153519671431,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/cc18f809e68330285a087976e3c1bbd4.jpg"
+        },
+        {
+          "id": "E2E58680-EE3F-4D1D-88B6-B79F87205B2C",
+          "name": "SZA",
+          "rank": 29,
+          "affinity": 0.9193733178351944,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/6e9a7fd0a4177ad62c9a961e2058dc26.jpg"
+        },
+        {
+          "id": "0A33BB65-2C12-4B1D-AB78-33D78C9386B6",
+          "name": "Kelly Lee Owens",
+          "rank": 30,
+          "affinity": 0.9193310372030356,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/7ac435dd8c04ba88b6112fdf15813cab.jpg"
+        },
+        {
+          "id": "9896F365-B597-4486-8C00-3DD596262ABE",
+          "name": "Allie X",
+          "rank": 31,
+          "affinity": 0.9178249973062458,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/1c84a33a5f3394f24d0b3c912f2627f1.jpg"
+        },
+        {
+          "id": "809668F2-63AB-4512-B201-3AFF325C282B",
+          "name": "Hannah Diamond",
+          "rank": 32,
+          "affinity": 0.91771195236263,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/0fcf93037d2373768dc1010fb3d625cf.jpg"
+        },
+        {
+          "id": "52278DD3-3506-4C92-84BC-BD2B4A30F143",
+          "name": "Addison Rae",
+          "rank": 33,
+          "affinity": 0.9174991683227355,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/52db4ecc0bfca94ed8d5a8ce9f4e6079.jpg"
+        },
+        {
+          "id": "490EECFD-E28E-46BF-96E5-0F1DF356D3B3",
+          "name": "iamamiwhoami",
+          "rank": 34,
+          "affinity": 0.9170302729083404,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/9e7a91afee9947e0810d334ba2b25f74.jpg"
+        },
+        {
+          "id": "27B2B13A-51A6-45A5-845E-CCBEA125FB5F",
+          "name": "Lyra Pramuk",
+          "rank": 35,
+          "affinity": 0.9169898309098709,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/320f05c889b59b41ddd8cb0ea8f38567.jpg"
+        },
+        {
+          "id": "9F825BDE-AB04-4043-9DC8-9D712DBC5B80",
+          "name": "ANOHNI",
+          "rank": 36,
+          "affinity": 0.9169229736888895,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/a07423534573d3f26ce4cacd93536223.jpg"
+        },
+        {
+          "id": "2798A2A2-0055-4B05-9117-8AD189A802A0",
+          "name": "Sega Bodega",
+          "rank": 37,
+          "affinity": 0.9161938364502783,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/1dbc1b56251ae1a8b3801d69033c9da0.jpg"
+        },
+        {
+          "id": "7C9617C7-1FA1-4F83-8FDE-2EC2148339C3",
+          "name": "PinkPantheress",
+          "rank": 38,
+          "affinity": 0.9160247753803374
+        },
+        {
+          "id": "66E202FD-9F73-4E20-9F7A-99CEE6FC01BF",
+          "name": "Ramona Lisa",
+          "rank": 39,
+          "affinity": 0.9151992405295576,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/9194e1771b7f4907c92336d5a71294df.jpg"
+        },
+        {
+          "id": "3909F901-F1DA-4F4E-92C3-4A5D1B0EB2C4",
+          "name": "Azealia Banks",
+          "rank": 40,
+          "affinity": 0.9151308534449181,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+        },
+        {
+          "id": "1D792A35-7D72-4D57-88D0-C3A4F3E73EF6",
+          "name": "Dua Lipa",
+          "rank": 41,
+          "affinity": 0.9150959847087984,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/f950569da54d5af9859e5014c697190f.jpg"
+        },
+        {
+          "id": "A4BDF3FE-4BE7-4539-B5E2-28EF926D42BF",
+          "name": "COBRAH",
+          "rank": 42,
+          "affinity": 0.9141973814211524,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/7541a6594604bf03d3cd2df6077a69a6.jpg"
+        },
+        {
+          "id": "6054BEC5-34E8-47BC-BAEE-6F6297CA9AB0",
+          "name": "Erika de Casier",
+          "rank": 43,
+          "affinity": 0.9137968449548098,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/0461295c607e1d5d8a52b1fca5c0e8ae.jpg"
+        },
+        {
+          "id": "CB21DFC0-F6D6-4F90-8133-6ED4B034B251",
+          "name": "Dorian Electra",
+          "rank": 44,
+          "affinity": 0.913755770894387,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/1dc14518a93b90f0627703f391780623.jpg"
+        },
+        {
+          "id": "C8D4270D-47F4-4022-BE32-305A32DDB69C",
+          "name": "A. G. Cook",
+          "rank": 45,
+          "affinity": 0.9136361471247949,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/9ff83e8fda82de9db18834731810709f.jpg"
+        },
+        {
+          "id": "1C7E1074-675B-4399-A257-6A084C60DB86",
+          "name": "Banoffee",
+          "rank": 46,
+          "affinity": 0.9133345986352932,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/f9d0eba1189dd2146b2fd734dadaf109.jpg"
+        },
+        {
+          "id": "0A0CB59C-6F7C-49B0-954E-BBD858D4F23B",
+          "name": "Kim Petras",
+          "rank": 47,
+          "affinity": 0.913063881677132,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/025249c06e7ef80f993cb1fe1990b76d.jpg"
+        },
+        {
+          "id": "A37B17AE-15C7-48A3-AADD-6CE50BE3FF74",
+          "name": "Lorde",
+          "rank": 48,
+          "affinity": 0.913048125401899,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/2a96cbd8b46e442.jpg"
+        },
+        {
+          "id": "E3BD2650-8E5C-43FB-B5A7-C1C7753A6293",
+          "name": "Mitski",
+          "rank": 49,
+          "affinity": 0.9129982659070853,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/a600f8d23d7e2f262f2962a399e6c401.jpg"
+        },
+        {
+          "id": "A3A7CEAC-FE66-49E4-AC58-D619BC48C840",
+          "name": "Carly Rae Jepsen",
+          "rank": 50,
+          "affinity": 0.9127517755847235,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/6cdebcd5eda5f2578d2f40eec42a9e0a.jpg"
+        }
+      ],
+      "gained": [
+        {
+          "id": "52278DD3-3506-4C92-84BC-BD2B4A30F143",
+          "name": "Addison Rae",
+          "rank": 33,
+          "affinity": 0.9174991683227355,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/52db4ecc0bfca94ed8d5a8ce9f4e6079.jpg"
+        },
+        {
+          "id": "7C9617C7-1FA1-4F83-8FDE-2EC2148339C3",
+          "name": "PinkPantheress",
+          "rank": 38,
+          "affinity": 0.9160247753803374
+        },
+        {
+          "id": "3909F901-F1DA-4F4E-92C3-4A5D1B0EB2C4",
+          "name": "Azealia Banks",
+          "rank": 40,
+          "affinity": 0.9151308534449181,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+        },
+        {
+          "id": "1D792A35-7D72-4D57-88D0-C3A4F3E73EF6",
+          "name": "Dua Lipa",
+          "rank": 41,
+          "affinity": 0.9150959847087984,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/f950569da54d5af9859e5014c697190f.jpg"
+        },
+        {
+          "id": "A4BDF3FE-4BE7-4539-B5E2-28EF926D42BF",
+          "name": "COBRAH",
+          "rank": 42,
+          "affinity": 0.9141973814211524,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/7541a6594604bf03d3cd2df6077a69a6.jpg"
+        },
+        {
+          "id": "6054BEC5-34E8-47BC-BAEE-6F6297CA9AB0",
+          "name": "Erika de Casier",
+          "rank": 43,
+          "affinity": 0.9137968449548098,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/0461295c607e1d5d8a52b1fca5c0e8ae.jpg"
+        },
+        {
+          "id": "CB21DFC0-F6D6-4F90-8133-6ED4B034B251",
+          "name": "Dorian Electra",
+          "rank": 44,
+          "affinity": 0.913755770894387,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/1dc14518a93b90f0627703f391780623.jpg"
+        },
+        {
+          "id": "0A0CB59C-6F7C-49B0-954E-BBD858D4F23B",
+          "name": "Kim Petras",
+          "rank": 47,
+          "affinity": 0.913063881677132,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/025249c06e7ef80f993cb1fe1990b76d.jpg"
+        },
+        {
+          "id": "A3A7CEAC-FE66-49E4-AC58-D619BC48C840",
+          "name": "Carly Rae Jepsen",
+          "rank": 50,
+          "affinity": 0.9127517755847235,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/6cdebcd5eda5f2578d2f40eec42a9e0a.jpg"
+        }
+      ],
+      "lost": [
+        {
+          "id": "8282575C-E987-4265-A3F9-E137D0692F5C",
+          "name": "Sampha",
+          "rank": 28,
+          "affinity": 0.9217449692465471,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/b6dbab944db8cc773ba370193b653fd6.jpg"
+        },
+        {
+          "id": "DF9A28F4-DB32-47A1-83B9-E9FEEFE9D04A",
+          "name": "Kacy Hill",
+          "rank": 30,
+          "affinity": 0.9208261635703316,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/f659d7ed4f163d9c46a44d377cce992b.jpg"
+        },
+        {
+          "id": "1B3FFFDF-8504-4B6D-8232-F06652276F1F",
+          "name": "serpentwithfeet",
+          "rank": 34,
+          "affinity": 0.9181240756800506,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/5d3d22b7531074a8a5d0e592afe79f99.jpg"
+        },
+        {
+          "id": "5B855CE4-A9B4-4D78-A0C8-E7B36C9E17EA",
+          "name": "Kelsey Lu",
+          "rank": 36,
+          "affinity": 0.9179675503530569,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/2501e647e798396a12ecb2412c7debec.jpg"
+        },
+        {
+          "id": "0D01AB41-2D81-4394-B95B-384B1BFA96CD",
+          "name": "Tirzah",
+          "rank": 37,
+          "affinity": 0.9174639567803656,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/7514a8df4af9c688e24aee7e430a9ced.jpg"
+        },
+        {
+          "id": "13562DDC-E8CD-4B54-B057-E9B9601D8533",
+          "name": "Okay Kaya",
+          "rank": 45,
+          "affinity": 0.9163341393017078,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/78389d111c1746ed48264bd1f8c91a25.jpg"
+        },
+        {
+          "id": "8081E76C-45EF-4D31-90EF-E8D9D14AFAA7",
+          "name": "Bianca Casady & The C.i.A",
+          "rank": 46,
+          "affinity": 0.9156963116854046,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/77b832fc518911a080ffe638182aef93.jpg"
+        },
+        {
+          "id": "64AD0902-0A1A-4121-9BB2-7AA76E380AAB",
+          "name": "Angel Olsen",
+          "rank": 47,
+          "affinity": 0.9154276092502556,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/5a92c5a736a03e1e46795c8e71251dbc.jpg"
+        },
+        {
+          "id": "03799700-A776-426A-822B-1242B7849970",
+          "name": "Helado Negro",
+          "rank": 50,
+          "affinity": 0.9152355085788466,
+          "image": "https://lastfm.freetls.fastly.net/i/u/770x0/a0cf38c4c87141f198132cf00d3381ee.jpg"
+        }
+      ],
+      "tags": {
+        "rising": [
+          {
+            "tag": "Pop",
+            "before": 28,
+            "after": 41,
+            "delta": 13
+          },
+          {
+            "tag": "Dance Pop",
+            "before": 6,
+            "after": 17,
+            "delta": 11
+          },
+          {
+            "tag": "Electropop",
+            "before": 31,
+            "after": 40,
+            "delta": 9
+          },
+          {
+            "tag": "Dance-Pop",
+            "before": 3,
+            "after": 10,
+            "delta": 7
+          },
+          {
+            "tag": "Empowerment",
+            "before": 10,
+            "after": 16,
+            "delta": 6
+          },
+          {
+            "tag": "Hyperpop",
+            "before": 11,
+            "after": 17,
+            "delta": 6
+          },
+          {
+            "tag": "Energetic",
+            "before": 10,
+            "after": 16,
+            "delta": 6
+          },
+          {
+            "tag": "Synthpop",
+            "before": 31,
+            "after": 36,
+            "delta": 5
+          }
+        ],
+        "falling": [
+          {
+            "tag": "Art Pop",
+            "before": 62,
+            "after": 54,
+            "delta": -8
+          },
+          {
+            "tag": "Dream Pop",
+            "before": 26,
+            "after": 19,
+            "delta": -7
+          },
+          {
+            "tag": "Experimental",
+            "before": 51,
+            "after": 45,
+            "delta": -6
+          },
+          {
+            "tag": "Intimate",
+            "before": 31,
+            "after": 25,
+            "delta": -6
+          },
+          {
+            "tag": "Indie",
+            "before": 12,
+            "after": 7,
+            "delta": -5
+          },
+          {
+            "tag": "Alternative R&B",
+            "before": 29,
+            "after": 25,
+            "delta": -4
+          },
+          {
+            "tag": "Expressive",
+            "before": 34,
+            "after": 30,
+            "delta": -4
+          },
+          {
+            "tag": "Soul",
+            "before": 13,
+            "after": 9,
+            "delta": -4
+          }
+        ]
+      }
+    },
+    {
+      "domain": "brand",
+      "overlap": 0.74,
+      "a": [
+        {
+          "id": "4F94C666-5FFA-4A42-8453-24C2F779EC36",
+          "name": "Urban Outfitters",
+          "rank": 1,
+          "affinity": 0.9438878071921994,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/54/5413187.jpg"
+        },
+        {
+          "id": "0B67CD5A-152C-470B-9577-A052E3A092F7",
+          "name": "Yves Saint Laurent",
+          "rank": 2,
+          "affinity": 0.9380555036592894,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/20/20032127.jpg"
+        },
+        {
+          "id": "BB047D19-D3D5-47A1-B9AA-ECCEBE9470AE",
+          "name": "Balenciaga",
+          "rank": 3,
+          "affinity": 0.9374228462436481,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/94/9445148.jpg"
+        },
+        {
+          "id": "9A0FA0D6-7A07-4F07-A905-E82547C74113",
+          "name": "Martin Margiela",
+          "rank": 4,
+          "affinity": 0.9325940955805306,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/23/235393849.jpg"
+        },
+        {
+          "id": "8A2527C6-2C10-443F-A71C-6EDDA5F95E11",
+          "name": "American Apparel",
+          "rank": 5,
+          "affinity": 0.9301138877658262,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/22/22081838.jpg"
+        },
+        {
+          "id": "1A8FD8BE-6FAC-4759-A242-614C3A0810CD",
+          "name": "Stella Mccartney",
+          "rank": 6,
+          "affinity": 0.9284291216595919,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/90/9097967.jpg"
+        },
+        {
+          "id": "489BDF44-F2D1-484D-A09B-5A63A3034D6D",
+          "name": "Alexander Mcqueen",
+          "rank": 7,
+          "affinity": 0.9273283143447989,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/10/10480357.jpg"
+        },
+        {
+          "id": "D2C6D7FD-B21D-478C-8B29-68B10E9DCACB",
+          "name": "Alexander Wang",
+          "rank": 8,
+          "affinity": 0.9271414916303934,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/17/178733366.jpg"
+        },
+        {
+          "id": "5EA79857-0E68-48CC-8345-3A786B231326",
+          "name": "Allsaints",
+          "rank": 9,
+          "affinity": 0.9254466269658694,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/92/9241741.jpg"
+        },
+        {
+          "id": "827D80C7-BD20-4C76-B8F4-BDC131223FD0",
+          "name": "Ssense",
+          "rank": 10,
+          "affinity": 0.9240593424224067,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/11/11827603.jpg"
+        },
+        {
+          "id": "47B7265A-778E-44A5-B037-2E8AC5505609",
+          "name": "Opening Ceremony",
+          "rank": 11,
+          "affinity": 0.9235278420245798,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/21/21922111.jpg"
+        },
+        {
+          "id": "84B18312-3C2B-41A9-863B-89651C2F6A2C",
+          "name": "Gucci",
+          "rank": 12,
+          "affinity": 0.9229870035230647,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/24/2421050.jpg"
+        },
+        {
+          "id": "3637BC2E-B2D1-4496-9BD7-938E4FAE81AD",
+          "name": "Comme des Garcons",
+          "rank": 13,
+          "affinity": 0.9217270847342245,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/16/1680276293.jpg"
+        },
+        {
+          "id": "F59D6DB5-5A85-48C6-A2EC-CAAE334D4348",
+          "name": "Dr. Martens",
+          "rank": 14,
+          "affinity": 0.9206131981206666,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/14/145678112.jpg"
+        },
+        {
+          "id": "C7C2B636-E5F5-42BE-8068-C8A1F1C463F6",
+          "name": "Givenchy",
+          "rank": 15,
+          "affinity": 0.919888675057033,
+          "image": null
+        },
+        {
+          "id": "D630A953-8F2E-42CD-A91A-A2A6C05ECE1D",
+          "name": "Burberry",
+          "rank": 16,
+          "affinity": 0.9195267813979882,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/18/1889387.jpg"
+        },
+        {
+          "id": "212146FD-4F22-446B-BCA2-E8597774A940",
+          "name": "Chanel",
+          "rank": 17,
+          "affinity": 0.9190562997013345,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/69/695995017.jpg"
+        },
+        {
+          "id": "9D4B36F8-6512-4247-A481-E5D8FAF3EB5B",
+          "name": "Balmain",
+          "rank": 18,
+          "affinity": 0.9186111037195849,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/53/535065013.jpg"
+        },
+        {
+          "id": "3EC9E7DF-1497-44C4-8642-E7FA2FF3A99D",
+          "name": "Calvin Klein",
+          "rank": 19,
+          "affinity": 0.9183725372678961,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/19/193154362.jpg"
+        },
+        {
+          "id": "A631A56C-95EF-415F-B48C-C1AC2FDFF096",
+          "name": "Kenzo",
+          "rank": 20,
+          "affinity": 0.9182939643952921,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/18/181303532.jpg"
+        },
+        {
+          "id": "8A675C2C-99BF-454A-99CF-3AD69D3E8048",
+          "name": "Vivienne Westwood",
+          "rank": 21,
+          "affinity": 0.9180704215757488,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/18/186541074.jpg"
+        },
+        {
+          "id": "5760BF0A-EBDF-4B9A-88CD-69F4BF08C362",
+          "name": "Louis Vuitton",
+          "rank": 22,
+          "affinity": 0.9166763247001759,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/18/187619120.jpg"
+        },
+        {
+          "id": "49540603-38B5-43F9-8F87-BD2F2A1C62ED",
+          "name": "Marc Jacobs",
+          "rank": 23,
+          "affinity": 0.9158828698721292,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/10/1024067.jpg"
+        },
+        {
+          "id": "33A42D87-793C-49F5-B899-EF34D47FB1A2",
+          "name": "Fendi",
+          "rank": 24,
+          "affinity": 0.9156752849680523,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/20/20158039.jpg"
+        },
+        {
+          "id": "80E08DE0-0D9C-42F5-8BE2-218F67DF36C6",
+          "name": "Chloé",
+          "rank": 25,
+          "affinity": 0.9149746787296943,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/56/560379617.jpg"
+        },
+        {
+          "id": "17F9BDB5-F913-40C8-86B3-63850A541FAC",
+          "name": "Vetements",
+          "rank": 26,
+          "affinity": 0.9144851779989273,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/93/930523155.jpg"
+        },
+        {
+          "id": "50DDC31D-B19D-4963-AE84-9E7F50A610AD",
+          "name": "Miu Miu",
+          "rank": 27,
+          "affinity": 0.9142911106538707,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/30/305083839.jpg"
+        },
+        {
+          "id": "489F29B5-A94E-43AB-BD3A-5F028B3348C6",
+          "name": "Céline",
+          "rank": 28,
+          "affinity": 0.9142827452169306,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/41/4184252622.jpg"
+        },
+        {
+          "id": "07627DFB-36E8-4635-9554-988A769DFEB9",
+          "name": "Narciso Rodriguez",
+          "rank": 29,
+          "affinity": 0.9139723024532729
+        },
+        {
+          "id": "2CA2569D-223D-42D6-BB2F-F8B5D36B9AEC",
+          "name": "COS",
+          "rank": 30,
+          "affinity": 0.9136868338091543,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/39/392125511.jpg"
+        },
+        {
+          "id": "59E72ACF-8CFA-4E5B-BBEF-BA3AF8988C55",
+          "name": "Christian Dior",
+          "rank": 31,
+          "affinity": 0.9120325705889705,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/55/550072490.jpg"
+        },
+        {
+          "id": "82946F1C-AB10-4669-B9A1-640A01E2A407",
+          "name": "Tommy Hilfiger",
+          "rank": 32,
+          "affinity": 0.9116025529183905,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/85/8579765.jpg"
+        },
+        {
+          "id": "64607FA4-B9F0-4BC6-AC81-81ED237D5ABD",
+          "name": "Prada",
+          "rank": 33,
+          "affinity": 0.9114756555491909,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/30/304662892.jpg"
+        },
+        {
+          "id": "1D56E32D-8300-46C9-B976-D18328BEB2E1",
+          "name": "Moschino",
+          "rank": 34,
+          "affinity": 0.910959490158477,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/44/4404556.jpg"
+        },
+        {
+          "id": "2151CAF1-46B3-43DE-8116-49A5B14A8B1C",
+          "name": "Karl Lagerfeld",
+          "rank": 35,
+          "affinity": 0.9106682057602767,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/21/217889406.jpg"
+        },
+        {
+          "id": "D5D353B0-FB40-4E2F-8C01-6386CE136E13",
+          "name": "Versace",
+          "rank": 36,
+          "affinity": 0.910244801807969,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/92/9213261.jpg"
+        },
+        {
+          "id": "628AFDF5-16D7-4AE5-B727-AF5AE5CE12F2",
+          "name": "Loewe",
+          "rank": 37,
+          "affinity": 0.9101429730424251,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/88/8873610.jpg"
+        },
+        {
+          "id": "74A44B01-5C99-4754-9585-F487D21C543D",
+          "name": "Zara",
+          "rank": 38,
+          "affinity": 0.9101224295513373,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/60/602725764.jpg"
+        },
+        {
+          "id": "ACCC2A57-5C63-4890-99C2-C05AA2C92E87",
+          "name": "3.1 Phillip Lim",
+          "rank": 39,
+          "affinity": 0.9094280002009482,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/18/186933326.jpg"
+        },
+        {
+          "id": "F0F3C532-AF49-480E-82B3-D7B443EDC1C7",
+          "name": "Topshop",
+          "rank": 40,
+          "affinity": 0.9091807587744724,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/41/4165329.jpg"
+        },
+        {
+          "id": "8BE27D89-C323-4294-9A8E-BC02814C3C62",
+          "name": "Helmut Lang",
+          "rank": 41,
+          "affinity": 0.9081475973133918,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/88/8852719.jpg"
+        },
+        {
+          "id": "DE3FA929-BDA9-44B8-8187-EDD76AA53F05",
+          "name": "i-D",
+          "rank": 42,
+          "affinity": 0.9076477068555454,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/19/199175210.jpg"
+        },
+        {
+          "id": "45E5E64C-A26A-4DA0-90D8-2B55DAF3E2F2",
+          "name": "Valentino",
+          "rank": 43,
+          "affinity": 0.9075469075011502,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/39/39939022.jpg"
+        },
+        {
+          "id": "11DFD977-E5AA-40FE-8D24-DF4C98750FDB",
+          "name": "ASOS",
+          "rank": 44,
+          "affinity": 0.9068930750047957,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/39/3931765.jpg"
+        },
+        {
+          "id": "04D60F2E-4E66-4F6E-8D59-398537957DBC",
+          "name": "V Files",
+          "rank": 45,
+          "affinity": 0.9061360426588378,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/19/19804475.jpg"
+        },
+        {
+          "id": "5A9A64E3-E6E3-4855-B7AD-66129C951294",
+          "name": "Isabel Marant",
+          "rank": 46,
+          "affinity": 0.9059486516238744,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/40/404802190.jpg"
+        },
+        {
+          "id": "82D4DA62-E83C-4B1E-8EE7-FEE67B3706A3",
+          "name": "The Row",
+          "rank": 47,
+          "affinity": 0.9059021319232221,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/31/315710838.jpg"
+        },
+        {
+          "id": "4282B7B0-8C22-4C9A-BA5C-DE81F51ED8CB",
+          "name": "Jean-Paul Gaultier",
+          "rank": 48,
+          "affinity": 0.9049357679266021,
+          "image": null
+        },
+        {
+          "id": "28FDFABF-8695-4DE6-9115-BF19EFE7C8F7",
+          "name": "Net a porter",
+          "rank": 49,
+          "affinity": 0.9041643605723594,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/52/5248998.jpg"
+        },
+        {
+          "id": "2EB9CC4F-9B6A-4745-9E58-52EF4E292B5C",
+          "name": "Lyst",
+          "rank": 50,
+          "affinity": 0.9032873593064629,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/14/1415692.jpg"
+        }
+      ],
+      "b": [
+        {
+          "id": "4F94C666-5FFA-4A42-8453-24C2F779EC36",
+          "name": "Urban Outfitters",
+          "rank": 1,
+          "affinity": 0.9397012130509221,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/54/5413187.jpg"
+        },
+        {
+          "id": "3EC9E7DF-1497-44C4-8642-E7FA2FF3A99D",
+          "name": "Calvin Klein",
+          "rank": 2,
+          "affinity": 0.9250919234023532,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/19/193154362.jpg"
+        },
+        {
+          "id": "84B18312-3C2B-41A9-863B-89651C2F6A2C",
+          "name": "Gucci",
+          "rank": 3,
+          "affinity": 0.9219438682687806,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/24/2421050.jpg"
+        },
+        {
+          "id": "0B67CD5A-152C-470B-9577-A052E3A092F7",
+          "name": "Yves Saint Laurent",
+          "rank": 4,
+          "affinity": 0.9203493260880437,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/20/20032127.jpg"
+        },
+        {
+          "id": "8A2527C6-2C10-443F-A71C-6EDDA5F95E11",
+          "name": "American Apparel",
+          "rank": 5,
+          "affinity": 0.9203388126922335,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/22/22081838.jpg"
+        },
+        {
+          "id": "BB047D19-D3D5-47A1-B9AA-ECCEBE9470AE",
+          "name": "Balenciaga",
+          "rank": 6,
+          "affinity": 0.919035907669858,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/94/9445148.jpg"
+        },
+        {
+          "id": "F59D6DB5-5A85-48C6-A2EC-CAAE334D4348",
+          "name": "Dr. Martens",
+          "rank": 7,
+          "affinity": 0.9183979866357308,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/14/145678112.jpg"
+        },
+        {
+          "id": "5760BF0A-EBDF-4B9A-88CD-69F4BF08C362",
+          "name": "Louis Vuitton",
+          "rank": 8,
+          "affinity": 0.9147575294627164,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/18/187619120.jpg"
+        },
+        {
+          "id": "82946F1C-AB10-4669-B9A1-640A01E2A407",
+          "name": "Tommy Hilfiger",
+          "rank": 9,
+          "affinity": 0.9133213795578206,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/85/8579765.jpg"
+        },
+        {
+          "id": "827D80C7-BD20-4C76-B8F4-BDC131223FD0",
+          "name": "Ssense",
+          "rank": 10,
+          "affinity": 0.9101386931769262,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/11/11827603.jpg"
+        },
+        {
+          "id": "D630A953-8F2E-42CD-A91A-A2A6C05ECE1D",
+          "name": "Burberry",
+          "rank": 11,
+          "affinity": 0.9093500587744092,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/18/1889387.jpg"
+        },
+        {
+          "id": "212146FD-4F22-446B-BCA2-E8597774A940",
+          "name": "Chanel",
+          "rank": 12,
+          "affinity": 0.9091270100456826,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/69/695995017.jpg"
+        },
+        {
+          "id": "D5D353B0-FB40-4E2F-8C01-6386CE136E13",
+          "name": "Versace",
+          "rank": 13,
+          "affinity": 0.9081420935657547,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/92/9213261.jpg"
+        },
+        {
+          "id": "D2C6D7FD-B21D-478C-8B29-68B10E9DCACB",
+          "name": "Alexander Wang",
+          "rank": 14,
+          "affinity": 0.9072540085879708,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/17/178733366.jpg"
+        },
+        {
+          "id": "AC8F9047-F23D-4A54-BBAA-A3CBD2991C02",
+          "name": "Vans",
+          "rank": 15,
+          "affinity": 0.9072278258386602,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/18/18919774.jpg"
+        },
+        {
+          "id": "9A0FA0D6-7A07-4F07-A905-E82547C74113",
+          "name": "Martin Margiela",
+          "rank": 16,
+          "affinity": 0.906889088340342,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/23/235393849.jpg"
+        },
+        {
+          "id": "59E72ACF-8CFA-4E5B-BBEF-BA3AF8988C55",
+          "name": "Christian Dior",
+          "rank": 17,
+          "affinity": 0.9064434144544854,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/55/550072490.jpg"
+        },
+        {
+          "id": "5EA79857-0E68-48CC-8345-3A786B231326",
+          "name": "Allsaints",
+          "rank": 18,
+          "affinity": 0.906227927043021,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/92/9241741.jpg"
+        },
+        {
+          "id": "3637BC2E-B2D1-4496-9BD7-938E4FAE81AD",
+          "name": "Comme des Garcons",
+          "rank": 19,
+          "affinity": 0.9053208348478539,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/16/1680276293.jpg"
+        },
+        {
+          "id": "1A8FD8BE-6FAC-4759-A242-614C3A0810CD",
+          "name": "Stella Mccartney",
+          "rank": 20,
+          "affinity": 0.9049543738745744,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/90/9097967.jpg"
+        },
+        {
+          "id": "489BDF44-F2D1-484D-A09B-5A63A3034D6D",
+          "name": "Alexander Mcqueen",
+          "rank": 21,
+          "affinity": 0.9038107975752824,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/10/10480357.jpg"
+        },
+        {
+          "id": "33A42D87-793C-49F5-B899-EF34D47FB1A2",
+          "name": "Fendi",
+          "rank": 22,
+          "affinity": 0.9033122370273489,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/20/20158039.jpg"
+        },
+        {
+          "id": "62926E8D-2D7E-4428-819E-BF2477D3233F",
+          "name": "Polaroid",
+          "rank": 23,
+          "affinity": 0.9028361703746476,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/20/20572756.jpg"
+        },
+        {
+          "id": "A5707876-D5A1-49F0-ABF9-A793EA7736D2",
+          "name": "Vice",
+          "rank": 24,
+          "affinity": 0.9027538407647799,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/23/2388589.jpg"
+        },
+        {
+          "id": "74A44B01-5C99-4754-9585-F487D21C543D",
+          "name": "Zara",
+          "rank": 25,
+          "affinity": 0.9024270243822646,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/60/602725764.jpg"
+        },
+        {
+          "id": "C7C2B636-E5F5-42BE-8068-C8A1F1C463F6",
+          "name": "Givenchy",
+          "rank": 26,
+          "affinity": 0.9000764100961204,
+          "image": null
+        },
+        {
+          "id": "EE2B58FF-37F6-4521-912F-55EBC25D83E2",
+          "name": "Levi Strauss & Co.",
+          "rank": 27,
+          "affinity": 0.8999530320732742,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/46/4641204.jpg"
+        },
+        {
+          "id": "7FFF01CF-7B0E-405A-A232-14176B165E60",
+          "name": "Converse",
+          "rank": 28,
+          "affinity": 0.8993264633933538,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/67/6716197.jpg"
+        },
+        {
+          "id": "64607FA4-B9F0-4BC6-AC81-81ED237D5ABD",
+          "name": "Prada",
+          "rank": 29,
+          "affinity": 0.8989201042459016,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/30/304662892.jpg"
+        },
+        {
+          "id": "9D4B36F8-6512-4247-A481-E5D8FAF3EB5B",
+          "name": "Balmain",
+          "rank": 30,
+          "affinity": 0.8988154777819805,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/53/535065013.jpg"
+        },
+        {
+          "id": "17F9BDB5-F913-40C8-86B3-63850A541FAC",
+          "name": "Vetements",
+          "rank": 31,
+          "affinity": 0.8983482731685675,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/93/930523155.jpg"
+        },
+        {
+          "id": "8A675C2C-99BF-454A-99CF-3AD69D3E8048",
+          "name": "Vivienne Westwood",
+          "rank": 32,
+          "affinity": 0.8979040130198501,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/18/186541074.jpg"
+        },
+        {
+          "id": "7161ADA0-8DC8-471E-A4A8-61EE15578400",
+          "name": "Supreme",
+          "rank": 33,
+          "affinity": 0.897443809492305,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/13/13336763.jpg"
+        },
+        {
+          "id": "F0F3C532-AF49-480E-82B3-D7B443EDC1C7",
+          "name": "Topshop",
+          "rank": 34,
+          "affinity": 0.8967933676503392,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/41/4165329.jpg"
+        },
+        {
+          "id": "B6B09679-E8F9-4A42-B6D4-E648E2A1F435",
+          "name": "Off-white",
+          "rank": 35,
+          "affinity": 0.8957607193690227,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/36/362471749.jpg"
+        },
+        {
+          "id": "49540603-38B5-43F9-8F87-BD2F2A1C62ED",
+          "name": "Marc Jacobs",
+          "rank": 36,
+          "affinity": 0.8954296634242207,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/10/1024067.jpg"
+        },
+        {
+          "id": "47B7265A-778E-44A5-B037-2E8AC5505609",
+          "name": "Opening Ceremony",
+          "rank": 37,
+          "affinity": 0.8951556696279438,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/21/21922111.jpg"
+        },
+        {
+          "id": "1D56E32D-8300-46C9-B976-D18328BEB2E1",
+          "name": "Moschino",
+          "rank": 38,
+          "affinity": 0.8950731750300688,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/44/4404556.jpg"
+        },
+        {
+          "id": "108EB684-257B-42D7-84E5-6E9D8BE3E793",
+          "name": "H&M",
+          "rank": 39,
+          "affinity": 0.8949210826829368,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/23/23410080.jpg"
+        },
+        {
+          "id": "D3310425-7161-41FC-8C2C-5435AF0F0A5B",
+          "name": "Victoria's Secret",
+          "rank": 40,
+          "affinity": 0.8944046113414105,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/34/3416684.jpg"
+        },
+        {
+          "id": "11DFD977-E5AA-40FE-8D24-DF4C98750FDB",
+          "name": "ASOS",
+          "rank": 41,
+          "affinity": 0.8943241936815546,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/39/3931765.jpg"
+        },
+        {
+          "id": "5323F6FA-ABF1-4C26-8284-D0AD3595DDAA",
+          "name": "Antonio Banderas",
+          "rank": 42,
+          "affinity": 0.8931311246222712
+        },
+        {
+          "id": "489F29B5-A94E-43AB-BD3A-5F028B3348C6",
+          "name": "Céline",
+          "rank": 43,
+          "affinity": 0.8927455271200404,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/41/4184252622.jpg"
+        },
+        {
+          "id": "80E08DE0-0D9C-42F5-8BE2-218F67DF36C6",
+          "name": "Chloé",
+          "rank": 44,
+          "affinity": 0.8927157102568651,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/56/560379617.jpg"
+        },
+        {
+          "id": "E50919AC-B1FF-410A-9B0D-DFA914286C3C",
+          "name": "Puma",
+          "rank": 45,
+          "affinity": 0.8925240820235449,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/10/10145706.jpg"
+        },
+        {
+          "id": "A631A56C-95EF-415F-B48C-C1AC2FDFF096",
+          "name": "Kenzo",
+          "rank": 46,
+          "affinity": 0.8919605128604913,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/18/181303532.jpg"
+        },
+        {
+          "id": "91650DD4-1CCF-4A08-9DBF-AF243BCA6288",
+          "name": "Dolce & Gabbana",
+          "rank": 47,
+          "affinity": 0.8919575714187057,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/51/5123245.jpg"
+        },
+        {
+          "id": "51844CEA-DECE-4071-ABF4-1A6834639F2B",
+          "name": "UNIF",
+          "rank": 48,
+          "affinity": 0.8913121700244443,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/43/4305908.jpg"
+        },
+        {
+          "id": "50DDC31D-B19D-4963-AE84-9E7F50A610AD",
+          "name": "Miu Miu",
+          "rank": 49,
+          "affinity": 0.8899049245115256,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/30/305083839.jpg"
+        },
+        {
+          "id": "45E5E64C-A26A-4DA0-90D8-2B55DAF3E2F2",
+          "name": "Valentino",
+          "rank": 50,
+          "affinity": 0.8899029604522469,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/39/39939022.jpg"
+        }
+      ],
+      "gained": [
+        {
+          "id": "AC8F9047-F23D-4A54-BBAA-A3CBD2991C02",
+          "name": "Vans",
+          "rank": 15,
+          "affinity": 0.9072278258386602,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/18/18919774.jpg"
+        },
+        {
+          "id": "62926E8D-2D7E-4428-819E-BF2477D3233F",
+          "name": "Polaroid",
+          "rank": 23,
+          "affinity": 0.9028361703746476,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/20/20572756.jpg"
+        },
+        {
+          "id": "A5707876-D5A1-49F0-ABF9-A793EA7736D2",
+          "name": "Vice",
+          "rank": 24,
+          "affinity": 0.9027538407647799,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/23/2388589.jpg"
+        },
+        {
+          "id": "EE2B58FF-37F6-4521-912F-55EBC25D83E2",
+          "name": "Levi Strauss & Co.",
+          "rank": 27,
+          "affinity": 0.8999530320732742,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/46/4641204.jpg"
+        },
+        {
+          "id": "7FFF01CF-7B0E-405A-A232-14176B165E60",
+          "name": "Converse",
+          "rank": 28,
+          "affinity": 0.8993264633933538,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/67/6716197.jpg"
+        },
+        {
+          "id": "7161ADA0-8DC8-471E-A4A8-61EE15578400",
+          "name": "Supreme",
+          "rank": 33,
+          "affinity": 0.897443809492305,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/13/13336763.jpg"
+        },
+        {
+          "id": "B6B09679-E8F9-4A42-B6D4-E648E2A1F435",
+          "name": "Off-white",
+          "rank": 35,
+          "affinity": 0.8957607193690227,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/36/362471749.jpg"
+        },
+        {
+          "id": "108EB684-257B-42D7-84E5-6E9D8BE3E793",
+          "name": "H&M",
+          "rank": 39,
+          "affinity": 0.8949210826829368,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/23/23410080.jpg"
+        },
+        {
+          "id": "D3310425-7161-41FC-8C2C-5435AF0F0A5B",
+          "name": "Victoria's Secret",
+          "rank": 40,
+          "affinity": 0.8944046113414105,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/34/3416684.jpg"
+        },
+        {
+          "id": "5323F6FA-ABF1-4C26-8284-D0AD3595DDAA",
+          "name": "Antonio Banderas",
+          "rank": 42,
+          "affinity": 0.8931311246222712
+        },
+        {
+          "id": "E50919AC-B1FF-410A-9B0D-DFA914286C3C",
+          "name": "Puma",
+          "rank": 45,
+          "affinity": 0.8925240820235449,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/10/10145706.jpg"
+        },
+        {
+          "id": "91650DD4-1CCF-4A08-9DBF-AF243BCA6288",
+          "name": "Dolce & Gabbana",
+          "rank": 47,
+          "affinity": 0.8919575714187057,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/51/5123245.jpg"
+        },
+        {
+          "id": "51844CEA-DECE-4071-ABF4-1A6834639F2B",
+          "name": "UNIF",
+          "rank": 48,
+          "affinity": 0.8913121700244443,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/43/4305908.jpg"
+        }
+      ],
+      "lost": [
+        {
+          "id": "07627DFB-36E8-4635-9554-988A769DFEB9",
+          "name": "Narciso Rodriguez",
+          "rank": 29,
+          "affinity": 0.9139723024532729
+        },
+        {
+          "id": "2CA2569D-223D-42D6-BB2F-F8B5D36B9AEC",
+          "name": "COS",
+          "rank": 30,
+          "affinity": 0.9136868338091543,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/39/392125511.jpg"
+        },
+        {
+          "id": "2151CAF1-46B3-43DE-8116-49A5B14A8B1C",
+          "name": "Karl Lagerfeld",
+          "rank": 35,
+          "affinity": 0.9106682057602767,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/21/217889406.jpg"
+        },
+        {
+          "id": "628AFDF5-16D7-4AE5-B727-AF5AE5CE12F2",
+          "name": "Loewe",
+          "rank": 37,
+          "affinity": 0.9101429730424251,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/88/8873610.jpg"
+        },
+        {
+          "id": "ACCC2A57-5C63-4890-99C2-C05AA2C92E87",
+          "name": "3.1 Phillip Lim",
+          "rank": 39,
+          "affinity": 0.9094280002009482,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/18/186933326.jpg"
+        },
+        {
+          "id": "8BE27D89-C323-4294-9A8E-BC02814C3C62",
+          "name": "Helmut Lang",
+          "rank": 41,
+          "affinity": 0.9081475973133918,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/88/8852719.jpg"
+        },
+        {
+          "id": "DE3FA929-BDA9-44B8-8187-EDD76AA53F05",
+          "name": "i-D",
+          "rank": 42,
+          "affinity": 0.9076477068555454,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/19/199175210.jpg"
+        },
+        {
+          "id": "04D60F2E-4E66-4F6E-8D59-398537957DBC",
+          "name": "V Files",
+          "rank": 45,
+          "affinity": 0.9061360426588378,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/19/19804475.jpg"
+        },
+        {
+          "id": "5A9A64E3-E6E3-4855-B7AD-66129C951294",
+          "name": "Isabel Marant",
+          "rank": 46,
+          "affinity": 0.9059486516238744,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/40/404802190.jpg"
+        },
+        {
+          "id": "82D4DA62-E83C-4B1E-8EE7-FEE67B3706A3",
+          "name": "The Row",
+          "rank": 47,
+          "affinity": 0.9059021319232221,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/31/315710838.jpg"
+        },
+        {
+          "id": "4282B7B0-8C22-4C9A-BA5C-DE81F51ED8CB",
+          "name": "Jean-Paul Gaultier",
+          "rank": 48,
+          "affinity": 0.9049357679266021,
+          "image": null
+        },
+        {
+          "id": "28FDFABF-8695-4DE6-9115-BF19EFE7C8F7",
+          "name": "Net a porter",
+          "rank": 49,
+          "affinity": 0.9041643605723594,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/52/5248998.jpg"
+        },
+        {
+          "id": "2EB9CC4F-9B6A-4745-9E58-52EF4E292B5C",
+          "name": "Lyst",
+          "rank": 50,
+          "affinity": 0.9032873593064629,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/14/1415692.jpg"
+        }
+      ],
+      "tags": {
+        "rising": [
+          {
+            "tag": "Skateboarding",
+            "before": 1,
+            "after": 6,
+            "delta": 5
+          },
+          {
+            "tag": "Lifestyle / Casual",
+            "before": 22,
+            "after": 26,
+            "delta": 4
+          },
+          {
+            "tag": "Creative Expression",
+            "before": 2,
+            "after": 5,
+            "delta": 3
+          },
+          {
+            "tag": "Sneakers",
+            "before": 2,
+            "after": 5,
+            "delta": 3
+          },
+          {
+            "tag": "Digital Connectivity",
+            "before": 0,
+            "after": 3,
+            "delta": 3
+          },
+          {
+            "tag": "Glamorous",
+            "before": 4,
+            "after": 6,
+            "delta": 2
+          },
+          {
+            "tag": "Cultural Influence",
+            "before": 1,
+            "after": 3,
+            "delta": 2
+          },
+          {
+            "tag": "Commuting",
+            "before": 1,
+            "after": 3,
+            "delta": 2
+          }
+        ],
+        "falling": [
+          {
+            "tag": "Modern",
+            "before": 6,
+            "after": 1,
+            "delta": -5
+          },
+          {
+            "tag": "Bags & Leather",
+            "before": 32,
+            "after": 28,
+            "delta": -4
+          },
+          {
+            "tag": "Minimalist",
+            "before": 28,
+            "after": 24,
+            "delta": -4
+          },
+          {
+            "tag": "Fashion",
+            "before": 53,
+            "after": 50,
+            "delta": -3
+          },
+          {
+            "tag": "Accessories",
+            "before": 32,
+            "after": 29,
+            "delta": -3
+          },
+          {
+            "tag": "Chic",
+            "before": 11,
+            "after": 8,
+            "delta": -3
+          },
+          {
+            "tag": "Polished",
+            "before": 4,
+            "after": 1,
+            "delta": -3
+          },
+          {
+            "tag": "Eclectic",
+            "before": 12,
+            "after": 10,
+            "delta": -2
+          }
+        ]
+      }
+    }
+  ],
+  "bridges": [
+    {
+      "domain": "brand",
+      "bridges": [
+        {
+          "id": "B6B09679-E8F9-4A42-B6D4-E648E2A1F435",
+          "name": "Off-white",
+          "rank": 1,
+          "affinity": 0.9467341748382652,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/36/362471749.jpg",
+          "rankInPackage": 66,
+          "rankInAudience": 4
+        },
+        {
+          "id": "BB047D19-D3D5-47A1-B9AA-ECCEBE9470AE",
+          "name": "Balenciaga",
+          "rank": 2,
+          "affinity": 0.9458154891985671,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/94/9445148.jpg",
+          "rankInPackage": 3,
+          "rankInAudience": 60
+        },
+        {
+          "id": "3637BC2E-B2D1-4496-9BD7-938E4FAE81AD",
+          "name": "Comme des Garcons",
+          "rank": 3,
+          "affinity": 0.9388163752023849,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/16/1680276293.jpg",
+          "rankInPackage": 13,
+          "rankInAudience": 46
+        },
+        {
+          "id": "827D80C7-BD20-4C76-B8F4-BDC131223FD0",
+          "name": "Ssense",
+          "rank": 4,
+          "affinity": 0.9376275147485716,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/11/11827603.jpg",
+          "rankInPackage": 10,
+          "rankInAudience": 59
+        },
+        {
+          "id": "84B18312-3C2B-41A9-863B-89651C2F6A2C",
+          "name": "Gucci",
+          "rank": 5,
+          "affinity": 0.9344604998834767,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/24/2421050.jpg",
+          "rankInPackage": 12,
+          "rankInAudience": 74
+        },
+        {
+          "id": "17F9BDB5-F913-40C8-86B3-63850A541FAC",
+          "name": "Vetements",
+          "rank": 8,
+          "affinity": 0.928977867635584,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/93/930523155.jpg",
+          "rankInPackage": 26,
+          "rankInAudience": 77
+        },
+        {
+          "id": "AC8F9047-F23D-4A54-BBAA-A3CBD2991C02",
+          "name": "Vans",
+          "rank": 9,
+          "affinity": 0.92879533473251,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/18/18919774.jpg",
+          "rankInPackage": 91,
+          "rankInAudience": 20
+        },
+        {
+          "id": "A5C63FA9-24C7-4D4B-956D-8F9FF265660E",
+          "name": "Y-3",
+          "rank": 14,
+          "affinity": 0.9250847791456244,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/17/175694806.jpg",
+          "rankInPackage": 84,
+          "rankInAudience": 27
+        },
+        {
+          "id": "82946F1C-AB10-4669-B9A1-640A01E2A407",
+          "name": "Tommy Hilfiger",
+          "rank": 15,
+          "affinity": 0.9248116284373814,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/85/8579765.jpg",
+          "rankInPackage": 32,
+          "rankInAudience": 93
+        },
+        {
+          "id": "10C1DE14-1F55-448A-B5D5-89EF483DC66A",
+          "name": "Rick Owens",
+          "rank": 22,
+          "affinity": 0.9185224832400483,
+          "image": "s3://qloo-autogenic/instagram/images/profiles/59/597316118.jpg",
+          "rankInPackage": 71,
+          "rankInAudience": 67
+        }
+      ],
+      "insufficientSignal": false
+    },
+    {
+      "domain": "movie",
+      "bridges": [
+        {
+          "id": "9754326F-D73D-4C46-BF79-7127AE0222E9",
+          "name": "Waves",
+          "rank": 1,
+          "affinity": 0.9271066223363363,
+          "image": "https://m.media-amazon.com/images/M/MV5BNmFlNmQyYzctMzE3Ni00NjRkLWFiYzctYmZjMDllZTdkY2VjXkEyXkFqcGc@._V1_.jpg",
+          "rankInPackage": 23,
+          "rankInAudience": 3
+        },
+        {
+          "id": "2E20280C-3E6F-4D69-89EA-DEF4BDBAFBB9",
+          "name": "The Favourite",
+          "rank": 2,
+          "affinity": 0.9261596598646302,
+          "image": "https://m.media-amazon.com/images/M/MV5BMTg1NzQwMDQxNV5BMl5BanBnXkFtZTgwNDg2NDYyNjM@._V1_.jpg",
+          "rankInPackage": 4,
+          "rankInAudience": 41
+        },
+        {
+          "id": "FC877810-FE6F-4D25-83B5-015B43E2018F",
+          "name": "Beautiful Boy",
+          "rank": 3,
+          "affinity": 0.9259376078791185,
+          "image": "https://m.media-amazon.com/images/M/MV5BNTRhNjg3NGMtMDM3Mi00ZmRmLTg0ZDMtYTBhMThiN2YxMTdjXkEyXkFqcGc@._V1_.jpg",
+          "rankInPackage": 24,
+          "rankInAudience": 4
+        },
+        {
+          "id": "7E0F4C67-399A-4A93-95FC-BBC6C4FE0F1D",
+          "name": "I'm Thinking of Ending Things",
+          "rank": 4,
+          "affinity": 0.9244387518534974,
+          "image": "https://m.media-amazon.com/images/M/MV5BYTgxNWU0MGMtMDI1Ny00NDIwLTllYzYtZDkyOTVmYmFhZGM0XkEyXkFqcGc@._V1_.jpg",
+          "rankInPackage": 5,
+          "rankInAudience": 46
+        },
+        {
+          "id": "9E661A87-6EB9-4138-8795-27284CD8E249",
+          "name": "Marriage Story",
+          "rank": 5,
+          "affinity": 0.9217302569305471,
+          "image": "https://m.media-amazon.com/images/M/MV5BNmE0OWJlM2MtNzhmMi00YmQyLTlmY2EtZmUzNzBiNGRlN2JkXkEyXkFqcGc@._V1_.jpg",
+          "rankInPackage": 8,
+          "rankInAudience": 21
+        },
+        {
+          "id": "54C5E3F0-402C-42DD-8E24-7389CE5D44CF",
+          "name": "Eighth Grade",
+          "rank": 6,
+          "affinity": 0.9212591468866517,
+          "image": "https://m.media-amazon.com/images/M/MV5BMTUyYzNiZTQtZGEwYi00ZjdiLTk5ZjctYTAxZTY3YmY0OThlXkEyXkFqcGc@._V1_.jpg",
+          "rankInPackage": 19,
+          "rankInAudience": 12
+        },
+        {
+          "id": "0D7FD186-0207-40BF-8AF1-0FD79ADA63E6",
+          "name": "Mid90s",
+          "rank": 7,
+          "affinity": 0.9207974547504169,
+          "image": "https://m.media-amazon.com/images/M/MV5BNjYwYmVjOWMtZDJmOS00N2QyLWFjMjUtYTUwN2JkMjViZTIyXkEyXkFqcGc@._V1_.jpg",
+          "rankInPackage": 64,
+          "rankInAudience": 1
+        },
+        {
+          "id": "969911E8-7092-43D9-8C7D-C7547EAE3C00",
+          "name": "Little Women",
+          "rank": 9,
+          "affinity": 0.9190295762017368,
+          "image": "https://m.media-amazon.com/images/M/MV5BMWMzYjNiZWMtMDg4NS00MDgyLTk5MWItOTFmNjg4NzRhZmExXkEyXkFqcGc@._V1_.jpg",
+          "rankInPackage": 13,
+          "rankInAudience": 18
+        },
+        {
+          "id": "4BE414CF-375F-4566-AA66-9AC6150A6B7F",
+          "name": "Lady Bird",
+          "rank": 10,
+          "affinity": 0.9188759660859361,
+          "image": "https://m.media-amazon.com/images/M/MV5BNjk5MzcyOWQtNzE1Mi00NzdmLTlkM2QtOTdjZThhMDc2Y2NjXkEyXkFqcGc@._V1_.jpg",
+          "rankInPackage": 17,
+          "rankInAudience": 15
+        },
+        {
+          "id": "85C499B8-4E79-49C0-90F0-19C33C1D32D8",
+          "name": "Booksmart",
+          "rank": 12,
+          "affinity": 0.9184641853510075,
+          "image": "https://m.media-amazon.com/images/M/MV5BMjEzMjcxNjA2Nl5BMl5BanBnXkFtZTgwMjAxMDM2NzM@._V1_.jpg",
+          "rankInPackage": 48,
+          "rankInAudience": 6
+        },
+        {
+          "id": "E39A5CE6-5991-46B9-897D-4B23A494804A",
+          "name": "Promising Young Woman",
+          "rank": 13,
+          "affinity": 0.9184382986366483,
+          "image": "https://m.media-amazon.com/images/M/MV5BZDMyNTQ5ODYtMjU3YS00MjM3LWFmOGMtZjZlNDA3YWE3YjM0XkEyXkFqcGc@._V1_.jpg",
+          "rankInPackage": 31,
+          "rankInAudience": 9
+        },
+        {
+          "id": "71E75CE5-D48B-45FF-9A9D-060D676DFD48",
+          "name": "Honey Boy",
+          "rank": 14,
+          "affinity": 0.9177832652147567,
+          "image": "https://m.media-amazon.com/images/M/MV5BMmE2ZWU0NzUtMWZlOS00OWEzLWJiNjUtMDAwZWEyY2MzYjc2XkEyXkFqcGc@._V1_.jpg",
+          "rankInPackage": 43,
+          "rankInAudience": 7
+        },
+        {
+          "id": "B411575F-057B-4913-BD80-F189FFA6570F",
+          "name": "The Farewell",
+          "rank": 16,
+          "affinity": 0.9164122918796986,
+          "image": "https://m.media-amazon.com/images/M/MV5BYjdlZDI1OWYtZWU4MC00NDhkLThmOWEtMTZiODFhZThkMjA4XkEyXkFqcGc@._V1_.jpg",
+          "rankInPackage": 20,
+          "rankInAudience": 27
+        },
+        {
+          "id": "24A2FD28-FC76-4CCD-AC43-A015B539DBAA",
+          "name": "Uncut Gems",
+          "rank": 18,
+          "affinity": 0.9146310725077544,
+          "image": "https://m.media-amazon.com/images/M/MV5BNmI0YjA5NjItYzExYi00NzkxLTkxNDctNGJjYTZhM2M0NDQ0XkEyXkFqcGc@._V1_.jpg",
+          "rankInPackage": 25,
+          "rankInAudience": 22
+        },
+        {
+          "id": "66EBD81E-3F1B-4913-AF28-FD197DC49EE9",
+          "name": "Portrait of a Lady on Fire",
+          "rank": 19,
+          "affinity": 0.9137390050084884,
+          "image": "https://m.media-amazon.com/images/M/MV5BZjJlYWJlYmMtNjMyMS00ZDgxLTlmNjAtOTJhMzBiZWM5N2VmXkEyXkFqcGc@._V1_.jpg",
+          "rankInPackage": 12,
+          "rankInAudience": 60
+        },
+        {
+          "id": "B1E9C8A6-DB42-45F3-910B-B1AF94376165",
+          "name": "The Tale",
+          "rank": 21,
+          "affinity": 0.91193533014694,
+          "image": "https://m.media-amazon.com/images/M/MV5BNzMxYTNhMTAtMWExNC00MzdhLWJlYTAtMTY5NDE2NjQ5MGNlXkEyXkFqcGc@._V1_.jpg",
+          "rankInPackage": 11,
+          "rankInAudience": 80
+        },
+        {
+          "id": "B3B71D65-B9F5-48A5-AE2A-42D4CC2384EA",
+          "name": "The Last Black Man in San Francisco",
+          "rank": 22,
+          "affinity": 0.9106019360909299,
+          "image": "https://m.media-amazon.com/images/M/MV5BYTUyNTdhNmUtYzU5Zi00ZTI0LTg3NzQtNjM5ZmFkZWNiOTYwXkEyXkFqcGc@._V1_.jpg",
+          "rankInPackage": 49,
+          "rankInAudience": 13
+        },
+        {
+          "id": "70DFA686-8D9F-4DCA-B76F-2014DC59ACED",
+          "name": "Thoroughbreds",
+          "rank": 23,
+          "affinity": 0.908393443124235,
+          "image": "https://m.media-amazon.com/images/M/MV5BMTczOTIxNDMxOV5BMl5BanBnXkFtZTgwMDk5OTg4NDM@._V1_.jpg",
+          "rankInPackage": 22,
+          "rankInAudience": 79
+        },
+        {
+          "id": "D1B3AD33-5D48-40D0-AE5F-B870078DBC09",
+          "name": "Jojo Rabbit",
+          "rank": 24,
+          "affinity": 0.908358048781545,
+          "image": "https://m.media-amazon.com/images/M/MV5BYmFmNmUyMjYtZTFjNS00OWQyLThhZmMtMGZkYTQ3YjY0ZDQ1XkEyXkFqcGc@._V1_.jpg",
+          "rankInPackage": 37,
+          "rankInAudience": 35
+        },
+        {
+          "id": "B61E9F72-4380-46D9-ACEC-05DC6D3E5338",
+          "name": "Wildlife",
+          "rank": 25,
+          "affinity": 0.9083557259921687,
+          "image": "https://m.media-amazon.com/images/M/MV5BOTliYzZkZmItODdhZi00YTcyLTkzYzQtZWJlNjE0NTUzMGU1XkEyXkFqcGc@._V1_.jpg",
+          "rankInPackage": 32,
+          "rankInAudience": 50
+        },
+        {
+          "id": "7D6E66D9-2E1B-43F7-85EE-1F4AB4552865",
+          "name": "Babyteeth",
+          "rank": 26,
+          "affinity": 0.90816040241988,
+          "image": "https://m.media-amazon.com/images/M/MV5BN2YyNmQ3NTgtZjM4ZC00MGFlLTgyM2ItMDg0NGI4YTE0MzJmXkEyXkFqcGc@._V1_.jpg",
+          "rankInPackage": 40,
+          "rankInAudience": 26
+        },
+        {
+          "id": "C701C358-C692-4539-B9B6-D227A3076219",
+          "name": "If Beale Street Could Talk",
+          "rank": 27,
+          "affinity": 0.907618959266368,
+          "image": "https://m.media-amazon.com/images/M/MV5BYmJlMWY1ZDMtMmU3ZS00MzVmLWE2MjQtYWVhNDAxOWY2MWI0XkEyXkFqcGc@._V1_.jpg",
+          "rankInPackage": 41,
+          "rankInAudience": 30
+        },
+        {
+          "id": "960F3839-F838-4163-8257-772945DE9BD5",
+          "name": "The Florida Project",
+          "rank": 30,
+          "affinity": 0.9055493122427403,
+          "image": "https://m.media-amazon.com/images/M/MV5BNDBhM2MxYjAtMWFiYy00MWMwLThkMDYtN2M1ZWY3NjkxNGExXkEyXkFqcGc@._V1_.jpg",
+          "rankInPackage": 46,
+          "rankInAudience": 39
+        },
+        {
+          "id": "5391CAF9-1664-42D5-9B2B-93352891897C",
+          "name": "The Souvenir",
+          "rank": 34,
+          "affinity": 0.9043401751060113,
+          "image": "https://m.media-amazon.com/images/M/MV5BMTk2NjY3NDYzN15BMl5BanBnXkFtZTgwOTUxNzg0NzM@._V1_.jpg",
+          "rankInPackage": 44,
+          "rankInAudience": 43
+        },
+        {
+          "id": "D0284786-422C-44D3-9C87-AD30D05FCDD5",
+          "name": "Never Rarely Sometimes Always",
+          "rank": 35,
+          "affinity": 0.9026222521412706,
+          "image": "https://m.media-amazon.com/images/M/MV5BMjI4ZDA4NDgtNDlkNS00MDEzLWEzNTMtZDJjMGRkNzg3MjE4XkEyXkFqcGc@._V1_.jpg",
+          "rankInPackage": 69,
+          "rankInAudience": 25
+        },
+        {
+          "id": "33388BBB-6625-4EF5-9BA1-75A78331C77D",
+          "name": "Call Me by Your Name",
+          "rank": 36,
+          "affinity": 0.9025400751584539,
+          "image": "https://m.media-amazon.com/images/M/MV5BNDk3NTEwNjc0MV5BMl5BanBnXkFtZTgwNzYxNTMwMzI@._V1_.jpg",
+          "rankInPackage": 51,
+          "rankInAudience": 58
+        },
+        {
+          "id": "DC02C8BA-FCBD-4FEC-ABFF-7BE7017B771A",
+          "name": "The Devil All the Time",
+          "rank": 38,
+          "affinity": 0.9017350782948111,
+          "image": "https://m.media-amazon.com/images/M/MV5BYmExOWUxZDMtZmM1ZS00NjQ4LWEwODAtY2E0N2Y1Y2MzZTkwXkEyXkFqcGc@._V1_.jpg",
+          "rankInPackage": 55,
+          "rankInAudience": 49
+        },
+        {
+          "id": "60CCC3AF-D51F-4EFD-9DE4-01340FDEAB25",
+          "name": "Sorry to Bother You",
+          "rank": 39,
+          "affinity": 0.9011720576169275,
+          "image": "https://m.media-amazon.com/images/M/MV5BYjA3ZTYwMzctZTM2ZS00MTllLWE5YzYtOTBjZGRlOTNkODVlXkEyXkFqcGc@._V1_.jpg",
+          "rankInPackage": 67,
+          "rankInAudience": 40
+        },
+        {
+          "id": "19ECFF12-037A-40F5-ABF5-412FD6C96668",
+          "name": "Blindspotting",
+          "rank": 40,
+          "affinity": 0.9002410531006269,
+          "image": "https://m.media-amazon.com/images/M/MV5BODc5ZmRjNzItODhjYS00NTJjLTg1YWYtNjBmMzY0YThhYjljXkEyXkFqcGc@._V1_.jpg",
+          "rankInPackage": 75,
+          "rankInAudience": 32
+        },
+        {
+          "id": "4DA2B4AB-2336-45C7-98B6-AF6942C033B6",
+          "name": "Nomadland",
+          "rank": 43,
+          "affinity": 0.8986352938475493,
+          "image": "https://m.media-amazon.com/images/M/MV5BZGNkOWQ0ZjMtMTc4Ny00NDRhLTgyMjUtNzFmZDM0MTc3N2JjXkEyXkFqcGc@._V1_.jpg",
+          "rankInPackage": 72,
+          "rankInAudience": 48
+        },
+        {
+          "id": "1CBD7BD1-0ABC-480D-B6AD-056B0B33D662",
+          "name": "Good Time",
+          "rank": 45,
+          "affinity": 0.8980520147561069,
+          "image": "https://m.media-amazon.com/images/M/MV5BZTYwOTJmYmItYjA3MS00MGYyLTg3YjgtNDljM2U5MzgwNjNmXkEyXkFqcGc@._V1_.jpg",
+          "rankInPackage": 73,
+          "rankInAudience": 52
+        },
+        {
+          "id": "A9991EB6-6D09-4215-8C17-5A82C9407DD8",
+          "name": "I, Tonya",
+          "rank": 46,
+          "affinity": 0.898027339702272,
+          "image": "https://m.media-amazon.com/images/M/MV5BMjI5MDY1NjYzMl5BMl5BanBnXkFtZTgwNjIzNDAxNDM@._V1_.jpg",
+          "rankInPackage": 62,
+          "rankInAudience": 89
+        }
+      ],
+      "insufficientSignal": false
+    }
+  ],
+  "drivers": [
+    {
+      "id": "B6D76FFA-A387-4B93-B56A-50575C698643",
+      "name": "Midsommar",
+      "type": "movie",
+      "slot": "film_ref_2",
+      "share": 0.20831478944386925
+    },
+    {
+      "id": "C90E3920-BF05-4537-903F-085BFE2E41AC",
+      "name": "Acne Studios",
+      "type": "brand",
+      "slot": "brand",
+      "share": 0.20300762197886857
+    },
+    {
+      "id": "17C8BCEF-2FF2-4A23-8F51-6C8CB9CD8114",
+      "name": "Hereditary",
+      "type": "movie",
+      "slot": "film_ref",
+      "share": 0.1984782751557531
+    },
+    {
+      "id": "16B70494-1B07-47E4-A318-D89DA4A50DAE",
+      "name": "Florence Pugh",
+      "type": "person",
+      "slot": "cast",
+      "share": 0.19728062815498065
+    },
+    {
+      "id": "0795B56A-783E-4F4F-A268-98453C535C72",
+      "name": "Mica Levi",
+      "type": "artist",
+      "slot": "music",
+      "share": 0.19291868526652828
+    }
+  ]
+}
