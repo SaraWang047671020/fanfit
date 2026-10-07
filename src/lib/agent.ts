@@ -24,7 +24,7 @@ const MIN_CORE_RETENTION = 0.5;
 export interface AgentInput {
   goal: string;
   base: CreativePackage;
-  audience: { label: string; seeds: { id: string; name: string }[] };
+  audience: { label: string; seeds: { id: string; name: string }[]; age?: string };
   maxSwaps: number;
 }
 
@@ -111,7 +111,7 @@ function instructions(input: AgentInput) {
 You explore alternative packages and report evidence; the humans make the creative decision.
 
 Goal: ${input.goal}
-Target audience: ${input.audience.label} (seeds: ${input.audience.seeds.map((s) => s.name).join(", ")})
+Target audience: ${input.audience.label} (seeds: ${input.audience.seeds.map((s) => s.name).join(", ")}${input.audience.age ? `; age ${input.audience.age}` : ""})
 Constraints: change at most ${input.maxSwaps} slot(s) per proposal. Keep core_retention >= ${MIN_CORE_RETENTION}.
 
 Metrics (computed from Qloo, never estimate them yourself):
@@ -136,6 +136,7 @@ export async function runAgent(input: AgentInput, emit: (e: AgentEvent) => void)
   const model = process.env.OPENAI_MODEL || DEFAULT_MODEL;
   const client = new OpenAI();
   const seeds = input.audience.seeds.map((s) => s.id);
+  const age = input.audience.age;
 
   const known = new Map<string, PackageEntity>(); // entity_id -> entity returned by a tool (grounding)
   const evaluations = new Map<string, Evaluation>();
@@ -145,7 +146,7 @@ export async function runAgent(input: AgentInput, emit: (e: AgentEvent) => void)
   let versionCounter = 0; // allocated synchronously: evaluate_swaps calls run in parallel
   let submitted: Proposal[] | null = null;
 
-  const baseline = await evaluatePackage(input.base, input.base, seeds);
+  const baseline = await evaluatePackage(input.base, input.base, seeds, age);
   emit({ type: "start", goal: input.goal, model, base: input.base, audience: input.audience.label, baseline });
 
   const tools: Record<string, (a: Record<string, unknown>) => Promise<{ summary: string; output: unknown; evaluation?: Evaluation }>> = {
@@ -165,7 +166,7 @@ export async function runAgent(input: AgentInput, emit: (e: AgentEvent) => void)
 
     async find_bridges(a) {
       const domain = a.domain as Domain;
-      const r = await tasteBridge(input.base, seeds, domain);
+      const r = await tasteBridge(input.base, seeds, domain, age);
       const top = r.bridges.slice(0, 8);
       for (const b of top) known.set(b.id, { id: b.id, name: b.name, type: domain, slot: "" });
       const output = r.insufficientSignal
@@ -196,7 +197,7 @@ export async function runAgent(input: AgentInput, emit: (e: AgentEvent) => void)
       const versionId = `v${++versionCounter}`;
       const pkg = applySwaps(input.base, swaps, versionId);
       const [metrics, shifts] = await Promise.all([
-        evaluatePackage(pkg, input.base, seeds),
+        evaluatePackage(pkg, input.base, seeds, age),
         Promise.all(DOMAINS.map((d) => compareDomain(input.base, pkg, d))),
       ]);
       const evaluation: Evaluation = { versionId, swaps, metrics };
@@ -249,6 +250,10 @@ export async function runAgent(input: AgentInput, emit: (e: AgentEvent) => void)
         throw new Error(
           `${notBetter.map((p) => p.version_id).join(", ")} do not beat the base target_overlap while keeping core_retention >= ${MIN_CORE_RETENTION}. Propose only versions that do.`,
         );
+      const swapKey = (id: string) => evaluations.get(id)!.swaps.map((s) => s.id).sort().join("+");
+      const dupes = list.filter((p, i) => list.findIndex((o) => swapKey(o.version_id) === swapKey(p.version_id)) !== i);
+      if (dupes.length)
+        throw new Error(`${dupes.map((p) => p.version_id).join(", ")} bring in the same entities as another proposal. Submit distinct options.`);
       const weak = list.filter((p) => evaluations.get(p.version_id)!.metrics.coreRetention < MIN_CORE_RETENTION);
       if (weak.length)
         throw new Error(
@@ -264,6 +269,7 @@ export async function runAgent(input: AgentInput, emit: (e: AgentEvent) => void)
     { role: "user", content: `Base package:\n${input.base.entities.map((e) => `- ${e.slot} (${e.type}): ${e.name}`).join("\n")}\n\nStart.` },
   ];
 
+  let nudges = 0;
   for (let turn = 0; turn < MAX_TURNS && !submitted; turn++) {
     const res = await client.responses.create({
       model,
@@ -276,7 +282,13 @@ export async function runAgent(input: AgentInput, emit: (e: AgentEvent) => void)
     if (res.output_text?.trim()) emit({ type: "note", text: res.output_text.trim() });
 
     const calls = res.output.filter((o) => o.type === "function_call");
-    if (calls.length === 0) break;
+    if (calls.length === 0) {
+      // The model sometimes stops with a text answer instead of submitting (1 of 3 runs on 2026-10-07). Nudge it.
+      if (nudges++ >= 2) break;
+      emit({ type: "note", text: "Reminder sent: the agent must finish by calling submit_proposals." });
+      nextInput = [{ role: "user", content: "You have not submitted yet. Use the evaluations so far (or run more) and finish by calling submit_proposals." }];
+      continue;
+    }
 
     nextInput = await Promise.all(
       calls.map(async (call): Promise<ResponseInputItem> => {

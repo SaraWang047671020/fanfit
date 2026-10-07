@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-06T08:13:42.463Z",
+  "generatedAt": "2026-10-07T08:56:14.977Z",
   "comparisons": [
     {
       "domain": "movie",
@@ -3334,41 +3334,146 @@
       "insufficientSignal": false
     }
   ],
-  "drivers": [
+  "influence": [
     {
-      "id": "B6D76FFA-A387-4B93-B56A-50575C698643",
-      "name": "Midsommar",
-      "type": "movie",
-      "slot": "film_ref_2",
-      "share": 0.20831478944386925
+      "id": "0795B56A-783E-4F4F-A268-98453C535C72",
+      "name": "Mica Levi",
+      "type": "artist",
+      "slot": "music",
+      "perDomain": [
+        {
+          "domain": "movie",
+          "influence": 0.30000000000000004
+        },
+        {
+          "domain": "artist",
+          "influence": 0.45999999999999996
+        },
+        {
+          "domain": "brand",
+          "influence": 0.33999999999999997
+        }
+      ],
+      "influence": 0.3666666666666667
     },
     {
       "id": "C90E3920-BF05-4537-903F-085BFE2E41AC",
       "name": "Acne Studios",
       "type": "brand",
       "slot": "brand",
-      "share": 0.20300762197886857
-    },
-    {
-      "id": "17C8BCEF-2FF2-4A23-8F51-6C8CB9CD8114",
-      "name": "Hereditary",
-      "type": "movie",
-      "slot": "film_ref",
-      "share": 0.1984782751557531
+      "perDomain": [
+        {
+          "domain": "movie",
+          "influence": 0.30000000000000004
+        },
+        {
+          "domain": "artist",
+          "influence": 0.4
+        },
+        {
+          "domain": "brand",
+          "influence": 0.33999999999999997
+        }
+      ],
+      "influence": 0.3466666666666667
     },
     {
       "id": "16B70494-1B07-47E4-A318-D89DA4A50DAE",
       "name": "Florence Pugh",
       "type": "person",
       "slot": "cast",
-      "share": 0.19728062815498065
+      "perDomain": [
+        {
+          "domain": "movie",
+          "influence": 0.06000000000000005
+        },
+        {
+          "domain": "artist",
+          "influence": 0.42000000000000004
+        },
+        {
+          "domain": "brand",
+          "influence": 0.36
+        }
+      ],
+      "influence": 0.28
     },
     {
-      "id": "0795B56A-783E-4F4F-A268-98453C535C72",
-      "name": "Mica Levi",
-      "type": "artist",
-      "slot": "music",
-      "share": 0.19291868526652828
+      "id": "17C8BCEF-2FF2-4A23-8F51-6C8CB9CD8114",
+      "name": "Hereditary",
+      "type": "movie",
+      "slot": "film_ref",
+      "perDomain": [
+        {
+          "domain": "movie",
+          "influence": 0.14
+        },
+        {
+          "domain": "artist",
+          "influence": 0.21999999999999997
+        },
+        {
+          "domain": "brand",
+          "influence": 0.36
+        }
+      ],
+      "influence": 0.24
+    },
+    {
+      "id": "B6D76FFA-A387-4B93-B56A-50575C698643",
+      "name": "Midsommar",
+      "type": "movie",
+      "slot": "film_ref_2",
+      "perDomain": [
+        {
+          "domain": "movie",
+          "influence": 0.14
+        },
+        {
+          "domain": "artist",
+          "influence": 0.33999999999999997
+        },
+        {
+          "domain": "brand",
+          "influence": 0.18000000000000005
+        }
+      ],
+      "influence": 0.22
+    }
+  ],
+  "baseline": {
+    "targetOverlap": 0.20000000000000004
+  },
+  "llmOnly": [
+    {
+      "name": "Ayo Edebiri",
+      "resolved": true,
+      "targetOverlap": 0.22,
+      "coreRetention": 0.68
+    },
+    {
+      "name": "Jharrel Jerome",
+      "resolved": true,
+      "targetOverlap": 0.21333333333333335,
+      "coreRetention": 0.7133333333333334
+    },
+    {
+      "name": "Sabrina Carpenter",
+      "resolved": true,
+      "targetOverlap": 0.19999999999999998,
+      "coreRetention": 0.7533333333333333
+    },
+    {
+      "name": "Rachel Sennott",
+      "resolved": true,
+      "targetOverlap": 0.19333333333333336,
+      "coreRetention": 0.7133333333333334
+    },
+    {
+      "name": "Kelvin Harrison Jr.",
+      "resolved": true,
+      "targetOverlap": 0.21333333333333335,
+      "coreRetention": 0.6733333333333333
     }
   ]
 }

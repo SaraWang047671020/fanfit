@@ -4,10 +4,15 @@ import type { DemoSnapshot } from "@/lib/demo-analysis";
 import type { Domain } from "@/lib/qloo";
 import type { DomainComparison } from "@/lib/tasteframe";
 import snapshotJson from "@/data/demo-snapshot.json";
+import agentRunJson from "@/data/demo-agent-run.json";
+import type { AgentEvent } from "@/lib/agent";
 
 // Served from a snapshot computed from live Qloo data (npm run snapshot), so judges
 // always get an instant page that cannot hit rate limits.
 const snapshot = snapshotJson as DemoSnapshot;
+const agentProposals =
+  (agentRunJson.events as { event: AgentEvent }[]).map((e) => e.event).find((e) => e.type === "proposals")?.proposals ?? [];
+const agentBest = [...agentProposals].sort((a, b) => b.evaluation.metrics.targetOverlap - a.evaluation.metrics.targetOverlap)[0];
 const DOMAIN_LABEL: Record<Domain, string> = { movie: "Film", artist: "Music", brand: "Brands" };
 
 export default function Home() {
@@ -47,6 +52,10 @@ export default function Home() {
         <ShiftMap />
       </Section>
 
+      <Section kicker="Instinct vs. taste data" title="Ask an LLM alone, and the obvious picks barely move the needle">
+        <InstinctVsData />
+      </Section>
+
       <div className="grid gap-6 lg:grid-cols-2">
         <Section kicker="Taste Bridge" title={`Bridges to ${TARGET_AUDIENCE.label}`}>
           <p className="mb-4 text-sm text-muted">
@@ -55,9 +64,11 @@ export default function Home() {
           </p>
           <Bridges />
         </Section>
-        <Section kicker="Drivers" title="What pulls Package A's film neighborhood?">
-          <p className="mb-4 text-sm text-muted">Summed Qloo explainability scores across the top 20 film results.</p>
-          <Drivers />
+        <Section kicker="Influence" title="Which element shapes Package A the most?">
+          <p className="mb-4 text-sm text-muted">
+            Remove one element at a time and measure how much of the package&apos;s top-50 Qloo neighbourhood changes.
+          </p>
+          <Influence />
         </Section>
       </div>
 
@@ -169,22 +180,70 @@ function Bridges() {
   );
 }
 
-function Drivers() {
+function Influence() {
+  const max = Math.max(...snapshot.influence.map((e) => e.influence), 0.01);
   return (
     <ul className="space-y-3 text-sm">
-      {snapshot.drivers.map((d) => (
-        <li key={d.id}>
-          <div className="mb-1 flex justify-between">
+      {snapshot.influence.map((e) => (
+        <li key={e.id}>
+          <div className="mb-1 flex justify-between gap-3">
             <span>
-              {d.name} <span className="text-muted">· {d.slot.replace(/_\d$/, "")}</span>
+              {e.name} <span className="text-muted">· {e.slot.replace(/_\d$/, "")}</span>
             </span>
-            <span className="font-mono text-muted">{Math.round(d.share * 100)}%</span>
+            <span className="font-mono text-muted">{Math.round(e.influence * 100)}% changes</span>
           </div>
           <div className="h-2 rounded-full bg-panel-2">
-            <div className="h-2 rounded-full bg-accent" style={{ width: `${d.share * 100}%` }} />
+            <div className="h-2 rounded-full bg-accent" style={{ width: `${(e.influence / max) * 100}%` }} />
           </div>
+          <p className="mt-1 text-xs text-muted">
+            {e.perDomain.map((d) => `${DOMAIN_LABEL[d.domain]} ${Math.round(d.influence * 100)}%`).join(" · ")}
+          </p>
         </li>
       ))}
     </ul>
+  );
+}
+
+function InstinctVsData() {
+  const base = snapshot.baseline.targetOverlap;
+  const rows = [
+    ...snapshot.llmOnly.flatMap((r) =>
+      r.resolved ? [{ label: r.name, sub: "LLM-only suggestion (cast swap)", value: r.targetOverlap, agent: false }] : [],
+    ),
+    ...(agentBest
+      ? [{ label: agentBest.evaluation.swaps.map((s) => s.name).join(" + "), sub: "TasteFrame agent (Qloo-grounded)", value: agentBest.evaluation.metrics.targetOverlap, agent: true }]
+      : []),
+  ];
+  const max = Math.max(base, ...rows.map((r) => r.value)) * 1.1;
+  return (
+    <div>
+      <p className="mb-4 max-w-3xl text-sm text-muted">
+        We asked an LLM (no Qloo) to recast the lead for {TARGET_AUDIENCE.label}, then measured every suggestion with Qloo:
+        how much of the package&apos;s cultural neighbourhood the audience shares. The line marks the original package.
+      </p>
+      <ul className="space-y-2.5 text-sm">
+        {rows.map((r) => (
+          <li key={r.label} className="grid grid-cols-[minmax(0,11rem)_1fr_3.5rem] items-center gap-3">
+            <span className="truncate">
+              <span className={r.agent ? "font-semibold text-gain" : ""}>{r.label}</span>
+              <span className="block truncate text-xs text-muted">{r.sub}</span>
+            </span>
+            <span className="relative h-3 rounded-full bg-panel-2">
+              <span
+                className={`absolute inset-y-0 left-0 rounded-full ${r.agent ? "bg-gain" : "bg-muted/60"}`}
+                style={{ width: `${(r.value / max) * 100}%` }}
+              />
+              <span className="absolute -top-1 h-5 w-0.5 bg-text" style={{ left: `${(base / max) * 100}%` }} />
+            </span>
+            <span className={`text-right font-mono ${r.agent ? "text-gain" : "text-muted"}`}>
+              {(r.value / base).toFixed(1)}×
+            </span>
+          </li>
+        ))}
+      </ul>
+      <p className="mt-3 text-xs text-muted">
+        × = audience overlap relative to the original package. Names come from the LLM; every score comes from Qloo.
+      </p>
+    </div>
   );
 }

@@ -117,10 +117,10 @@ export interface BridgeCandidate extends RankedEntity {
   rankInAudience: number; // provenance: rank when signalled by the audience seeds alone
 }
 
-export async function tasteBridge(pkg: CreativePackage, audienceSeeds: string[], domain: Domain) {
+export async function tasteBridge(pkg: CreativePackage, audienceSeeds: string[], domain: Domain, audienceAge?: string) {
   const [p, t, c] = await Promise.all([
     insightsDeep({ entities: ids(pkg), domain }),
-    insightsDeep({ entities: audienceSeeds, domain }),
+    insightsDeep({ entities: audienceSeeds, domain, age: audienceAge }),
     insights({ entities: [...ids(pkg), ...audienceSeeds], domain, take: 50 }),
   ]);
   const rankP = new Map(p.map((e, i) => [e.entity_id, i + 1]));
@@ -149,6 +149,39 @@ export async function packageDrivers(pkg: CreativePackage, domain: Domain, take 
     .sort((x, y) => y.share - x.share);
 }
 
+// ---------------------------------------------------------------- element influence (leave-one-out)
+
+export interface ElementInfluence extends PackageEntity {
+  /** Mean share of the package's top-50 neighbours that disappear when this element is removed (0–1). */
+  influence: number;
+  perDomain: { domain: Domain; influence: number }[];
+}
+
+/**
+ * Which element shapes the package's neighbourhood most? Qloo's explainability scores came back nearly flat
+ * (~20% each for 5 inputs), so we measure it directly: drop one element at a time and see how much the
+ * top-50 results change. 3 calls per element, all cacheable.
+ */
+export async function elementInfluence(pkg: CreativePackage): Promise<ElementInfluence[]> {
+  const full = new Map(
+    await Promise.all(DOMAINS.map(async (d) => [d, new Set((await packageContext(pkg, d)).map((e) => e.entity_id))] as const)),
+  );
+  const rows = await Promise.all(
+    pkg.entities.map(async (el) => {
+      const without: CreativePackage = { ...pkg, id: `${pkg.id}-${el.id}`, entities: pkg.entities.filter((e) => e.id !== el.id) };
+      const perDomain = await Promise.all(
+        DOMAINS.map(async (domain) => {
+          const res = await packageContext(without, domain);
+          const kept = res.filter((e) => full.get(domain)!.has(e.entity_id)).length;
+          return { domain, influence: 1 - kept / (full.get(domain)!.size || 1) };
+        }),
+      );
+      return { ...el, perDomain, influence: perDomain.reduce((s, d) => s + d.influence, 0) / perDomain.length };
+    }),
+  );
+  return rows.sort((a, b) => b.influence - a.influence);
+}
+
 // ---------------------------------------------------------------- package helpers
 
 export function swap(pkg: CreativePackage, slot: string, replacement: PackageEntity, label?: string): CreativePackage {
@@ -173,13 +206,14 @@ export async function evaluatePackage(
   pkg: CreativePackage,
   base: CreativePackage,
   audienceSeeds: string[],
+  audienceAge?: string,
 ): Promise<PackageMetrics> {
   const perDomain = await Promise.all(
     DOMAINS.map(async (domain) => {
       const [p, b, t] = await Promise.all([
         packageContext(pkg, domain),
         packageContext(base, domain),
-        insightsDeep({ entities: audienceSeeds, domain }),
+        insightsDeep({ entities: audienceSeeds, domain, age: audienceAge }),
       ]);
       const inBase = new Set(b.map((e) => e.entity_id));
       const inTarget = new Set(t.map((e) => e.entity_id));
