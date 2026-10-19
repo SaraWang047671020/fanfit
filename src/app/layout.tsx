@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "TasteFrame",
-  description: "See where your creative choices take your film — creative packaging intelligence built with Qloo.",
+  title: "FanFit",
+  description: "Match sports teams and sponsors on what fans actually love, with Qloo taste data.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

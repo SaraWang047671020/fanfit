@@ -7,8 +7,6 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "snapshot": "tsx --env-file=.env.local scripts/snapshot.mts",
-    "agent:record": "tsx --env-file=.env.local scripts/agent-run.mts",
     "fanfit": "tsx --env-file=.env.local scripts/fanfit-walkthrough.mts",
     "db:check": "tsx --env-file=.env.local scripts/db-check.mts"
   },

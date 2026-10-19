@@ -1,8 +1,4 @@
-import { DOMAINS, type Domain, QlooError } from "@/lib/qloo";
-
-export function isDomain(d: unknown): d is Domain {
-  return typeof d === "string" && (DOMAINS as readonly string[]).includes(d);
-}
+import { QlooError } from "@/lib/qloo";
 
 export function errorResponse(err: unknown) {
   const status = err instanceof QlooError ? err.status : 500;

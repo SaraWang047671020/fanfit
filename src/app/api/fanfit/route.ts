@@ -13,7 +13,7 @@ const str = (v: unknown, max: number) => (typeof v === "string" ? v.trim().slice
 //   { team, city, brands: [{id,name,category,address?}] }   timing + conflicts only, for candidates surfaced by the sliders
 // Streams NDJSON, one FanfitEvent per line.
 export async function POST(req: Request) {
-  if (process.env.AGENT_LIVE_DISABLED === "true")
+  if (process.env.LIVE_RUNS_DISABLED === "true")
     return Response.json({ error: "Live runs are disabled on this deployment." }, { status: 503 });
   if (!process.env.OPENAI_API_KEY || !process.env.QLOO_API_KEY)
     return Response.json({ error: "OPENAI_API_KEY and QLOO_API_KEY must be set" }, { status: 500 });

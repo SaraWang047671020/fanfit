@@ -9,7 +9,7 @@ const str = (v: unknown, max: number) => (typeof v === "string" ? v.trim().slice
 
 // POST /api/fanfit/activation { team: {id,name,city}, partner: {id,name,kind,category}, driver, whyNow? }
 export async function POST(req: Request) {
-  if (process.env.AGENT_LIVE_DISABLED === "true")
+  if (process.env.LIVE_RUNS_DISABLED === "true")
     return Response.json({ error: "Live runs are disabled on this deployment." }, { status: 503 });
   const b = (await req.json().catch(() => ({}))) as {
     team?: Record<string, unknown>;

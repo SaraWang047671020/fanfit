@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# FanFit
 
-## Getting Started
+Match sports teams and sponsors on what fans actually love, using [Qloo](https://qloo.com) taste data.
 
-First, run the development server:
+- **Teams** (`/fanfit`): brands and local businesses their fans love by age group, best fit per sponsorship category,
+  current sponsors and a reason to call each brand now (web search), and matchday activation ideas.
+- **Sponsors** (`/sponsor`): every NBA, MLS, WNBA and NWSL team ranked by how much its fans like the brand, and a page per
+  team explaining the fit (audiences, shared tastes and traits), whether the category is taken, and why now.
+
+Every brand, artist and place comes from Qloo; the model (OpenAI) only searches the news, classifies and writes.
+
+## Stack
+
+Next.js 16 (App Router; `src/proxy.ts` is the old middleware), Supabase (auth + Postgres + row level security), Qloo
+Insights API, OpenAI Responses API with web search. Deploys to Vercel.
+
+## Local setup
 
 ```bash
+npm install
+cp .env.example .env.local          # fill in QLOO_API_KEY and OPENAI_API_KEY
+npx supabase start                  # needs Docker; prints the local URL and publishable key for .env.local
+npx supabase db reset               # applies supabase/migrations and seeds the 79 teams
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Sign-in emails go to the local Mailpit inbox at http://127.0.0.1:54324.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Script | What it does |
+| --- | --- |
+| `npm run db:check` | 16 row-level-security checks against local Supabase (creates throwaway users) |
+| `npm run fanfit -- "Austin FC" "Austin, TX"` | Runs the team pipeline in the terminal |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Data
 
-## Learn More
+- `supabase/migrations/` — accounts schema: teams, sponsors, profiles, team_sponsors, onboarding functions, RLS.
+- `supabase/seed.sql` — team directory with each team's Qloo ID and its 40-brand baseline (`fit_mean`, `fit_sd`),
+  which the sponsor ranking uses to compare teams fairly.
 
-To learn more about Next.js, take a look at the following resources:
+## Environment
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+See `.env.example`. `LIVE_RUNS_DISABLED=true` turns off every route that spends Qloo/OpenAI calls.

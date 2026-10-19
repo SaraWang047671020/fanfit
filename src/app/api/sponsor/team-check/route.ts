@@ -11,7 +11,7 @@ import { currentUser } from "@/lib/supabase/server";
 export const maxDuration = 120;
 
 export async function POST(req: Request) {
-  if (process.env.AGENT_LIVE_DISABLED === "true")
+  if (process.env.LIVE_RUNS_DISABLED === "true")
     return Response.json({ error: "Live runs are disabled on this deployment." }, { status: 503 });
   const { supabase, user, profile } = await currentUser();
   if (!user || profile?.role !== "sponsor") return Response.json({ error: "Sponsor account required." }, { status: 403 });
