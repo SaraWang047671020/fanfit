@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { currentUser } from "@/lib/supabase/server";
 import AccountBar from "../AccountBar";
@@ -15,6 +16,11 @@ export default async function FanfitPage() {
   return (
     <main className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 sm:py-14">
       <AccountBar name={profile.display_name ?? user.email ?? ""} org={team?.name ?? "Your team"} role="team" />
+      <div className="mt-3 flex justify-end">
+        <Link href="/team/offers" className="text-sm text-accent hover:underline">
+          Fan map offers and results →
+        </Link>
+      </div>
       <header className="mt-6">
         <p className="text-xs font-bold uppercase tracking-[0.14em] text-gain">FanFit Agent</p>
         <h1 className="mt-2 text-4xl font-bold">Find the sponsors your fans already love.</h1>

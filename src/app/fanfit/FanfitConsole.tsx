@@ -4,6 +4,7 @@ import { useMemo, useRef, useState } from "react";
 import type { CategoryHit, FanfitEvent, TeamInfo, Timing } from "@/lib/fanfit";
 import type { Activation } from "@/lib/fanfit-activation";
 import ActivationPanel from "./ActivationPanel";
+import OfferButton from "./OfferButton";
 import {
   AGES,
   AGE_LABEL,
@@ -331,6 +332,7 @@ export default function FanfitConsole({ initial = PRESETS[0] }: { initial?: { te
                 timing={timings[r.row.id]}
                 activation={activations[r.row.id]}
                 onActivate={running ? undefined : () => activate(r.row, tab)}
+                offerable={tab === "place" && !running}
               />
             ))}
           </ol>
@@ -497,6 +499,7 @@ function Card({
   timing,
   activation,
   onActivate,
+  offerable,
 }: {
   rank?: number;
   row: FitRow;
@@ -504,6 +507,7 @@ function Card({
   timing?: Timing;
   activation?: ActivationState;
   onActivate?: () => void;
+  offerable?: boolean;
 }) {
   const flags: { tone: string; text: string }[] = [];
   if (timing) {
@@ -572,6 +576,7 @@ function Card({
               {activation?.status === "loading" ? "Designing activation… (~15 s)" : "✦ Activation idea"}
             </button>
           )}
+          {offerable && <OfferButton row={row} />}
           {activation?.status === "error" && <p className="mt-2 text-xs text-loss">{activation.message}</p>}
           {activation?.status === "done" && <ActivationPanel a={activation.data} partner={row.name} />}
         </div>

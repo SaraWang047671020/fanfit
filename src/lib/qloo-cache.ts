@@ -16,6 +16,7 @@ interface Entity {
   name: string;
   tags?: Tag[];
   properties?: { address?: string };
+  location?: { lat?: number; lon?: number };
   query?: { affinity?: number };
 }
 
@@ -24,6 +25,7 @@ const entity = (e: Entity): Entity => ({
   name: e.name,
   ...(e.tags ? { tags: e.tags.filter((t) => KEPT_TAGS.some((k) => t.type?.includes(k))).map(({ type, name }) => ({ type, name })) } : {}),
   ...(e.properties?.address ? { properties: { address: e.properties.address } } : {}),
+  ...(typeof e.location?.lat === "number" ? { location: { lat: e.location.lat, lon: e.location.lon } } : {}), // places: fan map
   ...(typeof e.query?.affinity === "number" ? { query: { affinity: e.query.affinity } } : {}),
 });
 
