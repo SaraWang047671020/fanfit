@@ -1,9 +1,12 @@
 // Thin client for the Qloo Hackathon API.
 // - Callers pass a `slim` function so only the fields they use are kept in memory.
-// - Slimmed responses are memoised in-process: the taste graph changes slowly and calls take 2–5 s.
+// - Responses are cached in memory and in Supabase (qloo-cache.ts): the taste graph changes slowly, calls take
+//   seconds, and the monthly quota is small.
 // - Hackathon keys allow 5 requests per second and 10,000 per month (X-Second- / X-Month-RateLimit-* headers).
 //   Requests are paced below the per-second limit: a concurrency cap alone was enough from Taiwan (2–5 s per call)
 //   but not from Vercel in the US, where calls return fast enough for 3 parallel requests to exceed 5 per second.
+
+import { compact, readCache, writeCache } from "./qloo-cache";
 
 const BASE_URL = process.env.QLOO_API_URL ?? "https://hackathon.api.qloo.com";
 const CACHE_MS = 1000 * 60 * 60 * 24;
@@ -68,9 +71,11 @@ async function fetchJson(url: string, key: string): Promise<unknown> {
   }
 }
 
+// In-process layer on top of qloo_cache. Holds the compacted response, not the caller's slimmed value: two callers
+// can request the same URL with different `slim` functions.
 const memo = new Map<string, { at: number; value: Promise<unknown> }>();
 
-/** Rate-limited, memoised GET. `slim` must reduce the raw response to what the caller keeps. */
+/** Rate-limited, cached GET (memory, then qloo_cache, then Qloo). `slim` reduces the response to what the caller keeps. */
 export async function get<T>(
   path: string,
   params: Record<string, string | number | undefined>,
@@ -81,13 +86,19 @@ export async function get<T>(
 
   const qs = new URLSearchParams();
   for (const [k, v] of Object.entries(params)) if (v !== undefined && v !== "") qs.set(k, String(v));
-  const url = `${BASE_URL}${path}?${qs}`;
+  const cacheKey = `${path}?${qs}`;
 
-  const hit = memo.get(url);
-  if (hit && Date.now() - hit.at < CACHE_MS) return hit.value as Promise<T>;
+  const hit = memo.get(cacheKey);
+  if (hit && Date.now() - hit.at < CACHE_MS) return slim(await hit.value);
 
-  const value = fetchJson(url, key).then(slim);
-  memo.set(url, { at: Date.now(), value });
-  value.catch(() => memo.delete(url)); // never cache failures
-  return value;
+  const value = (async () => {
+    const stored = await readCache(cacheKey);
+    if (stored) return stored;
+    const fresh = compact(await fetchJson(`${BASE_URL}${cacheKey}`, key));
+    void writeCache(cacheKey, fresh);
+    return fresh;
+  })();
+  memo.set(cacheKey, { at: Date.now(), value });
+  value.catch(() => memo.delete(cacheKey)); // never cache failures
+  return slim(await value);
 }
