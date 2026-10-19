@@ -37,6 +37,9 @@ export default async function Home() {
       <Link href="/login" className="mt-10 inline-block rounded-full bg-accent px-8 py-3 text-sm font-semibold text-bg">
         Sign in or create an account
       </Link>
+      <p className="mt-16 text-xs text-muted">
+        <Link href="/privacy" className="hover:text-text">Privacy policy</Link> · <Link href="/terms" className="hover:text-text">Terms of service</Link>
+      </p>
     </main>
   );
 }

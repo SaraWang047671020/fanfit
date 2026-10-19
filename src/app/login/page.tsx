@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { safeNext } from "@/lib/safe-next";
 import { currentUser } from "@/lib/supabase/server";
@@ -20,6 +21,10 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
       <div className="mt-8">
         <LoginForm next={target} />
       </div>
+      <p className="mt-8 text-xs text-muted">
+        By signing in you agree to the <Link href="/terms" className="text-accent">terms</Link> and{" "}
+        <Link href="/privacy" className="text-accent">privacy policy</Link>.
+      </p>
     </main>
   );
 }
