@@ -6,7 +6,7 @@
 const BASE_URL = process.env.QLOO_API_URL ?? "https://hackathon.api.qloo.com";
 const CACHE_MS = 1000 * 60 * 60 * 24;
 const MAX_CONCURRENT = 3;
-const MAX_RETRIES = 4;
+const MAX_RETRIES = 6; // backoff 0.8 s → 25.6 s (~50 s total): FanFit's ~200-call runs outlast shorter waits
 
 export const DOMAINS = ["movie", "artist", "brand"] as const;
 export type Domain = (typeof DOMAINS)[number];
@@ -74,7 +74,8 @@ async function fetchJson(url: string, key: string): Promise<unknown> {
 
 const memo = new Map<string, { at: number; value: Promise<unknown> }>();
 
-async function get<T>(
+/** Rate-limited, memoised GET. `slim` must reduce the raw response to what the caller keeps. */
+export async function get<T>(
   path: string,
   params: Record<string, string | number | undefined>,
   slim: (raw: unknown) => T,

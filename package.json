@@ -8,9 +8,13 @@
     "start": "next start",
     "lint": "eslint",
     "snapshot": "tsx --env-file=.env.local scripts/snapshot.mts",
-    "agent:record": "tsx --env-file=.env.local scripts/agent-run.mts"
+    "agent:record": "tsx --env-file=.env.local scripts/agent-run.mts",
+    "fanfit": "tsx --env-file=.env.local scripts/fanfit-walkthrough.mts",
+    "db:check": "tsx --env-file=.env.local scripts/db-check.mts"
   },
   "dependencies": {
+    "@supabase/ssr": "0.12.7",
+    "@supabase/supabase-js": "2.118.0",
     "next": "16.3.8",
     "openai": "^7.28.0",
     "react": "19.2.8",
