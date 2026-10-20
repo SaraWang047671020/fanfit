@@ -34,7 +34,7 @@ export default async function FanMapPage({ params }: PageProps<"/t/[team]">) {
   const offers: FanOffer[] = rows.flatMap((r) =>
     r.offer_id === null
       ? []
-      : [{ offer_id: r.offer_id, title: r.title, details: r.details, place_name: r.place_name, address: r.address, lat: r.lat, lon: r.lon, category: r.category, fit: r.fit, ends_on: r.ends_on }],
+      : [{ offer_id: r.offer_id, title: r.title, details: r.details, place_name: r.place_name, address: r.address, lat: r.lat, lon: r.lon, category: r.category, fit: r.fit, ends_on: r.ends_on, demo: r.demo }],
   );
   return (
     <main className="mx-auto w-full max-w-5xl px-4 py-6 sm:px-6 sm:py-10">
