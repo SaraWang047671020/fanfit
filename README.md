@@ -5,6 +5,58 @@
 
 **Try it:** https://fanfit-a73p.vercel.app. No sign-up: use **Team demo**, **Sponsor demo** or **Fan demo** at the top of
 the home page. Each page has a **? Guided tour**, and every score has an **ⓘ** that explains how it is calculated.
+See [How to test it](#how-to-test-it) for a 10-minute path through all three sides.
+
+---
+
+## How to test it
+
+Everything below runs on the live site with the shared demo accounts: no sign-up, no keys. Switch sides any time with
+**Demo · switch side ▾** at the top right. Close a guided tour with **Esc**; replay it with **? Guided tour**.
+
+### The 10-minute path
+
+| # | Do this | You should see |
+| --- | --- | --- |
+| 1 | Home → **Team demo** | Seattle Sounders FC's workspace; a guided tour starts |
+| 2 | **Find sponsors** → **Who to call** | Brands Sounders fans love, each with the age group that loves it most and "why now" news with sources. The analysis is saved, so it loads instantly |
+| 3 | Click **ⓘ** next to *Who to call*, then open **How the agent ran** | How the ranking works; every step the agent took |
+| 4 | Scroll to **Set aside**, find **Gatorade** (it clashes with Seattle's partner Powerade) → **✉ Prepare pitch** → **Create report** (~20–30 s) → **Open report ↗** | A one-page report anyone can open by link: fit, rank among 79 teams, shared fans, what both audiences love, sourced news, a matchday idea, and a category check that states the Powerade clash instead of hiding it. Any brand under *Who to call* works the same way |
+| 5 | **Demo · switch side ▾** → **Sponsor · Gatorade** | All 79 teams ranked for Gatorade |
+| 6 | **Target audience**: *25–29*, *Women*, *Fitness* | Every team re-scored for that audience; ▲▼ show who moved (Gotham FC and Seattle Reign jump into the top 4) |
+| 7 | Untick **Hide teams with my category taken** (Seattle's drinks category is held by Powerade), open **Seattle Sounders FC** → **Tell Seattle Sounders FC you're interested** → **Create report** | Your note and its report link; the team's answer will show here |
+| 8 | **Outreach** → **Received** | The pitch Seattle sent Gatorade in step 4, with its report; answer **Interested** |
+| 9 | Switch to **Team** → **Outreach** | *Sent*: your pitch, how often its report was opened, Gatorade's answer. *Received*: Gatorade's note with fit and the exclusivity warning |
+| 10 | Switch to **Fan** | Your teams' partners and deals on one map, ordered **For you** by the demo fan's tastes, each with "because you like …" |
+
+### More to try
+
+**Team**
+- **✦ Ask FanFit**: tap an example ("Which banks would fit our fans best, and do any clash with our current sponsors?").
+  Watch the agent pick tools on the left; every name in the answer comes from a tool.
+- **By category** and **Fan mix**: drag a fan-mix slider and watch *Who to call* re-rank.
+- **Local businesses** tab under *Who to call* → **+ Fan map offer** publishes a deal to the club's fan page
+  (demo offers are labelled).
+- **Fan offers**: claims, redemptions and **Predicted vs actual**. The *Demo* tab uses simulated claims with random ages,
+  so it shows predictions only; share and lift appear on *Real* once fans claim real offers.
+
+**Sponsor**
+- **✦ Ask FanFit**: "Find three NBA teams whose fans love us and whose category is still open."
+- A team page's tabs: **Audience fit**, **What fans of both love**, **Sponsors, timing & activation** (**Check sponsors and news**, **✦ Activation idea**).
+
+**Fan**
+- **Your taste** → **Edit**: switch between *Brands*, *Music*, *Movies* and *TV shows*; the suggestions are what fans of
+  your teams like (Qloo). Add one and watch the order of deals change.
+- Tap ♡ on another team to add it to the map; filter the map by team.
+- **Get code** on a deal → a code and QR to show at the counter (demo codes are marked "not valid in store") → **My coupons**.
+- **Near me** sorts every team's deals by distance; your location stays on your device.
+
+### Good to know
+- The demo accounts are shared, so you may see what earlier visitors did. They cannot change sponsor lists, approve
+  members or delete data, and their notes and pitches only reach other demo accounts.
+- Each note or pitch can be sent once per pair: use **Withdraw** to send it again.
+- Actions that call Qloo or a web search have daily limits. **Re-run with fresh data** (about 3 minutes) is limited to a
+  few runs a day for the shared team account; the saved analysis shows everything without it.
 
 ---
 
@@ -56,6 +108,24 @@ flowchart LR
 ```
 
 ---
+
+## Why Qloo
+
+Qloo's taste data is what makes FanFit possible. Its strengths, and what each one does here:
+
+| Qloo strength | What it does for FanFit | Without it |
+| --- | --- | --- |
+| **Cross-domain taste graph**: one entity (a team) connects to brands, artists, films, TV, places and more | From a single team, FanFit finds sponsors, local businesses for fan deals, and performers and venues for activations | Separate data for each domain, or guesswork |
+| **Affinity, not popularity**: how much more people who like X like Y | "Sounders fans like REI more than they like the typical brand" instead of "REI is big" | Recommendations follow brand size, not fans |
+| **Demographic signals** (age, gender) | Six age-group views per team, weighted by the real fan mix; sponsors re-rank teams for their target audience | One average fan that does not exist |
+| **Location signals and real places with coordinates** | Recommendations local to the club's city; partners and deals pinned on the fan map | A list with no map and no local businesses |
+| **Interest tags and descriptive tags** | Target audiences ("into fitness"), shared brand traits (Active Living, Energetic), category filters | Manual category lists |
+| **Stable entity IDs and search** | The agents may only name what a Qloo call returned, which is how grounding is enforced; deals and partners join on Qloo place IDs | An LLM that can invent brands and venues |
+| **Aggregate, privacy-safe insight** | Audience understanding without collecting fans' personal data; a fan's own tastes stay on their account | Surveys or tracking |
+| **Scale and speed** | 40 teams scored for a brand in one request; a full club analysis in about 3 minutes | Weeks of agency research |
+
+The result is the core idea of FanFit: **a mid-size club with no research budget gets the same audience evidence a big
+league buys**, and both sides of a sponsorship can read it.
 
 ## How FanFit uses Qloo
 

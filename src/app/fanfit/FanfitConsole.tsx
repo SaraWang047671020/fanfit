@@ -378,7 +378,16 @@ export default function FanfitConsole({ initial = PRESETS[0] }: { initial?: { te
               <p className="text-xs font-bold uppercase tracking-wider text-loss">Set aside: already signed or category conflict</p>
               <ol className="mt-3 space-y-3 opacity-75">
                 {current.excluded.map((r) => (
-                  <Card key={r.row.id} row={r.row} fitRank={r.fitRank} timing={timings[r.row.id]} place={tab === "place"} />
+                  <Card
+                    key={r.row.id}
+                    row={r.row}
+                    fitRank={r.fitRank}
+                    timing={timings[r.row.id]}
+                    place={tab === "place"}
+                    // A club may still pitch a signed or clashing brand (a renewal, a contract ending); the report states the clash.
+                    pitchable={tab === "brand" && !running && info?.name.toLowerCase() === initial.team.toLowerCase()}
+                    teamName={info?.name}
+                  />
                 ))}
               </ol>
             </div>
