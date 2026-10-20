@@ -32,19 +32,6 @@ export default async function FanAccountPage() {
       </Shell>
     );
 
-  if (profile.role !== "fan")
-    return (
-      <Shell>
-        <p className="text-muted">
-          Signed in as {user.email} with a {profile.role} account. Coupons you claim are still saved to it.{" "}
-          <Link href={profile.role === "team" ? "/fanfit" : "/sponsor"} className="text-accent">
-            Go to your {profile.role} workspace →
-          </Link>
-        </p>
-        <SignOut />
-      </Shell>
-    );
-
   const { data: follows } = await supabase
     .from("fan_follows")
     .select("team_id, teams(name, league, city)")
@@ -52,6 +39,14 @@ export default async function FanAccountPage() {
   return (
     <Shell>
       <p className="text-muted">Signed in as {user.email}.</p>
+      {(profile.role === "team" || profile.role === "sponsor") && (
+        <p className="mt-2 text-sm text-muted">
+          Your {profile.role === "team" ? "club" : "brand"} account works here as a fan too.{" "}
+          <Link href={profile.role === "team" ? "/fanfit" : "/sponsor"} className="text-accent">
+            Go to your {profile.role === "team" ? "team" : "brand"} workspace →
+          </Link>
+        </p>
+      )}
       <section className="mt-6">
         <h2 className="text-xs font-bold uppercase tracking-[0.12em] text-accent">Teams you follow</h2>
         {(follows ?? []).length === 0 ? (

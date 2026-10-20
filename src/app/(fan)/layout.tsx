@@ -18,7 +18,11 @@ export default async function FanLayout({ children }: { children: React.ReactNod
           <Link href="/fans" className="text-sm font-bold">
             <span className="text-gain">Fan</span>Fit
           </Link>
-          {profile?.is_demo ? (
+          {!profile?.is_demo && (profile?.role === "team" || profile?.role === "sponsor") ? (
+            <Link href={profile.role === "team" ? "/fanfit" : "/sponsor"} className="rounded-full border border-line px-3 py-1 text-xs font-semibold hover:border-accent">
+              {profile.role === "team" ? "Team" : "Brand"} workspace →
+            </Link>
+          ) : profile?.is_demo ? (
             <div className="text-xs">
               <DemoSwitch current="fan" />
             </div>

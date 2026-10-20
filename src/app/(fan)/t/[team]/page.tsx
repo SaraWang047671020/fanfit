@@ -25,9 +25,9 @@ export default async function FanMapPage({ params }: PageProps<"/t/[team]">) {
   const { team } = await params;
   const rows = await load(team);
   if (!rows) notFound();
-  const { supabase, user, profile } = await currentUser();
+  const { supabase, user } = await currentUser();
   const [follow, { data: partners }] = await Promise.all([
-    profile?.role === "fan" ? supabase.from("fan_follows").select("team_id").eq("team_id", team).maybeSingle() : Promise.resolve({ data: null }),
+    user ? supabase.from("fan_follows").select("team_id").eq("team_id", team).maybeSingle() : Promise.resolve({ data: null }),
     supabase.rpc("fan_partners", { p_team: team }),
   ]);
   const following = !!follow.data;
@@ -40,7 +40,7 @@ export default async function FanMapPage({ params }: PageProps<"/t/[team]">) {
     <main className="mx-auto w-full max-w-5xl px-4 py-6 sm:px-6 sm:py-10">
       <div className="flex items-center justify-between gap-3">
         <p className="text-xs font-bold uppercase tracking-[0.14em] text-gain">{rows[0].team_name} · fan offers</p>
-        <FollowButton teamId={team} teamName={rows[0].team_name} following={following} signedInAs={user ? (profile?.role ?? "none") : null} />
+        <FollowButton teamId={team} teamName={rows[0].team_name} following={following} signedInAs={user ? "fan" : null} />
       </div>
       <h1 className="mt-2 text-3xl font-bold sm:text-4xl">{rows[0].team_name} partners and deals around {rows[0].team_city.split(",")[0]}</h1>
       <p className="mt-3 text-muted">The club&apos;s official partners, plus deals you can claim and show at the counter.</p>

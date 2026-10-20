@@ -11,8 +11,9 @@ import TeamSearch, { type FanTeam } from "./TeamSearch";
 export const metadata: Metadata = { title: "FanFit for fans · Deals from your team's partners" };
 
 export default async function FansHome() {
-  const { supabase, user, profile } = await currentUser();
-  const isFan = !!user && profile?.role === "fan";
+  const { supabase, user } = await currentUser();
+  // Every signed-in account gets the fan side (club and brand staff are fans too).
+  const isFan = !!user;
   const [{ data: teams }, { data: follows }, { data: tasteRows }] = await Promise.all([
     supabase.rpc("fan_teams"),
     isFan ? supabase.from("fan_follows").select("team_id") : Promise.resolve({ data: [] as { team_id: string }[] }),
@@ -68,7 +69,7 @@ export default async function FansHome() {
         {isFan ? (
           <TastePicker tastes={tastes} suggestions={suggestions} basis={basis} />
         ) : (
-          <TastePreview signedInAs={user ? (profile?.role ?? "none") : null} />
+          <TastePreview signedInAs={null} />
         )}
       </div>
       {mine.length > 0 && (
@@ -86,9 +87,9 @@ export default async function FansHome() {
           </div>
         </section>
       )}
-      <Tour id="fans" auto={!!profile?.is_demo} aboveNav />
+      <Tour id="fans" auto aboveNav />
       <div className="mt-8">
-        <TeamSearch teams={all} followed={[...followed]} signedInAs={user ? (profile?.role ?? "none") : null} />
+        <TeamSearch teams={all} followed={[...followed]} signedInAs={user ? "fan" : null} />
       </div>
     </main>
   );

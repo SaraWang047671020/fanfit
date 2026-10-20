@@ -27,6 +27,9 @@ export default function AccountMenu({ name, org, role, demo }: { name: string; o
             ))}
           </div>
         )}
+        <a href="/fans" className="block border-t border-line px-3 py-2 hover:bg-panel-2">
+          Fan side: deals and your teams →
+        </a>
         <form action="/auth/signout" method="post" className="border-t border-line pt-1">
           <button className="w-full rounded-lg px-3 py-2 text-left text-muted hover:bg-panel-2 hover:text-text">Sign out</button>
         </form>

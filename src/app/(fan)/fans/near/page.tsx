@@ -7,10 +7,10 @@ export const metadata: Metadata = { title: "Deals near me · FanFit" };
 
 /** Every live offer from every team; "Near me" sorts by distance in the browser, "For you" by the fan's tastes. */
 export default async function NearPage() {
-  const { supabase, user, profile } = await currentUser();
+  const { supabase, user } = await currentUser();
   const [{ data }, { data: tasteRows }] = await Promise.all([
     supabase.rpc("fan_all_offers"),
-    user && profile?.role === "fan" ? supabase.from("fan_tastes").select("entity_id, name, kind") : Promise.resolve({ data: [] as Taste[] }),
+    user ? supabase.from("fan_tastes").select("entity_id, name, kind") : Promise.resolve({ data: [] as Taste[] }),
   ]);
   let offers = (data ?? []) as FanOffer[];
   const matches = await matchPlaces((tasteRows ?? []) as Taste[], offers.map((o) => o.place_qloo_id).filter((x): x is string => !!x));

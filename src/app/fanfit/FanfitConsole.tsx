@@ -214,7 +214,10 @@ export default function FanfitConsole({ initial = PRESETS[0] }: { initial?: { te
     };
     return { brand: score("brand"), place: score("place") };
   }, [buckets, mix, timings]);
-  const ranked = useMemo(() => ({ brand: rankWithTiming(top.brand, timings), place: rankWithTiming(top.place, timings, "place") }), [top, timings]);
+  const ranked = useMemo(
+    () => ({ brand: rankWithTiming(top.brand, timings), place: rankWithTiming(top.place, timings, "place") }),
+    [top, timings],
+  );
   const unchecked = top[tab].filter((r) => !timings[r.id] || timings[r.id].exclusivityOnly);
 
   // Once results are in (fresh or saved), check every shown candidate the timing step never reached against the
@@ -293,6 +296,7 @@ export default function FanfitConsole({ initial = PRESETS[0] }: { initial?: { te
         {error && <p className="mt-3 text-sm text-loss">{error}</p>}
       </section>
 
+      {status === "idle" && !error && <FirstRun team={team} onRun={() => run()} />}
       <div data-tour="results-tabs" className="flex flex-wrap gap-2 border-b border-line pb-3" role="tablist" aria-label="Results">
         {VIEWS.map((v) => (
           <button
@@ -355,7 +359,11 @@ export default function FanfitConsole({ initial = PRESETS[0] }: { initial?: { te
             </button>
           )}
 
-          {top[tab].length === 0 && <p className="mt-4 text-sm text-muted">Results appear once all six age groups are in.</p>}
+          {top[tab].length === 0 && (
+            <p className="mt-4 text-sm text-muted">
+              {status === "idle" ? "Nothing yet: run the sponsor finder above." : "Results appear once all six age groups are in."}
+            </p>
+          )}
           <ol className="mt-4 space-y-3">
             {current.ranked.map((r, i) => (
               <Card
@@ -527,7 +535,6 @@ function CategoryGrid({
   );
 }
 
-
 function Field({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
   return (
     <label className="block">
@@ -665,9 +672,7 @@ function Card({
                   {f.text}
                 </p>
               ))}
-              <p className="mt-2 text-xs text-muted">
-                {flags.length ? "" : "No clash with current sponsors. "}Timing not checked yet.
-              </p>
+              <p className="mt-2 text-xs text-muted">{flags.length ? "" : "No clash with current sponsors. "}Timing not checked yet.</p>
             </>
           ) : timing ? (
             <>
@@ -723,7 +728,10 @@ function PitchToggle({ row, timing, teamName }: { row: FitRow; timing?: Timing; 
   const [open, setOpen] = useState(false);
   if (!open)
     return (
-      <button onClick={() => setOpen(true)} className="mt-3 ml-2 rounded-full border border-accent px-3 py-1 text-xs font-semibold text-accent">
+      <button
+        onClick={() => setOpen(true)}
+        className="mt-3 ml-2 rounded-full border border-accent px-3 py-1 text-xs font-semibold text-accent"
+      >
         ✉ Prepare pitch
       </button>
     );
@@ -738,12 +746,50 @@ function PitchToggle({ row, timing, teamName }: { row: FitRow; timing?: Timing; 
         payload={() => ({
           kind: "team_to_brand",
           brand: { id: row.id, category: row.category },
-          ...(timing && !timing.exclusivityOnly ? { timing: { timing: timing.timing, whyNow: timing.whyNow, signals: timing.signals } } : {}),
+          ...(timing && !timing.exclusivityOnly
+            ? { timing: { timing: timing.timing, whyNow: timing.whyNow, signals: timing.signals } }
+            : {}),
         })}
       />
       <button onClick={() => setOpen(false)} className="mt-2 text-xs text-muted underline">
         Close
       </button>
     </div>
+  );
+}
+
+/** A team with no saved analysis yet: what one run gives, what it costs, and the button. */
+function FirstRun({ team, onRun }: { team: string; onRun: () => void }) {
+  return (
+    <section className="rounded-3xl border-2 border-dashed border-accent/40 bg-accent/5 p-6 sm:p-8">
+      <p className="text-xs font-bold uppercase tracking-[0.14em] text-accent">Start here</p>
+      <h2 className="mt-2 text-2xl font-bold">Run your first analysis for {team}</h2>
+      <p className="mt-2 max-w-2xl text-sm text-muted">
+        The agent works for about 3 minutes and saves everything, so the results load instantly afterwards. You get:
+      </p>
+      <ul className="mt-4 grid gap-2 text-sm sm:grid-cols-2">
+        {[
+          "Who your fans are, by age group (Qloo)",
+          "Brands and local businesses they love, ranked",
+          "A sourced reason to call each one now",
+          "Clashes with your current sponsors set aside",
+        ].map((x) => (
+          <li key={x} className="flex gap-2">
+            <span className="text-gain">✓</span>
+            {x}
+          </li>
+        ))}
+      </ul>
+      <button onClick={onRun} className="mt-6 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-white hover:brightness-110">
+        Find sponsors for {team} (~3 min)
+      </button>
+      <p className="mt-3 text-xs text-muted">
+        Tip: add your current sponsors under{" "}
+        <a href="/team/sponsors" className="text-accent">
+          Our sponsors
+        </a>{" "}
+        first, so clashes are checked against your real list instead of a web search.
+      </p>
+    </section>
   );
 }

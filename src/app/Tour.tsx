@@ -1,7 +1,7 @@
 "use client";
 
 // Guided tour (coach marks): dims the page, lights up one element at a time and explains it. Each page has its own
-// short tour. Demo accounts get it once per page automatically; a floating button replays it.
+// short tour. It plays once per page per browser; a floating button replays it.
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import { useEffect } from "react";
@@ -148,7 +148,7 @@ export default function Tour({ id, auto = false, aboveNav = false }: { id: keyof
     d.drive();
   }
 
-  // Auto-start once per page for demo accounts, after the page's content (often streamed in) is there.
+  // Auto-start once per page, after the page's content (often streamed in) is there.
   useEffect(() => {
     if (!auto) return;
     try {

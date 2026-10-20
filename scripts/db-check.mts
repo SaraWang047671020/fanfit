@@ -88,8 +88,11 @@ const f = await user(`fan-${stamp}@example.test`);
 ok("join_fan works", !(await f.rpc("join_fan")).error);
 ok("fan cannot pick another account type", !!(await f.rpc("join_team", { p_team: other.id })).error);
 ok("fan follows a team", !(await f.from("fan_follows").insert({ user_id: (await f.auth.getUser()).data.user!.id, team_id: seattle.id })).error);
-ok("team account cannot follow teams", !!(await a.from("fan_follows").insert({ user_id: pa!.user_id, team_id: other.id })).error);
-ok("fan sees only own follows", ((await f.from("fan_follows").select("team_id")).data ?? []).length === 1 && ((await a.from("fan_follows").select("team_id")).data ?? []).length === 0);
+// Club and brand staff are fans too: any account may follow teams, but only for itself.
+ok("team account can follow teams too", !(await a.from("fan_follows").insert({ user_id: pa!.user_id, team_id: other.id })).error);
+ok("cannot follow on someone else's behalf", !!(await a.from("fan_follows").insert({ user_id: (await f.auth.getUser()).data.user!.id, team_id: other.id })).error);
+ok("each account sees only its own follows", ((await f.from("fan_follows").select("team_id")).data ?? []).length === 1 && ((await a.from("fan_follows").select("team_id")).data ?? []).every((r) => r.team_id === other.id));
+await a.from("fan_follows").delete().eq("user_id", pa!.user_id);
 ok("fan attaches a code claimed before signing in", (await f.rpc("attach_claims", { p_items: [{ offer: live!.id, code: anonCode }] })).data === 1);
 ok("an owned code cannot be attached again", (await b.rpc("attach_claims", { p_items: [{ offer: live!.id, code: anonCode }] })).data === 0);
 const { data: c1 } = await f.rpc("claim_offer", { p_offer: live!.id });

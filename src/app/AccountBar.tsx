@@ -14,7 +14,7 @@ export default async function AccountBar({
   name: string;
   org: string;
   role: "team" | "sponsor";
-  tour?: React.ComponentProps<typeof Tour>["id"]; // this page's guided tour (auto-plays once for demo accounts)
+  tour?: React.ComponentProps<typeof Tour>["id"]; // this page's guided tour (auto-plays once per browser, then on request)
 }) {
   const { supabase, profile } = await currentUser();
   const approved = role === "team" && !!profile?.team_approved;
@@ -59,7 +59,7 @@ export default async function AccountBar({
         </div>
       </nav>
       {/* Outside the nav: its backdrop blur would make the fixed button position against the bar. */}
-      {tour && <Tour id={tour} auto={!!profile?.is_demo} />}
+      {tour && <Tour id={tour} auto />}
     </>
   );
 }
