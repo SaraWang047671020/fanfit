@@ -77,3 +77,10 @@ section.rounded-3xl {
   border-color: var(--accent);
   color: #fff;
 }
+
+/* Printed pitch reports (Save as PDF): plain white page. */
+@media print {
+  body {
+    background: #fff;
+  }
+}

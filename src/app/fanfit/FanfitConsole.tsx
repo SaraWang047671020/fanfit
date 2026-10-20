@@ -6,6 +6,7 @@ import type { Activation } from "@/lib/fanfit-activation";
 import ActivationPanel from "./ActivationPanel";
 import { CategoryInfo, FanMixInfo, WhoToCallInfo } from "../Explain";
 import OfferButton from "./OfferButton";
+import PitchComposer from "../PitchComposer";
 import {
   AGES,
   AGE_LABEL,
@@ -367,6 +368,8 @@ export default function FanfitConsole({ initial = PRESETS[0] }: { initial?: { te
                 offerable={tab === "place" && !running}
                 place={tab === "place"}
                 tour={i === 0 ? "who-to-call" : undefined}
+                pitchable={tab === "brand" && !running && info?.name.toLowerCase() === initial.team.toLowerCase()}
+                teamName={info?.name}
               />
             ))}
           </ol>
@@ -602,9 +605,13 @@ function Card({
   offerable,
   place = false,
   tour,
+  pitchable = false,
+  teamName,
 }: {
   place?: boolean;
   tour?: string;
+  pitchable?: boolean; // own team's brand list: "Prepare pitch" builds a shareable FanFit report
+  teamName?: string;
   rank?: number;
   row: FitRow;
   fitRank: number;
@@ -691,10 +698,41 @@ function Card({
             </button>
           )}
           {offerable && <OfferButton row={row} />}
+          {pitchable && <PitchToggle row={row} timing={timing} teamName={teamName ?? "our club"} />}
           {activation?.status === "error" && <p className="mt-2 text-xs text-loss">{activation.message}</p>}
           {activation?.status === "done" && <ActivationPanel a={activation.data} partner={row.name} />}
         </div>
       </div>
     </li>
+  );
+}
+
+/** "Prepare pitch" under a brand card: a note plus a FanFit report on why this team's fans fit the brand. */
+function PitchToggle({ row, timing, teamName }: { row: FitRow; timing?: Timing; teamName: string }) {
+  const [open, setOpen] = useState(false);
+  if (!open)
+    return (
+      <button onClick={() => setOpen(true)} className="mt-3 ml-2 rounded-full border border-accent px-3 py-1 text-xs font-semibold text-accent">
+        ✉ Prepare pitch
+      </button>
+    );
+  return (
+    <div className="mt-3 rounded-xl border border-accent/40 bg-panel p-4">
+      <PitchComposer
+        title={`Pitch ${row.name}`}
+        intro="FanFit builds a one-page report from this analysis: fit, shared fans and tastes, why now, a matchday idea. You send the link."
+        defaultMessage={`Hi ${row.name} team, ${teamName} fans are some of your strongest fans in our league, and we'd love to build something together this season.`}
+        subject={`${teamName} × ${row.name}: our fans already love you`}
+        // Reuse the news search Find sponsors already ran for this brand, when it has one.
+        payload={() => ({
+          kind: "team_to_brand",
+          brand: { id: row.id, category: row.category },
+          ...(timing && !timing.exclusivityOnly ? { timing: { timing: timing.timing, whyNow: timing.whyNow, signals: timing.signals } } : {}),
+        })}
+      />
+      <button onClick={() => setOpen(false)} className="mt-2 text-xs text-muted underline">
+        Close
+      </button>
+    </div>
   );
 }

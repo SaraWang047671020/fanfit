@@ -215,3 +215,32 @@ ok("team inbox shows the brand name", ((await d.rpc("team_interest")).data ?? []
 ok("brands cannot read a team inbox", ((await b.rpc("team_interest")).data ?? []).length === 0);
 ok("brand withdraws its note", ((await b.from("sponsor_interest").delete().eq("sponsor_id", sid).select()).data ?? []).length === 1);
 await service.from("sponsor_interest").delete().in("sponsor_id", [sid, dsid]);
+
+// ---------------------------------------------------------------- pitch reports and team -> brand pitches
+const aId = (await a.auth.getUser()).data.user!.id;
+const { data: rep } = await service
+  .from("pitch_reports")
+  .insert({ kind: "team_to_brand", team_id: seattle.id, brand_qloo_id: "x", brand_name: "Tillamook", body: { headline: "t" }, created_by: aId })
+  .select("id, token")
+  .single();
+ok("report token is long and random", (rep?.token.length ?? 0) >= 20);
+ok("nobody can write reports directly", !!(await a.from("pitch_reports").insert({ kind: "team_to_brand", team_id: seattle.id, brand_qloo_id: "x", brand_name: "x", body: {} })).error);
+ok("team reads its own reports", ((await a.from("pitch_reports").select("id").eq("id", rep!.id)).data ?? []).length === 1);
+ok("others cannot list reports", ((await b.from("pitch_reports").select("id").eq("id", rep!.id)).data ?? []).length === 0);
+ok("anon cannot list reports", ((await anon.from("pitch_reports").select("id")).data ?? []).length === 0);
+ok("anyone opens a report by its link", ((await anon.rpc("report_by_token", { p_token: rep!.token })).data ?? []).length === 1);
+await a.rpc("report_by_token", { p_token: rep!.token }); // the author's own look is not a view
+ok("views count readers, not the author", (await service.from("pitch_reports").select("views").eq("id", rep!.id).single()).data?.views === 1);
+ok("wrong token opens nothing", ((await anon.rpc("report_by_token", { p_token: "nope-nope-nope-nope" })).data ?? []).length === 0);
+const { data: pitch } = await service
+  .from("team_outreach")
+  .insert({ team_id: seattle.id, brand_qloo_id: "x", brand_name: "Tillamook", message: "Hi", report_id: rep!.id, created_by: aId })
+  .select("id")
+  .single();
+ok("team sees its sent pitch", ((await a.from("team_outreach").select("id").eq("id", pitch!.id)).data ?? []).length === 1);
+ok("addressed brand sees the pitch", ((await b.rpc("brand_inbox")).data ?? []).some((r: { id: string }) => r.id === pitch!.id));
+ok("addressed brand answers", ((await b.from("team_outreach").update({ status: "interested" }).eq("id", pitch!.id).select("responded_at")).data ?? [])[0]?.responded_at != null);
+ok("team cannot mark its own pitch answered", ((await a.from("team_outreach").update({ status: "declined" }).eq("id", pitch!.id).select()).data ?? []).length === 0);
+ok("other brands never see it", ((await dbrand.rpc("brand_inbox")).data ?? []).length === 0);
+ok("team withdraws its pitch", ((await a.from("team_outreach").delete().eq("id", pitch!.id).select()).data ?? []).length === 1);
+await service.from("pitch_reports").delete().eq("id", rep!.id);

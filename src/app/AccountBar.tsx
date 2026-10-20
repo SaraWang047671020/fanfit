@@ -18,7 +18,11 @@ export default async function AccountBar({
 }) {
   const { supabase, profile } = await currentUser();
   const approved = role === "team" && !!profile?.team_approved;
-  const [requests, notes] = approved ? await Promise.all([supabase.rpc("team_requests"), supabase.rpc("team_interest")]) : [null, null];
+  const [requests, notes] = approved
+    ? await Promise.all([supabase.rpc("team_requests"), supabase.rpc("team_interest")])
+    : role === "sponsor"
+      ? [null, await supabase.rpc("brand_inbox")]
+      : [null, null];
   const waiting = requests?.data?.length ?? 0;
   const newNotes = ((notes?.data ?? []) as { status: string }[]).filter((n) => n.status === "new").length;
   const tabs =
@@ -29,14 +33,14 @@ export default async function AccountBar({
             { href: "/ask", label: "✦ Ask FanFit" },
             { href: "/team/sponsors", label: "Our sponsors" },
             { href: "/team/offers", label: "Fan offers" },
-            { href: "/team/interest", label: newNotes ? `Brand interest (${newNotes})` : "Brand interest" },
+            { href: "/team/outreach", label: newNotes ? `Outreach (${newNotes} new)` : "Outreach" },
             { href: "/team/members", label: waiting ? `Members (${waiting})` : "Members" },
           ]
         : []
       : [
           { href: "/sponsor", label: "Team ranking" },
           { href: "/ask", label: "✦ Ask FanFit" },
-          { href: "/sponsor/outreach", label: "Outreach" },
+          { href: "/sponsor/outreach", label: newNotes ? `Outreach (${newNotes} new)` : "Outreach" },
         ];
   return (
     <>

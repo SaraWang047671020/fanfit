@@ -391,7 +391,7 @@ export async function brandCategories(brands: { name: string; category: string }
 
 const SIGNAL_TYPES = ["market_expansion", "new_product", "sports_sponsorship", "marketing_campaign", "local_event", "funding_or_growth", "negative_news"];
 
-async function brandTiming(team: string, city: string, item: Candidate) {
+export async function brandTiming(team: string, city: string, item: Candidate) {
   const schema = obj({
     signals: { type: "array", items: obj({ type: { type: "string", enum: SIGNAL_TYPES }, date: S, summary: S, url: S }) },
     relationship: {

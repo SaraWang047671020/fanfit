@@ -28,7 +28,7 @@ const TOURS: Record<string, Step[]> = {
     {
       el: "who-to-call",
       title: "Who to call, and why",
-      body: "Ranked by fan fit and timing. Each card shows which age group loves it most, the news behind “why now” with sources, and buttons for an activation idea or a fan-map deal.",
+      body: "Ranked by fan fit and timing. Each card shows which age group loves it most, the news behind “why now” with sources, and buttons for an activation idea, a fan-map deal, or “Prepare pitch”: a one-page report to send the brand.",
     },
     {
       el: "nav-/ask",
