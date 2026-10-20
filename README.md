@@ -191,4 +191,4 @@ Qloo or OpenAI calls; saved results keep working.
 
 ## License
 
-MIT.
+MIT, see [LICENSE](LICENSE).
