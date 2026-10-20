@@ -18,6 +18,7 @@ interface Offer {
   ends_on: string | null;
   active: boolean;
   lat: number | null;
+  demo: boolean;
 }
 interface Claim {
   offer_id: string;
@@ -37,7 +38,7 @@ export default async function TeamOffersPage({ searchParams }: PageProps<"/team/
 
   const [{ data: team }, { data: offers }, { data: keys }, { data: claims }] = await Promise.all([
     supabase.from("teams").select("id, name").eq("id", profile.team_id!).single<{ id: string; name: string }>(),
-    supabase.from("offers").select("id, place_name, address, title, fit, ends_on, active, lat").order("created_at", { ascending: false }).returns<Offer[]>(),
+    supabase.from("offers").select("id, place_name, address, title, fit, ends_on, active, lat, demo").order("created_at", { ascending: false }).returns<Offer[]>(),
     supabase.from("offer_keys").select("offer_id, redeem_key").returns<{ offer_id: string; redeem_key: string }[]>(),
     supabase.from("claims").select("offer_id, age_group, redeemed_at, simulated").returns<Claim[]>(),
   ]);
@@ -46,7 +47,10 @@ export default async function TeamOffersPage({ searchParams }: PageProps<"/team/
   const fanUrl = `${origin}/t/${team?.id}`;
   const keyOf = new Map((keys ?? []).map((k) => [k.offer_id, k.redeem_key]));
   const hasSim = (claims ?? []).some((c) => c.simulated);
-  const counted = (claims ?? []).filter((c) => c.simulated === showSim);
+  // Demo tab: simulated claims plus every claim on a demo offer (the business never agreed to it). Real tab: the rest.
+  const demoOffers = new Set((offers ?? []).filter((o) => o.demo).map((o) => o.id));
+  const isDemo = (c: Claim) => c.simulated || demoOffers.has(c.offer_id);
+  const counted = (claims ?? []).filter((c) => isDemo(c) === showSim);
   const redeemed = counted.filter((c) => c.redeemed_at);
   const byAge = AGES.map((a) => ({ a, n: counted.filter((c) => c.age_group === a).length }));
   const maxAge = Math.max(1, ...byAge.map((x) => x.n));
@@ -78,11 +82,11 @@ export default async function TeamOffersPage({ searchParams }: PageProps<"/team/
       <section className="mt-8 rounded-3xl border border-line bg-panel/90 p-6">
         <div className="flex flex-wrap items-baseline justify-between gap-3">
           <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent">
-            Results {showSim && <span className="ml-2 rounded-full border border-warn px-2 py-0.5 text-warn normal-case tracking-normal">simulated demo data</span>}
+            Results {showSim && <span className="ml-2 rounded-full border border-warn px-2 py-0.5 text-warn normal-case tracking-normal">demo and simulated data</span>}
           </p>
           <div className="flex gap-3 text-xs">
             <Link href="/team/offers" className={!showSim ? "text-text" : "text-muted hover:text-text"}>Real</Link>
-            <Link href="/team/offers?sim=1" className={showSim ? "text-text" : "text-muted hover:text-text"}>Simulated</Link>
+            <Link href="/team/offers?sim=1" className={showSim ? "text-text" : "text-muted hover:text-text"}>Demo</Link>
           </div>
         </div>
         <div className="mt-4 grid gap-3 sm:grid-cols-4">
@@ -108,7 +112,8 @@ export default async function TeamOffersPage({ searchParams }: PageProps<"/team/
         </div>
         {showSim && (
           <p className="mt-4 text-xs text-warn">
-            Simulated claims are random and unrelated to fit. They show how the dashboard reads, not whether FanFit&apos;s predictions work.
+            Demo data: claims on demo offers (not agreed with the business) and simulated claims, which are random and unrelated to fit.
+            It shows how the dashboard reads, not whether FanFit&apos;s predictions work.
           </p>
         )}
         <div className="mt-4">
@@ -143,7 +148,10 @@ export default async function TeamOffersPage({ searchParams }: PageProps<"/team/
                 return (
                   <tr key={o.id} className={o.active ? "" : "opacity-60"}>
                     <td className="py-3 pr-3">
-                      <p className="font-semibold">{o.place_name}</p>
+                      <p className="font-semibold">
+                        {o.place_name}
+                        {o.demo && <span className="ml-2 rounded-full border border-warn px-2 py-0.5 text-[10px] font-semibold text-warn">DEMO</span>}
+                      </p>
                       <p className="text-xs text-muted">{o.title}{o.ends_on ? ` · until ${o.ends_on}` : ""}</p>
                       {o.lat === null && <p className="text-xs text-warn">No coordinates from Qloo: listed but not on the map.</p>}
                     </td>

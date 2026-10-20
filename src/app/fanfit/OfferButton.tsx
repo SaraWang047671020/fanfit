@@ -11,6 +11,7 @@ export default function OfferButton({ row }: { row: FitRow }) {
   const [title, setTitle] = useState("15% off with a match ticket");
   const [details, setDetails] = useState("");
   const [endsOn, setEndsOn] = useState("");
+  const [demo, setDemo] = useState(false);
   const [result, setResult] = useState<{ ok?: boolean; error?: string } | null>(null);
   const [pending, start] = useTransition();
 
@@ -43,11 +44,17 @@ export default function OfferButton({ row }: { row: FitRow }) {
         <span className="text-muted">Ends on (optional)</span>
         <input type="date" value={endsOn} onChange={(e) => setEndsOn(e.target.value)} className={field} />
       </label>
-      <p className="text-muted">Agree the offer with the business first. It goes live on your public fan page right away.</p>
+      <label className="flex items-start gap-2">
+        <input type="checkbox" checked={demo} onChange={(e) => setDemo(e.target.checked)} className="mt-0.5" />
+        <span>
+          Demo offer: not agreed with the business. Fans see it labelled DEMO, and its results count as demo data.
+        </span>
+      </label>
+      <p className="text-muted">{demo ? "Use demo offers for presentations only." : "Agree the offer with the business first. It goes live on your public fan page right away."}</p>
       <div className="flex gap-2">
         <button
           disabled={pending || title.trim().length < 3}
-          onClick={() => start(async () => setResult(await createOffer({ placeId: row.id, title, details, endsOn, fit: row.score })))}
+          onClick={() => start(async () => setResult(await createOffer({ placeId: row.id, title, details, endsOn, fit: row.score, demo })))}
           className="rounded-full bg-accent px-3 py-1 font-semibold text-bg disabled:opacity-50"
         >
           {pending ? "Publishing…" : "Publish offer"}

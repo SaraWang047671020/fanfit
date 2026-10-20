@@ -13,6 +13,7 @@ export interface SavedCode {
   team_name?: string;
   ends_on: string | null;
   claimed_at: string;
+  demo?: boolean; // from a demo offer: not valid in store
 }
 
 const STORE = "fanfit-claims"; // offer id -> SavedCode (older entries: offer id -> code string)

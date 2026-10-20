@@ -20,6 +20,7 @@ export interface FanOffer {
   ends_on: string | null;
   team_id?: string; // set on cross-team lists (deals near me)
   team_name?: string;
+  demo?: boolean; // not agreed with the business: labelled, codes not valid in store
 }
 
 /** A sponsor on the club's list. Shown on the fan map whether or not it has an offer; pinned when it has a location. */
@@ -106,6 +107,7 @@ export default function FanOffers({ offers, partners = [], emptyText }: { offers
                 team_name: o.team_name,
                 ends_on: o.ends_on,
                 claimed_at: new Date().toISOString(),
+                demo: o.demo,
               } satisfies SavedCode)
             }
           />
@@ -205,7 +207,7 @@ function OfferMap({
         const pt: [number, number] = [o.lat!, o.lon!];
         points.push(pt);
         L.circleMarker(pt, { radius: o.offer_id === selected ? 10 : 7, color: "#0b0d12", weight: 2, fillColor: gain, fillOpacity: 1 })
-          .bindTooltip(`${o.place_name}: ${o.title}`)
+          .bindTooltip(`${o.place_name}: ${o.title}${o.demo ? " (demo)" : ""}`)
           .on("click", () => onSelect(o.offer_id))
           .addTo(layer.current!);
       }
@@ -278,6 +280,7 @@ function OfferCard({
           {o.team_name} partner
         </a>
       )}
+      {o.demo && <DemoBadge />}
       <p className="mt-2 text-lg font-semibold text-gain">{o.title}</p>
       {o.details && <p className="text-sm text-muted">{o.details}</p>}
       {o.ends_on && <p className="mt-1 text-xs text-muted">Until {o.ends_on}</p>}
@@ -286,9 +289,9 @@ function OfferCard({
           {/* eslint-disable-next-line @next/next/no-img-element -- data URL generated in the browser */}
           {qr && <img src={qr} alt={`QR code for ${code}`} width={96} height={96} className="rounded bg-white p-1" />}
           <div>
-            <p className="text-xs text-muted">Show this at the counter</p>
+            <p className="text-xs text-muted">{o.demo ? "Demo code: not valid in store" : "Show this at the counter"}</p>
             <p className="font-mono text-3xl font-bold tracking-[0.2em]">{code}</p>
-            <p className="text-xs text-muted">One use. Saved on this device.</p>
+            <p className="text-xs text-muted">{o.demo ? "Shows how claiming works." : "One use. Saved on this device."}</p>
           </div>
         </div>
       ) : (
@@ -308,5 +311,13 @@ function OfferCard({
         </div>
       )}
     </li>
+  );
+}
+
+export function DemoBadge() {
+  return (
+    <p className="mt-2 inline-block rounded-full border border-warn px-2.5 py-0.5 text-xs font-semibold text-warn">
+      DEMO · Not a real offer. The business has not agreed to it.
+    </p>
   );
 }

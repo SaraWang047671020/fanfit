@@ -19,6 +19,7 @@ export interface AccountClaim {
   active: boolean;
   team_id: string;
   team_name: string;
+  demo: boolean;
 }
 
 type Status = "unused" | "used" | "expired" | "unknown";
@@ -31,6 +32,7 @@ interface Coupon {
   teamName?: string;
   endsOn: string | null;
   status: Status;
+  demo: boolean;
 }
 
 const today = () => new Date().toISOString().slice(0, 10);
@@ -83,6 +85,7 @@ export default function MyCoupons({ signedIn, account }: { signedIn: boolean; ac
       teamName: c.team_name,
       endsOn: c.ends_on,
       status: c.redeemed_at ? "used" : (c.ends_on && c.ends_on < today()) || !c.active ? "expired" : "unused",
+      demo: c.demo,
     }));
     const inAccount = new Set(fromAccount.map((c) => `${c.offerId}:${c.code}`));
     const fromDevice: Coupon[] = Object.entries(codes)
@@ -98,6 +101,7 @@ export default function MyCoupons({ signedIn, account }: { signedIn: boolean; ac
           teamName: s.team_name,
           endsOn: s.ends_on,
           status: st === "unused" && s.ends_on && s.ends_on < today() ? "expired" : st,
+          demo: !!s.demo,
         };
       });
     const order: Status[] = ["unused", "unknown", "used", "expired"];
@@ -121,6 +125,7 @@ export default function MyCoupons({ signedIn, account }: { signedIn: boolean; ac
             <button className="w-full text-left" onClick={() => setOpen(open === key ? null : key)} disabled={c.status !== "unused"}>
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
+                  {c.demo && <p className="text-xs font-semibold text-warn">DEMO · not valid in store</p>}
                   <p className="font-semibold text-gain">{c.title}</p>
                   <p className="text-sm">{c.place}</p>
                   <p className="text-xs text-muted">
