@@ -26,9 +26,10 @@ export async function proxy(request: NextRequest) {
     },
   });
 
-  // getUser() validates the token with Supabase Auth and refreshes it when expired.
-  const { data } = await supabase.auth.getUser();
-  if (!data.user && isProtected) {
+  // getClaims() verifies the token's signature (locally with the project's signing keys, else via Supabase Auth) and
+  // refreshes it when expired. Pages still call getUser() once per request (currentUser) before reading data.
+  const { data } = await supabase.auth.getClaims();
+  if (!data?.claims && isProtected) {
     if (path.startsWith("/api/")) return NextResponse.json({ error: "Sign in required" }, { status: 401 });
     const login = request.nextUrl.clone();
     login.pathname = "/login";

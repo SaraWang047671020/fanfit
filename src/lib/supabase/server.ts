@@ -2,6 +2,7 @@
 // (row level security applies). The session lives in cookies; src/proxy.ts refreshes it on each navigation.
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import { cache } from "react";
 
 export async function createClient() {
   const cookieStore = await cookies();
@@ -30,11 +31,14 @@ export type Profile = {
   is_demo: boolean; // shared demo account ("Try the demo"), with some actions switched off
 };
 
-/** The signed-in user and their profile, or nulls when signed out. */
-export async function currentUser() {
+/**
+ * The signed-in user and their profile, or nulls when signed out. Cached per request: the page and the top bar both
+ * ask, and each ask is a round trip to Supabase Auth and Postgres.
+ */
+export const currentUser = cache(async () => {
   const supabase = await createClient();
   const { data } = await supabase.auth.getUser();
   if (!data.user) return { supabase, user: null, profile: null };
   const { data: profile } = await supabase.from("profiles").select("*").eq("user_id", data.user.id).single<Profile>();
   return { supabase, user: data.user, profile };
-}
+});
