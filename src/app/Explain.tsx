@@ -12,6 +12,10 @@ export function FitInfo({ brand }: { brand: string }) {
       <span className="block">
         +2.0σ = two standard deviations above that panel. Strong ≥ 1.5σ, Good ≥ 0.75σ, Average ≥ 0.
       </span>
+      <span className="block">
+        With a target audience, Qloo scores your brand for those fans only (age, gender and interest as extra signals). Scores are re-centred so the
+        average team matches the all-fans view; ▲▼ show how far a team moved.
+      </span>
       <span className="block">It measures shared taste, not sales or how a sponsorship would perform.</span>
     </InfoTip>
   );

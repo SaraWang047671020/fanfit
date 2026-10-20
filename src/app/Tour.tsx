@@ -48,6 +48,11 @@ const TOURS: Record<string, Step[]> = {
       title: "Every team, ranked for your brand",
       body: "NBA, MLS, WNBA and NWSL teams ranked by how much more their fans like Gatorade than a typical big brand, from Qloo's taste data.",
     },
+    {
+      el: "audience",
+      title: "Aim at your audience",
+      body: "Pick an age group, gender or interest (say, women 25–29 into fitness) and Qloo re-scores every team for those fans. Arrows show who moved.",
+    },
     { el: "filters", title: "Narrow it down", body: "Filter by league, and hide teams that already have a sponsor in your category." },
     {
       el: "team-row",

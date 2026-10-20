@@ -10,13 +10,14 @@ export interface TeamRow {
   league: string;
   city: string;
   z: number | null;
+  overallRank?: number; // with a target audience: the team's rank for all fans
   onFanfit: boolean;
   category: { status: "taken"; by: string[] } | { status: "open" } | { status: "unknown" };
 }
 
 const BAND_TONE: Record<string, string> = { Strong: "text-gain", Good: "text-gain/80", Average: "text-muted", Weak: "text-muted", "No data": "text-muted" };
 
-export default function TeamList({ rows }: { rows: TeamRow[] }) {
+export default function TeamList({ rows, targeted = false }: { rows: TeamRow[]; targeted?: boolean }) {
   const leagues = useMemo(() => [...new Set(rows.map((r) => r.league))].sort(), [rows]);
   const [league, setLeague] = useState<string | null>(null);
   const [hideTaken, setHideTaken] = useState(true);
@@ -44,6 +45,8 @@ export default function TeamList({ rows }: { rows: TeamRow[] }) {
       <ol className="mt-4 divide-y divide-line">
         {shown.map((r, i) => {
           const band = fitBand(r.z);
+          const rank = rows.indexOf(r) + 1;
+          const moved = targeted && r.overallRank ? r.overallRank - rank : 0;
           return (
             <li key={r.id} data-tour={i === 0 ? "team-row" : undefined} className="grid grid-cols-[2rem_minmax(0,1fr)_auto] items-center gap-3 py-3 text-sm sm:grid-cols-[2rem_minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)]">
               <span className="font-mono text-xs text-muted">{i + 1}</span>
@@ -56,6 +59,12 @@ export default function TeamList({ rows }: { rows: TeamRow[] }) {
                 </p>
                 <p className="text-xs text-muted">
                   {r.league} · {r.city}
+                  {moved !== 0 && (
+                    <span className={`ml-2 font-mono font-semibold ${moved > 0 ? "text-gain" : "text-loss"}`} title={`#${r.overallRank} for all fans`}>
+                      {moved > 0 ? "▲" : "▼"}
+                      {Math.abs(moved)}
+                    </span>
+                  )}
                 </p>
               </div>
               <div className="text-right sm:text-left">

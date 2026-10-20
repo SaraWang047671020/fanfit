@@ -22,7 +22,8 @@ import type { Timing } from "./fanfit";
 import { loadSavedRun } from "./saved-runs";
 import { get } from "./qloo";
 import { audience, sharedAge, sharedTaste, sharedTraits, teamNews } from "./sponsor-detail";
-import { type DirectoryTeam, teamFit } from "./sponsor-fit";
+import { INTERESTS, parseTarget } from "./audience";
+import { type DirectoryTeam, type TeamFit, targetedFit, teamFit } from "./sponsor-fit";
 import { fitBand } from "./sponsor-fit-band";
 
 const DEFAULT_MODEL = "gpt-5.4-mini";
@@ -118,6 +119,9 @@ function sponsorTools(ctx: Extract<AskContext, { role: "sponsor" }>, seen: Map<s
       states: nullable({ type: "array", items: { type: "string" }, description: "Two-letter US states or Canadian provinces, e.g. GA, FL." }),
       open_category_only: { type: "boolean", description: "Drop teams whose club lists a sponsor in the brand's categories (teams with unknown lists stay)." },
       limit: { type: "integer", description: "1-15" },
+      target_age: nullable({ type: "string", enum: [...AGES], description: "Score for fans in this age group only." }),
+      target_gender: nullable({ type: "string", enum: ["female", "male"] }),
+      target_interest: nullable({ type: "string", enum: Object.keys(INTERESTS), description: "Score for fans into this interest." }),
     }),
     fn("team_audience", `Fans of a team vs ${ctx.brand.name}'s customers by age and gender (Qloo demographics).`, { team_id: { type: "string" } }),
     fn("shared_taste", `Brands, artists and places liked by people who like both the team and ${ctx.brand.name}, plus shared Qloo tags.`, { team_id: { type: "string" } }),
@@ -126,12 +130,24 @@ function sponsorTools(ctx: Extract<AskContext, { role: "sponsor" }>, seen: Map<s
   ];
 
   const tools: Record<string, Tool> = {
-    rank_teams: async ({ league, states, open_category_only, limit }) => {
-      const fits = await teamFit(ctx.brand.qlooId, ctx.teams);
+    rank_teams: async ({ league, states, open_category_only, limit, target_age, target_gender, target_interest }) => {
+      const target = parseTarget({ age: target_age as string, gender: target_gender as string, interest: target_interest as string });
+      const fits: (TeamFit & { overallRank?: number })[] = target
+        ? await targetedFit(ctx.brand.qlooId, ctx.teams, target)
+        : await teamFit(ctx.brand.qlooId, ctx.teams);
       const st = Array.isArray(states) ? states.map((s) => String(s).toUpperCase()) : null;
       const rows = fits
         .filter((f) => (!league || f.team.league === league) && (!st || st.includes(f.team.city.split(",").pop()!.trim().toUpperCase())))
-        .map((f) => ({ team_id: f.team.id, name: f.team.name, league: f.team.league, city: f.team.city, fit_z: round(f.z), fit: fitBand(f.z), category: categoryStatus(f.team.id) }))
+        .map((f) => ({
+          team_id: f.team.id,
+          name: f.team.name,
+          league: f.team.league,
+          city: f.team.city,
+          fit_z: round(f.z),
+          fit: fitBand(f.z),
+          ...(f.overallRank ? { rank_for_all_fans: f.overallRank } : {}),
+          category: categoryStatus(f.team.id),
+        }))
         .filter((r) => !open_category_only || !r.category.startsWith("taken"))
         .slice(0, Math.min(Math.max(Number(limit) || 10, 1), 15));
       rows.forEach((r) => seen.set(r.team_id, { name: r.name, kind: "team" }));

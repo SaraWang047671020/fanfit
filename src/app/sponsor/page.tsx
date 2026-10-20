@@ -2,10 +2,12 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { SPONSOR_CATEGORIES } from "@/lib/fanfit-score";
-import { type DirectoryTeam, teamFit } from "@/lib/sponsor-fit";
+import { type Target, parseTarget } from "@/lib/audience";
+import { type DirectoryTeam, type TeamFit, targetedFit, teamFit } from "@/lib/sponsor-fit";
 import { currentUser } from "@/lib/supabase/server";
 import AccountBar from "../AccountBar";
 import { FitInfo } from "../Explain";
+import AudiencePicker from "./AudiencePicker";
 import TeamList, { type TeamRow } from "./TeamList";
 
 export const metadata: Metadata = { title: "FanFit · Teams for your brand" };
@@ -17,7 +19,8 @@ interface SponsorRow {
   categories: string[];
 }
 
-export default async function SponsorPage() {
+export default async function SponsorPage({ searchParams }: PageProps<"/sponsor">) {
+  const target = parseTarget(await searchParams);
   const { supabase, user, profile } = await currentUser();
   if (!user) redirect("/login?next=/sponsor");
   if (profile?.role !== "sponsor") redirect(profile?.role === "team" ? "/fanfit" : "/onboarding");
@@ -37,10 +40,11 @@ export default async function SponsorPage() {
           <FitInfo brand={sponsor.name} />
         </p>
       </header>
-      <div className="mt-8">
+      <div className="mt-8 space-y-4">
+        {sponsor.qloo_id && <AudiencePicker target={target} />}
         {sponsor.qloo_id ? (
-          <Suspense fallback={<p className="text-sm text-muted">Scoring every team with Qloo…</p>}>
-            <Ranking sponsor={sponsor} />
+          <Suspense key={JSON.stringify(target)} fallback={<p className="text-sm text-muted">Scoring every team with Qloo…</p>}>
+            <Ranking sponsor={sponsor} target={target} />
           </Suspense>
         ) : (
           <p className="rounded-2xl border border-line bg-panel p-6 text-sm text-warn">
@@ -52,7 +56,7 @@ export default async function SponsorPage() {
   );
 }
 
-async function Ranking({ sponsor }: { sponsor: SponsorRow }) {
+async function Ranking({ sponsor, target }: { sponsor: SponsorRow; target: Target | null }) {
   const { supabase } = await currentUser();
   const [{ data: teams }, { data: taken }] = await Promise.all([
     supabase.from("teams").select("id, name, league, city, qloo_id, fit_mean, fit_sd, claimed_at").returns<DirectoryTeam[]>(),
@@ -60,8 +64,10 @@ async function Ranking({ sponsor }: { sponsor: SponsorRow }) {
   ]);
   const covered = new Set<string>(SPONSOR_CATEGORIES.filter((c) => sponsor.categories.includes(c.key)).flatMap((c) => c.covers));
   const listed = new Set((taken ?? []).map((t) => t.team_id));
-  const fits = await teamFit(sponsor.qloo_id!, teams ?? []);
-  const rows: TeamRow[] = fits.map(({ team, z }) => {
+  const fits: (TeamFit & { overallRank?: number })[] = target
+    ? await targetedFit(sponsor.qloo_id!, teams ?? [], target)
+    : await teamFit(sponsor.qloo_id!, teams ?? []);
+  const rows: TeamRow[] = fits.map(({ team, z, overallRank }) => {
     const conflicts = (taken ?? []).filter((t) => t.team_id === team.id && covered.has(t.category)).map((t) => t.name);
     return {
       id: team.id,
@@ -69,10 +75,11 @@ async function Ranking({ sponsor }: { sponsor: SponsorRow }) {
       league: team.league,
       city: team.city,
       z,
+      overallRank,
       onFanfit: !!team.claimed_at,
       // "unknown": the club has not listed its sponsors on FanFit, so exclusivity cannot be checked.
       category: conflicts.length ? { status: "taken", by: conflicts } : listed.has(team.id) ? { status: "open" } : { status: "unknown" },
     };
   });
-  return <TeamList rows={rows} />;
+  return <TeamList rows={rows} targeted={!!target} />;
 }
