@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { CategoryHit, FanfitEvent, TeamInfo, Timing } from "@/lib/fanfit";
 import type { Activation } from "@/lib/fanfit-activation";
@@ -54,13 +53,6 @@ const VIEWS: { key: View; label: string }[] = [
   { key: "sponsors", label: "Current sponsors" },
   { key: "trace", label: "How the agent ran" },
 ];
-
-const askAbout = (name: string, kind: Kind) =>
-  `/ask?q=${encodeURIComponent(
-    kind === "place"
-      ? `Is ${name} a good local partner for our fans? Which age group should a matchday deal with them target?`
-      : `Why is ${name} a good fit for our fans, how does it compare with the other brands we should call, and does it clash with our current sponsors?`,
-  )}`;
 
 function Empty({ running }: { running: boolean }) {
   return (
@@ -355,7 +347,6 @@ export default function FanfitConsole({ initial = PRESETS[0] }: { initial?: { te
                 activation={activations[r.row.id]}
                 onActivate={running ? undefined : () => activate(r.row, tab)}
                 offerable={tab === "place" && !running}
-                askHref={!running && info?.name.toLowerCase() === initial.team.toLowerCase() ? askAbout(r.row.name, tab) : undefined}
               />
             ))}
           </ol>
@@ -585,9 +576,7 @@ function Card({
   activation,
   onActivate,
   offerable,
-  askHref,
 }: {
-  askHref?: string;
   rank?: number;
   row: FitRow;
   fitRank: number;
@@ -663,11 +652,6 @@ function Card({
             </button>
           )}
           {offerable && <OfferButton row={row} />}
-          {askHref && (
-            <Link href={askHref} className="mt-3 ml-2 inline-block rounded-full border border-line px-3 py-1 text-xs font-semibold text-muted hover:border-accent hover:text-accent">
-              ✦ Ask about this
-            </Link>
-          )}
           {activation?.status === "error" && <p className="mt-2 text-xs text-loss">{activation.message}</p>}
           {activation?.status === "done" && <ActivationPanel a={activation.data} partner={row.name} />}
         </div>

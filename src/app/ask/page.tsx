@@ -6,8 +6,7 @@ import AskConsole from "./AskConsole";
 
 export const metadata: Metadata = { title: "FanFit · Ask FanFit" };
 
-export default async function AskPage({ searchParams }: PageProps<"/ask">) {
-  const { q } = await searchParams;
+export default async function AskPage() {
   const { supabase, user, profile } = await currentUser();
   if (!user) redirect("/login?next=/ask");
   const isTeam = profile?.role === "team" && profile.team_approved;
@@ -40,7 +39,7 @@ export default async function AskPage({ searchParams }: PageProps<"/ask">) {
         </p>
       </header>
       <div className="mt-8">
-        <AskConsole examples={examples} role={isTeam ? "team" : "sponsor"} initialQuestion={typeof q === "string" ? q.slice(0, 500) : undefined} />
+        <AskConsole examples={examples} role={isTeam ? "team" : "sponsor"} />
       </div>
     </main>
   );
