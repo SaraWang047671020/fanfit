@@ -11,8 +11,8 @@ See [How to test it](#how-to-test-it) for a 10-minute path through all three sid
 
 ## How to test it
 
-Everything below runs on the live site with the shared demo accounts: no sign-up, no keys. Switch sides any time with
-**Demo · switch side ▾** at the top right. Close a guided tour with **Esc**; replay it with **? Guided tour**.
+Everything below runs on the live site with the shared demo accounts: no sign-up, no keys. Switch sides any time from the menu at the top right
+(**DEMO · Seattle Sounders FC ▾** or **DEMO · Gatorade ▾**; on fan pages, **Demo · switch side ▾**). Close a guided tour with **Esc**; replay it with **? Guided tour**.
 
 ### The 10-minute path
 
@@ -22,7 +22,7 @@ Everything below runs on the live site with the shared demo accounts: no sign-up
 | 2 | **Find sponsors** → **Who to call** | Brands Sounders fans love, each with the age group that loves it most and "why now" news with sources. The analysis is saved, so it loads instantly |
 | 3 | Click **ⓘ** next to *Who to call*, then open **How the agent ran** | How the ranking works; every step the agent took |
 | 4 | Scroll to **Set aside**, find **Gatorade** (it clashes with Seattle's partner Powerade) → **✉ Prepare pitch** → **Create report** (~20–30 s) → **Open report ↗** | A one-page report anyone can open by link: fit, rank among 79 teams, shared fans, what both audiences love, sourced news, a matchday idea, and a category check that states the Powerade clash instead of hiding it. Any brand under *Who to call* works the same way |
-| 5 | **Demo · switch side ▾** → **Sponsor · Gatorade** | All 79 teams ranked for Gatorade |
+| 5 | Top-right menu **DEMO · Seattle Sounders FC ▾** → **Sponsor · Gatorade** | All 79 teams ranked for Gatorade |
 | 6 | **Target audience**: *25–29*, *Women*, *Fitness* | Every team re-scored for that audience; ▲▼ show who moved (Gotham FC and Seattle Reign jump into the top 4) |
 | 7 | Untick **Hide teams with my category taken** (Seattle's drinks category is held by Powerade), open **Seattle Sounders FC** → **Tell Seattle Sounders FC you're interested** → **Create report** | Your note and its report link; the team's answer will show here |
 | 8 | **Outreach** → **Received** | The pitch Seattle sent Gatorade in step 4, with its report; answer **Interested** |
@@ -32,7 +32,7 @@ Everything below runs on the live site with the shared demo accounts: no sign-up
 ### More to try
 
 **Team**
-- **✦ Ask FanFit**: tap an example ("Which banks would fit our fans best, and do any clash with our current sponsors?").
+- **✦ Ask**: tap an example ("Which banks would fit our fans best, and do any clash with our current sponsors?").
   Watch the agent pick tools on the left; every name in the answer comes from a tool.
 - **By category** and **Fan mix**: drag a fan-mix slider and watch *Who to call* re-rank.
 - **Local businesses** tab under *Who to call* → **+ Fan map offer** publishes a deal to the club's fan page
