@@ -162,3 +162,20 @@ ok("admin approves any team's request", !(await adm.rpc("decide_team_request", {
 ok("users cannot make themselves admin", !!(await f.from("profiles").update({ is_admin: true }).eq("user_id", (await f.auth.getUser()).data.user!.id)).error);
 ok("users cannot approve themselves via the table", !!(await a3.from("profiles").update({ team_approved: true }).eq("user_id", a3id)).error);
 await a2.from("team_sponsors").delete().like("name", "Test sponsor %");
+
+// ---------------------------------------------------------------- shared demo accounts
+const d = await user(`demo-check-${stamp}@example.test`);
+await d.rpc("join_team", { p_team: seattle.id });
+const did = (await d.auth.getUser()).data.user!.id;
+await service.from("profiles").update({ team_approved: true, is_demo: true }).eq("user_id", did);
+const seeded = (await a.from("offers").insert({ ...offer, title: "Seeded offer" }).select("id").single()).data!;
+ok("demo team cannot edit the sponsor list", !!(await d.from("team_sponsors").insert({ team_id: seattle.id, name: `Demo try ${stamp}`, category: "airline" })).error);
+const { data: dOffer, error: dErr } = await d.from("offers").insert({ ...offer, title: "Demo-made offer", created_by: did, demo: false }).select("id, demo").single();
+ok("demo team can create an offer, forced to demo", !dErr && dOffer?.demo === true, dErr?.message);
+ok("demo team edits its own offer", ((await d.from("offers").update({ active: false }).eq("id", dOffer!.id).select()).data ?? []).length === 1);
+ok("demo team cannot pause offers others made", ((await d.from("offers").update({ active: false }).eq("id", seeded.id).select()).data ?? []).length === 0);
+ok("demo team cannot approve requests", !!(await d.rpc("decide_team_request", { p_user: did, p_approve: true })).error);
+ok("demo team cannot wipe simulated data", !!(await d.rpc("clear_simulated", { p_team: seattle.id })).error);
+ok("demo team cannot add simulated data", !!(await d.rpc("simulate_claims", { p_offer: seeded.id, p_count: 5 })).error);
+ok("users cannot mark themselves non-demo", !!(await d.from("profiles").update({ is_demo: false }).eq("user_id", did)).error);
+await a.from("offers").update({ active: false }).in("id", [seeded.id, dOffer!.id]);

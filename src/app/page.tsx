@@ -35,7 +35,28 @@ export default async function Home() {
           ]}
         />
       </div>
-      <Link href="/login" className="mt-10 inline-block rounded-full bg-accent px-8 py-3 text-sm font-semibold text-bg">
+      <section className="mt-10 rounded-3xl border border-gain/40 bg-panel/90 p-6">
+        <p className="font-semibold">Try the demo, no sign-up</p>
+        <p className="mt-1 text-sm text-muted">
+          Shared demo accounts: Seattle Sounders FC as the club, Gatorade as the brand, and a fan. Demo offers are labelled and
+          some actions are switched off so the next visitor sees the same data.
+        </p>
+        <div className="mt-4 flex flex-wrap gap-3">
+          {(
+            [
+              ["team", "As a team · Seattle Sounders FC"],
+              ["sponsor", "As a sponsor · Gatorade"],
+              ["fan", "As a fan"],
+            ] as const
+          ).map(([kind, label]) => (
+            <form key={kind} action="/auth/demo" method="post">
+              <input type="hidden" name="as" value={kind} />
+              <button className="rounded-full bg-gain px-5 py-2.5 text-sm font-semibold text-bg">{label}</button>
+            </form>
+          ))}
+        </div>
+      </section>
+      <Link href="/login" className="mt-6 inline-block rounded-full border border-accent px-8 py-3 text-sm font-semibold text-accent">
         Sign in or create an account
       </Link>
       <p className="mt-4 text-sm text-muted">
