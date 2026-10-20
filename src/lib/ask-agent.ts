@@ -200,7 +200,7 @@ function teamTools(ctx: Extract<AskContext, { role: "team" }>, seen: Map<string,
   const defs: FunctionTool[] = [
     fn(
       "saved_analysis",
-      `The latest full Find sponsors run for ${team.name} (if saved in the last 14 days): the ranked brands and local businesses to call, with fit scores, the age group each is strongest with, timing ("why now") from web news, and which were set aside for clashing with current sponsors. No Qloo cost. Use it first for "who should we call" questions so answers match the Find sponsors page.`,
+      `The latest full Find sponsors run for ${team.name} (if one was saved; it shows its date): the ranked brands and local businesses to call, with fit scores, the age group each is strongest with, timing ("why now") from web news, and which were set aside for clashing with current sponsors. No Qloo cost. Use it first for "who should we call" questions so answers match the Find sponsors page.`,
       {},
     ),
     fn("fan_profile", `Who ${team.name}'s fans are: age and gender skew vs the average (Qloo demographics).`, {}),
@@ -222,7 +222,7 @@ function teamTools(ctx: Extract<AskContext, { role: "team" }>, seen: Map<string,
   const tools: Record<string, Tool> = {
     saved_analysis: async () => {
       const run = await loadSavedRun(team.name, team.city);
-      if (!run) throw new Error(`No saved Find sponsors run for ${team.name} in the last 14 days. Use the other tools, and suggest running Find sponsors.`);
+      if (!run) throw new Error(`No saved Find sponsors run for ${team.name}. Use the other tools, and suggest running Find sponsors.`);
       const buckets: Record<Kind, Partial<Record<Age, BrandHit[]>>> = { brand: {}, place: {} };
       const timings: Record<string, Timing> = {};
       let weights = Object.fromEntries(AGES.map((a) => [a, 1 / AGES.length])) as Record<Age, number>;
@@ -280,7 +280,7 @@ function teamTools(ctx: Extract<AskContext, { role: "team" }>, seen: Map<string,
       const places = out("place");
       return {
         summary: `saved ${run.created_at.slice(0, 10)}: brands ${brands.ranked.slice(0, 3).map((r) => r.name).join(", ")}; places ${places.ranked.slice(0, 2).map((r) => r.name).join(", ")}`,
-        output: { saved_on: run.created_at.slice(0, 10), brands, local_businesses: places },
+        output: { saved_on: run.created_at.slice(0, 10), note: "Mention the date if it is more than two weeks old.", brands, local_businesses: places },
       };
     },
     fan_profile: async () => {

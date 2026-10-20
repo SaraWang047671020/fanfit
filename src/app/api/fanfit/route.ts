@@ -34,7 +34,7 @@ function trim(events: FanfitEvent[]) {
 }
 
 // POST /api/fanfit
-//   { team, city }                 latest saved run (≤ 14 days) if any, else a full run that gets saved
+//   { team, city }                 latest saved run if any, else a full run that gets saved
 //   { team, city, fresh: true }    full run even if a saved one exists
 //   { team, city, savedOnly: true } the saved run if any, else an empty stream (page load never starts a run)
 //   { team, city, brands: [...] }  timing + conflicts only, for candidates surfaced by the sliders

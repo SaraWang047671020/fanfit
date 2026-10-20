@@ -1,7 +1,8 @@
 // Persistent cache for Qloo responses (table qloo_cache). Best effort: any failure falls back to calling Qloo.
 import { adminClient } from "./supabase/admin";
 
-const TTL_MS = 1000 * 60 * 60 * 24 * 14;
+// 30 days: entries cached while building the demo (late October) must last through judging (Nov 2-16).
+const TTL_MS = 1000 * 60 * 60 * 24 * 30;
 
 // Tag kinds FanFit reads (industry/genre for categories and the sports filter, the activation's taste profile).
 // Raw insights pages carry hundreds of other tags per entity; keeping them would fill the free database quickly.
