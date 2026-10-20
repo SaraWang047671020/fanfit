@@ -6,7 +6,7 @@ import { useState, useTransition } from "react";
 import type { FitRow } from "@/lib/fanfit-score";
 import { createOffer } from "../team/actions";
 
-export default function OfferButton({ row }: { row: FitRow }) {
+export default function OfferButton({ row }: { row: Pick<FitRow, "id" | "name"> & { score: number | null } }) {
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("15% off with a match ticket");
   const [details, setDetails] = useState("");

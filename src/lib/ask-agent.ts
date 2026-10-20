@@ -4,13 +4,28 @@
 import OpenAI from "openai";
 import type { FunctionTool, ResponseInputItem } from "openai/resources/responses/responses";
 import { brandCategories, categoryLeaders, composition, currentSponsors, entities, tagNames } from "./fanfit";
-import { AGE_LABEL, SPONSOR_CATEGORIES, type SponsorCategoryKey, checkConflicts } from "./fanfit-score";
+import {
+  AGES,
+  AGE_LABEL,
+  type Age,
+  type BrandHit,
+  type Kind,
+  SPONSOR_CATEGORIES,
+  type SponsorCategoryKey,
+  checkConflicts,
+  rankWithTiming,
+  scoreBrands,
+  weightsFromAffinity,
+} from "./fanfit-score";
+import type { Timing } from "./fanfit";
+import { loadSavedRun } from "./saved-runs";
 import { get } from "./qloo";
 import { audience, sharedAge, sharedTaste, sharedTraits, teamNews } from "./sponsor-detail";
 import { type DirectoryTeam, teamFit } from "./sponsor-fit";
 import { fitBand } from "./sponsor-fit-band";
 
 const DEFAULT_MODEL = "gpt-5.4-mini";
+const CLASH_WORDS = /clash|conflict|already (a |an )?sponsor|taken|sold|blocked|not open|closed/i;
 const MAX_TURNS = 10;
 const MAX_WEB_SEARCHES = 2; // team_news calls per question: each is a paid web search
 
@@ -158,7 +173,7 @@ function sponsorTools(ctx: Extract<AskContext, { role: "sponsor" }>, seen: Map<s
   return { defs, tools };
 }
 
-function teamTools(ctx: Extract<AskContext, { role: "team" }>, seen: Map<string, { name: string; kind: Pick["kind"] }>) {
+function teamTools(ctx: Extract<AskContext, { role: "team" }>, seen: Map<string, { name: string; kind: Pick["kind"] }>, blocked: Map<string, string>) {
   const { team } = ctx;
   const findBrand = (name: string) =>
     get("/search", { query: name, types: "urn:entity:brand", take: 5 }, (raw) =>
@@ -166,6 +181,11 @@ function teamTools(ctx: Extract<AskContext, { role: "team" }>, seen: Map<string,
     );
 
   const defs: FunctionTool[] = [
+    fn(
+      "saved_analysis",
+      `The latest full Find sponsors run for ${team.name} (if saved in the last 14 days): the ranked brands and local businesses to call, with fit scores, the age group each is strongest with, timing ("why now") from web news, and which were set aside for clashing with current sponsors. No Qloo cost. Use it first for "who should we call" questions so answers match the Find sponsors page.`,
+      {},
+    ),
     fn("fan_profile", `Who ${team.name}'s fans are: age and gender skew vs the average (Qloo demographics).`, {}),
     fn("brand_fit", `How much more ${team.name}'s fans like a named brand than other teams' fans do (Qloo; rank among all teams).`, {
       brand_name: { type: "string" },
@@ -183,6 +203,64 @@ function teamTools(ctx: Extract<AskContext, { role: "team" }>, seen: Map<string,
   ];
 
   const tools: Record<string, Tool> = {
+    saved_analysis: async () => {
+      const run = await loadSavedRun(team.name, team.city);
+      if (!run) throw new Error(`No saved Find sponsors run for ${team.name} in the last 14 days. Use the other tools, and suggest running Find sponsors.`);
+      const buckets: Record<Kind, Partial<Record<Age, BrandHit[]>>> = { brand: {}, place: {} };
+      const timings: Record<string, Timing> = {};
+      let weights = Object.fromEntries(AGES.map((a) => [a, 1 / AGES.length])) as Record<Age, number>;
+      for (const e of run.events) {
+        if (e.type === "bucket") buckets[e.kind][e.age] = e.items;
+        else if (e.type === "timing") timings[e.timing.brandId] = e.timing;
+        else if (e.type === "composition" && e.estimated) weights = weightsFromAffinity(e.age);
+      }
+      const shown: Record<Kind, number> = { brand: 15, place: 12 };
+      // Find sponsors checks timing for its first candidates only. Check the rest against the current sponsor list
+      // here (one category lookup, no Qloo) so an unchecked brand that is already signed never reads as open.
+      const top = (kind: Kind) => {
+        const b = buckets[kind];
+        return AGES.every((a) => b[a]) ? scoreBrands(b as Record<Age, BrandHit[]>, weights).slice(0, shown[kind]) : [];
+      };
+      const tops = { brand: top("brand"), place: top("place") };
+      const unchecked = [...tops.brand, ...tops.place].filter((r) => !timings[r.id]);
+      if (unchecked.length) {
+        const [{ sponsors }, cats] = await Promise.all([
+          currentSponsors(team.name, team.city),
+          brandCategories(unchecked.map((r) => ({ name: r.name, category: r.category }))),
+        ]);
+        for (const r of unchecked) {
+          const c = checkConflicts(r.name, cats.get(r.name) ?? ["other"], sponsors);
+          if (c.existing.length || c.conflicts.length)
+            timings[r.id] = { brandId: r.id, name: r.name, categories: cats.get(r.name) ?? [], timing: 0, whyNow: "", relationship: "", fitRisk: "", signals: [], ...c };
+        }
+      }
+      const out = (kind: Kind) => {
+        const { ranked, excluded } = rankWithTiming(tops[kind], timings);
+        const row = (r: (typeof ranked)[number]) => {
+          seen.set(r.row.id, { name: r.row.name, kind: kind === "place" ? "place" : "brand" });
+          const t = timings[r.row.id];
+          return {
+            id: r.row.id,
+            name: r.row.name,
+            category: r.row.category,
+            fit_score: Math.round(r.row.score),
+            strongest_age: AGE_LABEL[r.row.driver],
+            timing: t?.signals.length || t?.whyNow ? `${t.timing}/3` : "not checked",
+            why_now: t?.whyNow || undefined,
+            clash: t && (t.existing.length || t.conflicts.length) ? [...t.existing, ...t.conflicts].map((x) => x.name).join(", ") : undefined,
+          };
+        };
+        const aside = excluded.map(row);
+        aside.forEach((r) => r.clash && blocked.set(r.name.toLowerCase(), `clashes with ${r.clash}`));
+        return { ranked: ranked.map(row), set_aside: aside };
+      };
+      const brands = out("brand");
+      const places = out("place");
+      return {
+        summary: `saved ${run.created_at.slice(0, 10)}: brands ${brands.ranked.slice(0, 3).map((r) => r.name).join(", ")}; places ${places.ranked.slice(0, 2).map((r) => r.name).join(", ")}`,
+        output: { saved_on: run.created_at.slice(0, 10), brands, local_businesses: places },
+      };
+    },
     fan_profile: async () => {
       const c = await composition(team.qlooId);
       return { summary: `fans skew ${ageSkew(c?.age as Record<string, number> | undefined).join(", ") || "n/a"}`, output: c ?? { note: "no demographic data" } };
@@ -223,6 +301,9 @@ function teamTools(ctx: Extract<AskContext, { role: "team" }>, seen: Map<string,
       const { existing, conflicts, crowded } = checkConflicts(name, cats.get(name) ?? ["other"], sponsors);
       // A verdict word and a plain sentence: a bare list of "conflicts" was once read as "no conflict".
       const verdict = existing.length ? "already_sponsor" : conflicts.length ? "conflict" : crowded.length ? "same_group" : "clear";
+      if (existing.length) blocked.set(name.toLowerCase(), "is already a sponsor");
+      else if (conflicts.length) blocked.set(name.toLowerCase(), `clashes with ${conflicts.map((s) => s.name).join(", ")}`);
+      else blocked.delete(name.toLowerCase()); // a fresh check overrides the saved run
       const plain =
         verdict === "already_sponsor"
           ? `${name} is already a ${team.name} sponsor.`
@@ -255,6 +336,9 @@ function instructions(ctx: AskContext) {
     'A category marked "unknown" means the club has not listed its sponsors: call it unknown and suggest checking, never "open".',
     'When check_conflicts returns verdict "conflict" or "already_sponsor", say plainly that the category is taken (or the brand is already a sponsor); do not present that brand as an open option.',
     "Prefer 2-5 picks. Keep why and evidence short and concrete (numbers from tools). Put data gaps in caveats.",
+    ...(ctx.role === "team"
+      ? ["For who-to-call or best-partner questions, start with saved_analysis so the answer matches the Find sponsors page; say which picks it ranked and in what order."]
+      : []),
   ].join("\n");
 }
 
@@ -263,7 +347,9 @@ export async function runAsk(question: string, ctx: AskContext, emit: (e: AskEve
   const client = new OpenAI();
   const model = process.env.OPENAI_MODEL || DEFAULT_MODEL;
   const seen = new Map<string, { name: string; kind: Pick["kind"] }>();
-  const { defs, tools } = ctx.role === "sponsor" ? sponsorTools(ctx, seen, { used: 0 }) : teamTools(ctx, seen);
+  // Brands a tool showed to be signed or in a sold category (lowercase name -> reason): picks must say so.
+  const blocked = new Map<string, string>();
+  const { defs, tools } = ctx.role === "sponsor" ? sponsorTools(ctx, seen, { used: 0 }) : teamTools(ctx, seen, blocked);
   let answer: Answer | null = null;
   let step = 0;
 
@@ -272,6 +358,12 @@ export async function runAsk(question: string, ctx: AskContext, emit: (e: AskEve
     const unknown = list.filter((p) => !seen.has(p.id));
     if (unknown.length)
       throw new Error(`These ids never came from a tool: ${unknown.map((p) => p.id).join(", ")}. Use only ids returned by tools.`);
+    // A clashing brand may be named (e.g. "the bank category is sold"), but never as if it were open.
+    const hidden = list.filter((p) => blocked.has(seen.get(p.id)!.name.toLowerCase()) && !CLASH_WORDS.test([p.why, ...p.evidence].join(" ")));
+    if (hidden.length)
+      throw new Error(
+        `${hidden.map((p) => `${seen.get(p.id)!.name} ${blocked.get(seen.get(p.id)!.name.toLowerCase())}`).join("; ")}. Drop these picks, or say the clash plainly in why.`,
+      );
     answer = {
       summary: String(summary ?? ""),
       caveats: String(caveats ?? ""),

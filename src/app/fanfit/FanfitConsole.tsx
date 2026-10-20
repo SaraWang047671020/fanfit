@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { CategoryHit, FanfitEvent, TeamInfo, Timing } from "@/lib/fanfit";
 import type { Activation } from "@/lib/fanfit-activation";
@@ -16,7 +17,9 @@ import {
   type Sponsor,
   type SponsorCategoryKey,
   type Weights,
+  TIMING_BOOST,
   normalize,
+  rankWithTiming,
   sameCompany,
   scoreBrands,
   weightsFromAffinity,
@@ -34,7 +37,6 @@ const PRESETS = [
   { team: "Portland Thorns FC", city: "Portland, OR" },
 ];
 const SHOWN: Record<Kind, number> = { brand: 15, place: 12 };
-const TIMING_BOOST = 3; // each timing point moves a candidate up 3 places
 const TABS: { kind: Kind; label: string; hint: string }[] = [
   { kind: "brand", label: "Brands", hint: "National and regional brands these fans love (Qloo brands, team + city as taste signals)." },
   {
@@ -52,6 +54,13 @@ const VIEWS: { key: View; label: string }[] = [
   { key: "sponsors", label: "Current sponsors" },
   { key: "trace", label: "How the agent ran" },
 ];
+
+const askAbout = (name: string, kind: Kind) =>
+  `/ask?q=${encodeURIComponent(
+    kind === "place"
+      ? `Is ${name} a good local partner for our fans? Which age group should a matchday deal with them target?`
+      : `Why is ${name} a good fit for our fans, how does it compare with the other brands we should call, and does it clash with our current sponsors?`,
+  )}`;
 
 function Empty({ running }: { running: boolean }) {
   return (
@@ -210,7 +219,7 @@ export default function FanfitConsole({ initial = PRESETS[0] }: { initial?: { te
     };
     return { brand: score("brand"), place: score("place") };
   }, [buckets, mix]);
-  const ranked = useMemo(() => ({ brand: rank(top.brand, timings), place: rank(top.place, timings) }), [top, timings]);
+  const ranked = useMemo(() => ({ brand: rankWithTiming(top.brand, timings), place: rankWithTiming(top.place, timings) }), [top, timings]);
   const unchecked = top[tab].filter((r) => !timings[r.id]);
 
   async function checkNew() {
@@ -346,6 +355,7 @@ export default function FanfitConsole({ initial = PRESETS[0] }: { initial?: { te
                 activation={activations[r.row.id]}
                 onActivate={running ? undefined : () => activate(r.row, tab)}
                 offerable={tab === "place" && !running}
+                askHref={!running && info?.name.toLowerCase() === initial.team.toLowerCase() ? askAbout(r.row.name, tab) : undefined}
               />
             ))}
           </ol>
@@ -491,19 +501,6 @@ function CategoryGrid({
   );
 }
 
-function rank(top: FitRow[], timings: Record<string, Timing>) {
-  const rows = top.map((row, i) => {
-    const t = timings[row.id];
-    return {
-      row,
-      fitRank: i + 1,
-      excluded: !!t && (t.existing.length > 0 || t.conflicts.length > 0),
-      key: i + 1 - TIMING_BOOST * (t?.timing ?? 0),
-    };
-  });
-  const byKey = (a: (typeof rows)[number], b: (typeof rows)[number]) => a.key - b.key || a.fitRank - b.fitRank;
-  return { ranked: rows.filter((r) => !r.excluded).sort(byKey), excluded: rows.filter((r) => r.excluded) };
-}
 
 function Field({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
   return (
@@ -588,7 +585,9 @@ function Card({
   activation,
   onActivate,
   offerable,
+  askHref,
 }: {
+  askHref?: string;
   rank?: number;
   row: FitRow;
   fitRank: number;
@@ -664,6 +663,11 @@ function Card({
             </button>
           )}
           {offerable && <OfferButton row={row} />}
+          {askHref && (
+            <Link href={askHref} className="mt-3 ml-2 inline-block rounded-full border border-line px-3 py-1 text-xs font-semibold text-muted hover:border-accent hover:text-accent">
+              ✦ Ask about this
+            </Link>
+          )}
           {activation?.status === "error" && <p className="mt-2 text-xs text-loss">{activation.message}</p>}
           {activation?.status === "done" && <ActivationPanel a={activation.data} partner={row.name} />}
         </div>

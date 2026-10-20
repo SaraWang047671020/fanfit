@@ -16,7 +16,7 @@ async function teamMember() {
  * Put an offer from a recommended local business on the team's fan map. Name, address and coordinates come from Qloo
  * on the server (one cached call), not from the browser.
  */
-export async function createOffer(input: { placeId: string; title: string; details: string; endsOn: string; fit: number; demo?: boolean }) {
+export async function createOffer(input: { placeId: string; title: string; details: string; endsOn: string; fit: number | null; demo?: boolean }) {
   try {
     const { supabase, user, teamId } = await teamMember();
     const [place] = await get("/entities", { entity_ids: input.placeId }, (raw) =>
@@ -33,7 +33,7 @@ export async function createOffer(input: { placeId: string; title: string; detai
       category: tagNames(place, "category:place")[0] ?? "",
       title: input.title.trim().slice(0, 80),
       details: input.details.trim().slice(0, 300),
-      fit: Number.isFinite(input.fit) ? Math.round(input.fit) : null,
+      fit: input.fit !== null && Number.isFinite(input.fit) ? Math.round(input.fit) : null,
       ends_on: /^\d{4}-\d{2}-\d{2}$/.test(input.endsOn) ? input.endsOn : null,
       demo: !!input.demo,
       created_by: user.id,

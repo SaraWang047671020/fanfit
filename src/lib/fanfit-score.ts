@@ -253,3 +253,23 @@ export function checkConflicts(name: string, cats: Category[], sponsors: Sponsor
   );
   return { existing, conflicts, crowded };
 }
+
+export const TIMING_BOOST = 3; // each timing point moves a candidate up 3 places
+
+/**
+ * The Find sponsors order: fit rank moved up TIMING_BOOST places per timing point; anything already signed or in a
+ * current sponsor's category is set aside. Timing is passed in structurally so this file stays free of fanfit.ts.
+ */
+export function rankWithTiming<T extends { existing: unknown[]; conflicts: unknown[]; timing: number }>(top: FitRow[], timings: Record<string, T>) {
+  const rows = top.map((row, i) => {
+    const t = timings[row.id];
+    return {
+      row,
+      fitRank: i + 1,
+      excluded: !!t && (t.existing.length > 0 || t.conflicts.length > 0),
+      key: i + 1 - TIMING_BOOST * (t?.timing ?? 0),
+    };
+  });
+  const byKey = (a: (typeof rows)[number], b: (typeof rows)[number]) => a.key - b.key || a.fitRank - b.fitRank;
+  return { ranked: rows.filter((r) => !r.excluded).sort(byKey), excluded: rows.filter((r) => r.excluded) };
+}

@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import OfferButton from "../fanfit/OfferButton";
 import type { Answer, AskEvent } from "@/lib/ask-agent";
 
 type Step = { step: number; tool: string; reason: string; args: Record<string, unknown>; summary?: string; error?: boolean };
@@ -11,6 +13,7 @@ const TOOL_LABEL: Record<string, string> = {
   team_audience: "Fans vs customers (Qloo demographics)",
   shared_taste: "What both audiences love (Qloo)",
   team_news: "Recent news (web search)",
+  saved_analysis: "Saved Find sponsors analysis",
   fan_profile: "Fan profile (Qloo demographics)",
   brand_fit: "Brand fit across teams (Qloo)",
   category_leaders: "Best fit in a category (Qloo)",
@@ -19,7 +22,8 @@ const TOOL_LABEL: Record<string, string> = {
   submit_answer: "Answer",
 };
 
-export default function AskConsole({ examples, role }: { examples: string[]; role: "team" | "sponsor" }) {
+export default function AskConsole({ examples, role, initialQuestion }: { examples: string[]; role: "team" | "sponsor"; initialQuestion?: string }) {
+  const router = useRouter();
   const [question, setQuestion] = useState("");
   const [status, setStatus] = useState<"idle" | "running" | "done" | "error">("idle");
   const [steps, setSteps] = useState<Step[]>([]);
@@ -80,6 +84,18 @@ export default function AskConsole({ examples, role }: { examples: string[]; rol
       setStatus("error");
     }
   }
+
+  // Arrived from "Ask about this" on Find sponsors: ask once, then drop ?q so a refresh does not ask again.
+  useEffect(() => {
+    if (!initialQuestion || initialQuestion.trim().length < 5) return;
+    // Deferred: keeps state updates out of the effect body, and the cleanup stops a double ask in dev Strict Mode.
+    const t = setTimeout(() => {
+      router.replace("/ask", { scroll: false });
+      ask(initialQuestion.trim());
+    }, 0);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- once, for the question in the link
+  }, []);
 
   const running = status === "running";
   return (
@@ -180,6 +196,7 @@ export default function AskConsole({ examples, role }: { examples: string[]; rol
                           <li key={x}>· {x}</li>
                         ))}
                       </ul>
+                      {role === "team" && p.kind === "place" && <OfferButton row={{ id: p.id, name: p.name, score: null }} />}
                     </li>
                   ))}
                 </ol>

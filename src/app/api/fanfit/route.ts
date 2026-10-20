@@ -1,4 +1,5 @@
 import { type FanfitEvent, runFanfit, runTiming } from "@/lib/fanfit";
+import { loadSavedRun, teamKey } from "@/lib/saved-runs";
 import { adminClient } from "@/lib/supabase/admin";
 import { currentUser } from "@/lib/supabase/server";
 import { takeUsage } from "@/lib/usage";
@@ -7,11 +8,9 @@ import { takeUsage } from "@/lib/usage";
 export const maxDuration = 300;
 
 const MAX_CONCURRENT_RUNS = 2;
-const SAVED_FOR_MS = 14 * 24 * 60 * 60 * 1000;
 let running = 0;
 
 const str = (v: unknown, max: number) => (typeof v === "string" ? v.trim().slice(0, max) : "");
-const teamKey = (team: string, city: string) => `${team.toLowerCase()}|${city.toLowerCase()}`;
 const NDJSON = { "Content-Type": "application/x-ndjson; charset=utf-8", "Cache-Control": "no-store" };
 
 /** Keep only the last bucket event per kind and age group: the UI replaces buckets, so earlier ones are noise. */
@@ -58,14 +57,7 @@ export async function POST(req: Request) {
 
   // Saved run: replay it without spending anything.
   if (!brands && body.fresh !== true && db) {
-    const { data: saved } = await db
-      .from("analysis_runs")
-      .select("events, created_at")
-      .eq("team_key", teamKey(team, city))
-      .gte("created_at", new Date(Date.now() - SAVED_FOR_MS).toISOString())
-      .order("created_at", { ascending: false })
-      .limit(1)
-      .maybeSingle<{ events: FanfitEvent[]; created_at: string }>();
+    const saved = await loadSavedRun(team, city);
     if (saved) {
       const events: FanfitEvent[] = [{ type: "saved", at: saved.created_at }, ...saved.events];
       return new Response(events.map((e) => JSON.stringify(e)).join("\n") + "\n", { headers: NDJSON });
