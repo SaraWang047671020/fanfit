@@ -6,6 +6,7 @@ import { AGES, AGE_LABEL } from "@/lib/fanfit-score";
 import { placePredictions } from "@/lib/predictions";
 import { currentUser } from "@/lib/supabase/server";
 import AccountBar from "../../AccountBar";
+import { PredictedInfo } from "../../Explain";
 import { CopyLink, OfferControls, SimulatedControls } from "./OfferControls";
 
 export const metadata: Metadata = { title: "FanFit · Offers and fan map" };
@@ -154,7 +155,9 @@ export default async function TeamOffersPage({ searchParams }: PageProps<"/team/
       </section>
 
       <section data-tour="offer-predicted" className="mt-6 rounded-3xl border border-line bg-panel/90 p-6">
-        <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent">Predicted vs actual</p>
+        <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent">
+          Predicted vs actual <PredictedInfo />
+        </p>
         <p className="mt-1 max-w-3xl text-xs text-muted">
           For each business, the fan age group FanFit expected it to draw most (from the sponsor finder) next to who actually claimed its
           deal. Lift compares the predicted group&apos;s share of claims with its share of your fan base: above 1× means the prediction

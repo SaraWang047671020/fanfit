@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import type { CategoryHit, FanfitEvent, TeamInfo, Timing } from "@/lib/fanfit";
 import type { Activation } from "@/lib/fanfit-activation";
 import ActivationPanel from "./ActivationPanel";
+import { CategoryInfo, FanMixInfo, WhoToCallInfo } from "../Explain";
 import OfferButton from "./OfferButton";
 import {
   AGES,
@@ -320,6 +321,7 @@ export default function FanfitConsole({ initial = PRESETS[0] }: { initial?: { te
             <div className="flex items-center gap-3">
               <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent">
                 Who to call {info && <span className="text-muted normal-case tracking-normal">· {info.name}</span>}
+                <WhoToCallInfo />
               </p>
             </div>
             <div role="tablist" className="flex rounded-full border border-line bg-panel-2 p-1 text-sm">
@@ -469,7 +471,9 @@ function CategoryGrid({
 }) {
   return (
     <section className="rounded-3xl border border-line bg-panel/90 p-6">
-      <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent">Best fit by sponsorship category</p>
+      <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent">
+        Best fit by sponsorship category <CategoryInfo />
+      </p>
       <p className="mt-1 text-xs text-muted">
         Top brands in each category for these fans (Qloo, team + {city}), ranked by affinity. Sponsorship is sold by category, so this is
         the list to work through once a category is open; categories with a current sponsor are flagged.
@@ -545,7 +549,9 @@ function FanMix({
   return (
     <section className="rounded-3xl border border-line bg-panel/90 p-6">
       <div className="flex items-baseline justify-between gap-2">
-        <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent">Fan mix</p>
+        <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent">
+          Fan mix <FanMixInfo />
+        </p>
         {edited && (
           <button onClick={onReset} className="text-xs text-muted hover:text-text">
             Reset to Qloo estimate

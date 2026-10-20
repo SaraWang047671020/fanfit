@@ -8,6 +8,7 @@ import { type DirectoryTeam, teamFit } from "@/lib/sponsor-fit";
 import { fitBand } from "@/lib/sponsor-fit-band";
 import { currentUser } from "@/lib/supabase/server";
 import AccountBar from "../../../AccountBar";
+import { FitInfo } from "../../../Explain";
 import Tabs from "../../../Tabs";
 import TeamActions from "./TeamActions";
 
@@ -58,6 +59,7 @@ export default async function SponsorTeamPage({ params }: PageProps<"/sponsor/te
           <span className="font-semibold text-text">{fitBand(z)} fit</span>
           {z !== null && ` (${z >= 0 ? "+" : ""}${z.toFixed(1)}σ above how these fans like the typical big brand)`} · #{rank} of {fits.length} teams
           for {sponsor.name}.
+          <FitInfo brand={sponsor.name} />
         </p>
       </header>
 

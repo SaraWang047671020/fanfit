@@ -5,6 +5,7 @@ import { SPONSOR_CATEGORIES } from "@/lib/fanfit-score";
 import { type DirectoryTeam, teamFit } from "@/lib/sponsor-fit";
 import { currentUser } from "@/lib/supabase/server";
 import AccountBar from "../AccountBar";
+import { FitInfo } from "../Explain";
 import TeamList, { type TeamRow } from "./TeamList";
 
 export const metadata: Metadata = { title: "FanFit · Teams for your brand" };
@@ -33,6 +34,7 @@ export default async function SponsorPage() {
         <p className="mt-3 max-w-3xl text-muted">
           Every team in the directory, ranked by how much more their fans like {sponsor.name} than the typical big brand (Qloo taste
           data). Your categories: {labels.join(", ") || "none set"}; teams that list a sponsor in them are marked taken.
+          <FitInfo brand={sponsor.name} />
         </p>
       </header>
       <div className="mt-8">

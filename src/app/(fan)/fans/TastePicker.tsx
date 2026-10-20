@@ -5,6 +5,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 import type { Taste, TasteKind } from "@/lib/fan-taste";
+import { ForYouInfo } from "../../Explain";
 import { findTastes, setTaste } from "./actions";
 
 const TABS: { kind: TasteKind; label: string; search: string }[] = [
@@ -97,6 +98,7 @@ export default function TastePicker({
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <h2 className="text-xs font-bold uppercase tracking-[0.12em] text-accent">
           Your taste <span className="font-mono font-normal normal-case tracking-normal text-muted">{tastes.length}/{MAX}</span>
+          <ForYouInfo />
         </h2>
         <button onClick={() => setOpen(!open)} className="text-xs font-semibold text-accent">
           {open ? "Done" : tastes.length ? "Edit" : "Add"}

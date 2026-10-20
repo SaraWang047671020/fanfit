@@ -7,6 +7,7 @@ import { type SavedCode, useSavedCodes } from "@/lib/fan-codes";
 import type { Match } from "@/lib/fan-taste";
 import { AGES, AGE_LABEL, categoryLabel } from "@/lib/fanfit-score";
 import { createClient } from "@/lib/supabase/client";
+import { ForYouInfo } from "../Explain";
 
 export interface FanOffer {
   offer_id: string;
@@ -143,6 +144,7 @@ export default function FanOffers({
             ✦ For you
           </button>
         )}
+        {forYou && <ForYouInfo />}
         <button onClick={nearMe} disabled={locating === "busy"} className="rounded-full border border-accent px-4 py-1.5 font-semibold text-accent disabled:opacity-50">
           {locating === "busy" ? "Locating…" : here ? "Sorted by distance" : "Near me"}
         </button>
