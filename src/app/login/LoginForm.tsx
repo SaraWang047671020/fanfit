@@ -50,7 +50,7 @@ export default function LoginForm({ next }: { next: string }) {
       </div>
       <form onSubmit={sendLink} className="space-y-3">
         <label className="block">
-          <span className="text-xs font-bold uppercase tracking-[0.12em] text-accent">Work email</span>
+          <span className="text-xs font-bold uppercase tracking-[0.12em] text-accent">Email</span>
           <input
             type="email"
             required

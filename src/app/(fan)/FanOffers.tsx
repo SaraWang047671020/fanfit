@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import QRCode from "qrcode";
 import "leaflet/dist/leaflet.css";
+import { type SavedCode, useSavedCodes } from "@/lib/fan-codes";
 import { AGES, AGE_LABEL } from "@/lib/fanfit-score";
 import { createClient } from "@/lib/supabase/client";
 
@@ -17,35 +18,8 @@ export interface FanOffer {
   category: string;
   fit: number | null;
   ends_on: string | null;
-}
-
-const STORE = "fanfit-claims"; // offer id -> code, kept in this browser only
-const CHANGED = "fanfit-claims-changed";
-
-// Claimed codes live in localStorage; read through useSyncExternalStore so the server render (no storage) and the
-// first client render agree, and other tabs' claims show up too.
-function readStore() {
-  try {
-    return localStorage.getItem(STORE) ?? "{}";
-  } catch {
-    return "{}";
-  }
-}
-function subscribe(onChange: () => void) {
-  window.addEventListener("storage", onChange);
-  window.addEventListener(CHANGED, onChange);
-  return () => {
-    window.removeEventListener("storage", onChange);
-    window.removeEventListener(CHANGED, onChange);
-  };
-}
-function saveCode(offerId: string, code: string) {
-  try {
-    localStorage.setItem(STORE, JSON.stringify({ ...JSON.parse(readStore()), [offerId]: code }));
-  } catch {
-    // private mode: nothing persists, the code is still shown for this visit via the fallback below
-  }
-  window.dispatchEvent(new Event(CHANGED));
+  team_id?: string; // set on cross-team lists (deals near me)
+  team_name?: string;
 }
 
 /** Great-circle distance in km. */
@@ -55,13 +29,11 @@ function km(a: { lat: number; lon: number }, b: { lat: number; lon: number }) {
   return 12742 * Math.asin(Math.sqrt(h));
 }
 
-export default function FanOffers({ offers, teamName }: { offers: FanOffer[]; teamName: string }) {
+export default function FanOffers({ offers, emptyText }: { offers: FanOffer[]; emptyText: string }) {
   const [here, setHere] = useState<{ lat: number; lon: number } | null>(null);
   const [locating, setLocating] = useState<"idle" | "busy" | "denied">("idle");
   const [selected, setSelected] = useState<string | null>(null);
-  const stored = useSyncExternalStore(subscribe, readStore, () => "{}");
-  const [unsaved, setUnsaved] = useState<Record<string, string>>({}); // when storage is unavailable
-  const codes = useMemo(() => ({ ...unsaved, ...(JSON.parse(stored) as Record<string, string>) }), [stored, unsaved]);
+  const { codes, remember } = useSavedCodes();
 
   const sorted = useMemo(() => {
     if (!here) return offers; // already ordered by fit
@@ -82,7 +54,7 @@ export default function FanOffers({ offers, teamName }: { offers: FanOffer[]; te
   }
 
   if (offers.length === 0)
-    return <p className="rounded-2xl border border-line bg-panel p-6 text-muted">{teamName} has no live offers right now. Check back soon.</p>;
+    return <p className="rounded-2xl border border-line bg-panel p-6 text-muted">{emptyText}</p>;
 
   return (
     <div className="space-y-4">
@@ -102,11 +74,18 @@ export default function FanOffers({ offers, teamName }: { offers: FanOffer[]; te
             o={o}
             distance={here && o.lat !== null && o.lon !== null ? km(here, { lat: o.lat, lon: o.lon }) : null}
             highlighted={selected === o.offer_id}
-            code={codes[o.offer_id]}
-            onCode={(code) => {
-              setUnsaved((u) => ({ ...u, [o.offer_id]: code }));
-              saveCode(o.offer_id, code);
-            }}
+            code={codes[o.offer_id]?.code}
+            onCode={(code) =>
+              remember(o.offer_id, {
+                code,
+                title: o.title,
+                place_name: o.place_name,
+                team_id: o.team_id,
+                team_name: o.team_name,
+                ends_on: o.ends_on,
+                claimed_at: new Date().toISOString(),
+              } satisfies SavedCode)
+            }
           />
         ))}
       </ol>
@@ -210,6 +189,11 @@ function OfferCard({
       <p className="text-xs text-muted">
         {[o.category, o.address].filter(Boolean).join(" · ")}
       </p>
+      {o.team_name && o.team_id && (
+        <a href={`/t/${o.team_id}`} className="mt-1 inline-block text-xs text-accent">
+          {o.team_name} partner
+        </a>
+      )}
       <p className="mt-2 text-lg font-semibold text-gain">{o.title}</p>
       {o.details && <p className="text-sm text-muted">{o.details}</p>}
       {o.ends_on && <p className="mt-1 text-xs text-muted">Until {o.ends_on}</p>}

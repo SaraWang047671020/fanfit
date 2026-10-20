@@ -22,7 +22,7 @@ export async function createClient() {
 export type Profile = {
   user_id: string;
   display_name: string | null;
-  role: "team" | "sponsor" | null;
+  role: "team" | "sponsor" | "fan" | null;
   team_id: string | null;
   sponsor_id: string | null;
 };

@@ -6,7 +6,8 @@ export default async function Home() {
   // Signed-in users go straight to their side of the product (Supabase not configured: just show the page).
   if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
     const { user, profile } = await currentUser();
-    if (user) redirect(profile?.role === "team" ? "/fanfit" : profile?.role === "sponsor" ? "/sponsor" : "/onboarding");
+    if (user)
+      redirect(profile?.role === "team" ? "/fanfit" : profile?.role === "sponsor" ? "/sponsor" : profile?.role === "fan" ? "/fans" : "/onboarding");
   }
   return (
     <main className="mx-auto w-full max-w-5xl px-4 py-16 sm:px-6 sm:py-24">
@@ -37,6 +38,12 @@ export default async function Home() {
       <Link href="/login" className="mt-10 inline-block rounded-full bg-accent px-8 py-3 text-sm font-semibold text-bg">
         Sign in or create an account
       </Link>
+      <p className="mt-4 text-sm text-muted">
+        A fan looking for deals from your team&apos;s partners?{" "}
+        <Link href="/fans" className="text-accent">
+          Go to FanFit for fans →
+        </Link>
+      </p>
       <p className="mt-16 text-xs text-muted">
         <Link href="/privacy" className="hover:text-text">Privacy policy</Link> · <Link href="/terms" className="hover:text-text">Terms of service</Link>
       </p>

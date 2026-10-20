@@ -9,7 +9,8 @@ export default function PrivacyPage() {
       <Section title="What FanFit collects">
         <ul>
           <li>Your email address, and your name if you sign in with Google (from your Google profile).</li>
-          <li>Your account type (team or sponsor), the team you represent or the brand and sponsorship categories you enter.</li>
+          <li>Your account type (team, sponsor or fan), the team you represent or the brand and sponsorship categories you enter.</li>
+          <li>For fan accounts: the teams you follow, and the codes you claim (so they appear on any device you sign in on).</li>
           <li>Sponsors a team account lists for its team, and offers it puts on its fan map.</li>
           <li>
             On a team&apos;s fan map, no account is needed: when you claim a code we store the code, the time, whether it was
@@ -27,6 +28,10 @@ export default function PrivacyPage() {
       <Section title="Who sees it">
         <ul>
           <li>Your email, name and brand details are visible only to you.</li>
+          <li>
+            Teams see how many of their codes were claimed and redeemed, and the optional age groups, but not who claimed them or
+            the codes themselves.
+          </li>
           <li>
             Signed-in users see the team directory, whether a team has an account on FanFit (not who holds it), and the sponsor
             lists teams enter.

@@ -1,6 +1,8 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
+import { joinFan } from "../(fan)/fans/actions";
 import { SPONSOR_CATEGORIES } from "@/lib/fanfit-score";
 import { type BrandOption, createSponsor, findBrands, joinTeam } from "./actions";
 
@@ -12,10 +14,10 @@ export interface TeamOption {
 }
 
 export default function OnboardingForm({ teams }: { teams: TeamOption[] }) {
-  const [role, setRole] = useState<"team" | "sponsor" | null>(null);
+  const [role, setRole] = useState<"team" | "sponsor" | "fan" | null>(null);
   return (
     <div className="space-y-6">
-      <div className="grid gap-3 sm:grid-cols-2">
+      <div className="grid gap-3 sm:grid-cols-3">
         <RoleCard
           active={role === "team"}
           onClick={() => setRole("team")}
@@ -28,7 +30,14 @@ export default function OnboardingForm({ teams }: { teams: TeamOption[] }) {
           title="A brand / sponsor"
           body="See which teams' fans love your brand, and which of them still have your category open."
         />
+        <RoleCard
+          active={role === "fan"}
+          onClick={() => setRole("fan")}
+          title="A fan"
+          body="Find deals from your team's partner businesses and keep your coupons on every device."
+        />
       </div>
+      {role === "fan" && <FanStep />}
       {role === "team" && <TeamStep teams={teams} />}
       {role === "sponsor" && <SponsorStep />}
     </div>
@@ -45,6 +54,30 @@ function RoleCard({ active, onClick, title, body }: { active: boolean; onClick: 
       <p className="font-semibold">{title}</p>
       <p className="mt-1 text-sm text-muted">{body}</p>
     </button>
+  );
+}
+
+function FanStep() {
+  const router = useRouter();
+  const [error, setError] = useState("");
+  const [pending, start] = useTransition();
+  return (
+    <section className="rounded-2xl border border-line bg-panel p-6">
+      <button
+        disabled={pending}
+        onClick={() =>
+          start(async () => {
+            const r = await joinFan();
+            if (r.error) setError(r.error);
+            else router.push("/fans");
+          })
+        }
+        className="rounded-full bg-accent px-6 py-2.5 text-sm font-semibold text-bg disabled:opacity-50"
+      >
+        {pending ? "Saving…" : "Continue as a fan"}
+      </button>
+      {error && <p className="mt-3 text-sm text-loss">{error}</p>}
+    </section>
   );
 }
 

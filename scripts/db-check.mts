@@ -69,3 +69,49 @@ ok("team clears simulated claims", !(await a.rpc("clear_simulated", { p_team: se
 ok("team pauses its offer", !(await a.from("offers").update({ active: false }).eq("id", o!.id)).error);
 ok("paused offer leaves the fan map", !((await anon.rpc("fan_offers", { p_team: seattle.id })).data ?? []).some((r: { offer_id: string }) => r.offer_id === o!.id));
 ok("paused offer cannot be claimed", !!(await anon.rpc("claim_offer", { p_offer: o!.id })).error);
+
+// ---------------------------------------------------------------- fan accounts
+const { data: live, error: le } = await a.from("offers").insert({ ...offer, title: "Fan test offer" }).select("id").single();
+ok("team creates a live offer for fan tests", !le && !!live, le?.message);
+ok("anon lists teams with offer counts", ((await anon.rpc("fan_teams")).data ?? []).some((t: { id: string; live_offers: number }) => t.id === seattle.id && t.live_offers > 0));
+ok("anon lists all live offers", ((await anon.rpc("fan_all_offers")).data ?? []).some((r: { offer_id: string }) => r.offer_id === live!.id));
+const { data: anonCode } = await anon.rpc("claim_offer", { p_offer: live!.id });
+ok("anon code status is unused", (await anon.rpc("claim_status", { p_offer: live!.id, p_code: anonCode })).data === "unused");
+
+const f = await user(`fan-${stamp}@example.test`);
+ok("join_fan works", !(await f.rpc("join_fan")).error);
+ok("fan cannot pick another account type", !!(await f.rpc("join_team", { p_team: other.id })).error);
+ok("fan follows a team", !(await f.from("fan_follows").insert({ user_id: (await f.auth.getUser()).data.user!.id, team_id: seattle.id })).error);
+ok("team account cannot follow teams", !!(await a.from("fan_follows").insert({ user_id: pa!.user_id, team_id: other.id })).error);
+ok("fan sees only own follows", ((await f.from("fan_follows").select("team_id")).data ?? []).length === 1 && ((await a.from("fan_follows").select("team_id")).data ?? []).length === 0);
+ok("fan attaches a code claimed before signing in", (await f.rpc("attach_claims", { p_items: [{ offer: live!.id, code: anonCode }] })).data === 1);
+ok("an owned code cannot be attached again", (await b.rpc("attach_claims", { p_items: [{ offer: live!.id, code: anonCode }] })).data === 0);
+const { data: c1 } = await f.rpc("claim_offer", { p_offer: live!.id });
+const { data: c2 } = await f.rpc("claim_offer", { p_offer: live!.id });
+ok("signed-in fan gets the same unused code twice", c1 === c2 && c1 === anonCode, `${c1} ${c2} ${anonCode}`);
+const { data: mine } = await f.rpc("my_claims");
+ok("fan lists own codes with offer details", (mine ?? []).length === 1 && mine![0].title === "Fan test offer" && mine![0].team_name === "Seattle Sounders FC");
+ok("other users see none of the fan's codes", ((await b.rpc("my_claims")).data ?? []).length === 0);
+ok("team cannot read who claimed", !!(await a.from("claims").select("user_id").eq("offer_id", live!.id)).error);
+ok("team cannot read claim codes", !!(await a.from("claims").select("code").eq("offer_id", live!.id)).error);
+ok("team still reads claim counts", ((await a.from("claims").select("id, redeemed_at").eq("offer_id", live!.id)).data ?? []).length === 1);
+await anon.rpc("redeem_claim", { p_offer: live!.id, p_key: (await a.from("offer_keys").select("redeem_key").eq("offer_id", live!.id).single()).data!.redeem_key, p_code: c1 });
+ok("fan sees the code as used after redemption", ((await f.rpc("my_claims")).data ?? [])[0]?.redeemed_at !== null);
+await a.from("offers").update({ active: false }).eq("id", live!.id); // keep repeated runs from piling up live test offers
+
+// ---------------------------------------------------------------- function privileges
+const zero = "00000000-0000-0000-0000-000000000000";
+const anonCalls: [string, Record<string, unknown>][] = [
+  ["my_claims", {}], ["join_fan", {}], ["attach_claims", { p_items: [] }], ["simulate_claims", { p_offer: zero, p_count: 1 }],
+  ["clear_simulated", { p_team: zero }], ["my_team", {}], ["my_sponsor", {}],
+];
+for (const [fn, args] of anonCalls) {
+  const { error } = await anon.rpc(fn, args);
+  ok(`anon cannot execute ${fn}`, !!error && /permission denied/i.test(error.message), error?.code ?? "no error");
+}
+// Trigger functions are not exposed through the API at all (PGRST202: no such function).
+for (const fn of ["handle_new_user", "create_offer_key"]) {
+  const { error } = await anon.rpc(fn, {});
+  ok(`${fn} is not callable through the API`, !!error && (error.code === "PGRST202" || /permission denied/i.test(error.message)), error?.code ?? "no error");
+}
+ok("signed-in team can still use my_team in RLS", ((await a.from("offers").select("id")).data ?? []).length > 0);

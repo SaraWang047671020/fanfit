@@ -10,6 +10,7 @@ export default async function OnboardingPage() {
   if (!user) redirect("/login?next=/onboarding");
   if (profile?.role === "team") redirect("/fanfit");
   if (profile?.role === "sponsor") redirect("/sponsor");
+  if (profile?.role === "fan") redirect("/fans");
 
   const { data: teams } = await supabase.from("teams").select("id, name, league, city").order("league").order("name").returns<TeamOption[]>();
   return (
