@@ -52,6 +52,7 @@ export function FollowButton({
   const router = useRouter();
   const [on, setOn] = useState(following);
   const [pending, start] = useTransition();
+  const [note, setNote] = useState(false);
   const label = on ? `Remove ${teamName ?? "this team"} from my teams` : `Add ${teamName ?? "this team"} to my teams`;
   const shape = compact ? "h-10 w-10 justify-center text-xl" : "gap-1.5 px-4 py-1.5 text-sm";
   if (signedInAs !== "fan")
@@ -64,7 +65,31 @@ export function FollowButton({
       >
         ♡{!compact && " Add to my teams"}
       </Link>
-    ) : null;
+    ) : (
+      // Team and brand accounts: the heart still shows, and explains that favourites belong to fan accounts.
+      <span className="relative inline-flex shrink-0">
+        <button
+          type="button"
+          onClick={() => setNote(!note)}
+          aria-label={label}
+          aria-expanded={note}
+          className={`inline-flex items-center rounded-full border border-line text-muted hover:border-loss hover:text-loss ${shape}`}
+        >
+          ♡{!compact && " Add to my teams"}
+        </button>
+        {note && (
+          <span role="note" className="absolute left-0 top-full z-50 mt-2 block w-64 rounded-xl border border-line bg-panel p-3 text-left text-xs shadow-lg">
+            <span className="block text-text">
+              Favourite teams belong to fan accounts. You&apos;re signed in with a {signedInAs === "sponsor" ? "brand" : "team"} account.
+            </span>
+            <form action="/auth/demo" method="post" className="mt-2">
+              <input type="hidden" name="as" value="fan" />
+              <button className="rounded-full bg-fan px-3 py-1 font-semibold text-white">Try the fan demo</button>
+            </form>
+          </span>
+        )}
+      </span>
+    );
   return (
     <button
       disabled={pending}
