@@ -84,3 +84,11 @@ section.rounded-3xl {
     background: #fff;
   }
 }
+
+/* Sideways-scrolling tab rows (top bar on phones): no scrollbar strip. */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

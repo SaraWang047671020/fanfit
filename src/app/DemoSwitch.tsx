@@ -1,5 +1,5 @@
 // For shared demo accounts: hop to another side of the product without signing out.
-const SIDES = [
+export const SIDES = [
   ["team", "Team · Seattle Sounders FC"],
   ["sponsor", "Sponsor · Gatorade"],
   ["fan", "Fan"],
