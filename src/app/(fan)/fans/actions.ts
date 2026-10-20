@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { TASTE_TYPES, type Taste, searchTastes } from "@/lib/fan-taste";
+import { TASTE_TYPES, type Taste, type TasteKind, searchTastes } from "@/lib/fan-taste";
 import { createClient } from "@/lib/supabase/server";
 
 export async function joinFan() {
@@ -25,14 +25,14 @@ export async function setFollow(teamId: string, follow: boolean) {
 }
 
 /** Qloo search for the taste picker (signed-in fans only: it spends API quota). */
-export async function findTastes(query: string) {
+export async function findTastes(query: string, kind?: TasteKind) {
   const q = query.trim().slice(0, 80);
   if (q.length < 2) return { results: [] as Taste[] };
   const supabase = await createClient();
   const { data } = await supabase.auth.getUser();
   if (!data.user) return { error: "Sign in to save your taste.", results: [] as Taste[] };
   try {
-    return { results: await searchTastes(q) };
+    return { results: await searchTastes(q, kind && kind in TASTE_TYPES ? kind : undefined) };
   } catch {
     return { error: "Search is unavailable right now.", results: [] as Taste[] };
   }

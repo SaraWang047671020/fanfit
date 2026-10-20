@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { type Taste, matchPlaces } from "@/lib/fan-taste";
+import { TASTE_TYPES, type Taste, type TasteKind, matchPlaces, suggestTastes } from "@/lib/fan-taste";
 import { currentUser } from "@/lib/supabase/server";
 import Tour from "../../Tour";
 import FanOffers, { type FanOffer, type Partner } from "../FanOffers";
@@ -33,6 +33,18 @@ export default async function FansHome() {
     partners = lists.flatMap(({ data }, i) => ((data ?? []) as Partner[]).map((p) => ({ ...p, team_id: mine[i].id, team_name: mine[i].name })));
   }
 
+  // Taste suggestions per kind: what fans of this fan's teams like (Qloo), or what is popular in the US.
+  let suggestions = { brand: [], artist: [], movie: [], tv_show: [] } as Record<TasteKind, Taste[]>;
+  if (isFan) {
+    const { data: signal } = mine.length
+      ? await supabase.from("teams").select("qloo_id, city").in("id", mine.map((t) => t.id))
+      : { data: [] as { qloo_id: string; city: string }[] };
+    const kinds = Object.keys(TASTE_TYPES) as TasteKind[];
+    const lists = await Promise.all(kinds.map((k) => suggestTastes(k, signal ?? []).catch(() => [] as Taste[])));
+    suggestions = Object.fromEntries(kinds.map((k, i) => [k, lists[i]])) as Record<TasteKind, Taste[]>;
+  }
+  const basis = mine.length ? `${mine.length === 1 ? mine[0].name : "your teams'"} fans` : "people in the US";
+
   // For you: order the map's deals and partner businesses by this fan's tastes (Qloo).
   const ids = [...offers.map((o) => o.place_qloo_id), ...partners.map((p) => p.place_qloo_id)].filter((x): x is string => !!x);
   const matches = await matchPlaces(tastes, ids);
@@ -47,7 +59,7 @@ export default async function FansHome() {
       </p>
       {isFan && (
         <div className="mt-6">
-          <TastePicker tastes={tastes} />
+          <TastePicker tastes={tastes} suggestions={suggestions} basis={basis} />
         </div>
       )}
       {mine.length > 0 && (
