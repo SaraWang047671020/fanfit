@@ -6,6 +6,7 @@ import { SPONSOR_CATEGORIES } from "@/lib/fanfit-score";
 import { errorResponse } from "@/lib/http";
 import { teamNews } from "@/lib/sponsor-detail";
 import { currentUser } from "@/lib/supabase/server";
+import { takeUsage } from "@/lib/usage";
 
 // Two web-search passes for sponsors + one for news, in parallel.
 export const maxDuration = 120;
@@ -23,6 +24,8 @@ export async function POST(req: Request) {
     supabase.from("sponsors").select("name, categories").eq("id", profile.sponsor_id!).single<{ name: string; categories: string[] }>(),
   ]);
   if (!team || !sponsor) return Response.json({ error: "Unknown team." }, { status: 404 });
+  const limit = await takeUsage(user.id, "team_check");
+  if (limit) return Response.json({ error: limit }, { status: 429 });
 
   const mine = SPONSOR_CATEGORIES.filter((c) => sponsor.categories.includes(c.key));
   const covered = new Set<string>(mine.flatMap((c) => c.covers));

@@ -75,6 +75,7 @@ export type FanfitEvent =
   | { type: "category"; key: SponsorCategoryKey; location: string; considered: number; items: CategoryHit[] }
   | { type: "sponsors"; sponsors: Sponsor[]; source: "club" | "web" }
   | { type: "timing"; timing: Timing }
+  | { type: "saved"; at: string } // replaying a stored run (see /api/fanfit), sent first
   | { type: "done"; ms: number }
   | { type: "error"; message: string };
 

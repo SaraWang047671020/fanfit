@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { CategoryHit, FanfitEvent, TeamInfo, Timing } from "@/lib/fanfit";
 import type { Activation } from "@/lib/fanfit-activation";
 import ActivationPanel from "./ActivationPanel";
@@ -63,6 +63,7 @@ export default function FanfitConsole({ initial = PRESETS[0] }: { initial?: { te
   const [elapsed, setElapsed] = useState<number | null>(null);
   const [activations, setActivations] = useState<Record<string, ActivationState>>({});
   const [categories, setCategories] = useState<Partial<Record<SponsorCategoryKey, CategoryResult>>>({});
+  const [savedAt, setSavedAt] = useState<string | null>(null);
   const runId = useRef(0);
 
   async function activate(row: FitRow, kind: Kind) {
@@ -115,6 +116,9 @@ export default function FanfitConsole({ initial = PRESETS[0] }: { initial?: { te
       case "timing":
         setTimings((t) => ({ ...t, [e.timing.brandId]: e.timing }));
         break;
+      case "saved":
+        setSavedAt(e.at);
+        break;
       case "done":
         setElapsed(e.ms);
         break;
@@ -124,7 +128,7 @@ export default function FanfitConsole({ initial = PRESETS[0] }: { initial?: { te
     }
   }
 
-  async function stream(body: object, id: number) {
+  async function stream(body: object, id: number, onEvent?: () => void) {
     const res = await fetch("/api/fanfit", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -139,13 +143,19 @@ export default function FanfitConsole({ initial = PRESETS[0] }: { initial?: { te
       buf += value;
       const lines = buf.split("\n");
       buf = lines.pop() ?? "";
-      for (const line of lines) if (line.trim()) apply(JSON.parse(line) as FanfitEvent);
+      for (const line of lines)
+        if (line.trim()) {
+          onEvent?.();
+          apply(JSON.parse(line) as FanfitEvent);
+        }
     }
   }
 
-  async function run() {
+  /** saved-or-run: the saved analysis if there is one, else a new run. fresh: always a new run. saved-only: page load. */
+  async function run(mode: "saved-or-run" | "fresh" | "saved-only" = "saved-or-run") {
     const id = ++runId.current;
     setStatus("running");
+    setSavedAt(null);
     setError(null);
     setSteps([]);
     setInfo(null);
@@ -159,13 +169,20 @@ export default function FanfitConsole({ initial = PRESETS[0] }: { initial?: { te
     setCategories({});
     setElapsed(null);
     try {
-      await stream({ team, city }, id);
-      setStatus("done");
+      let got = false;
+      await stream({ team, city, fresh: mode === "fresh", savedOnly: mode === "saved-only" }, id, () => (got = true));
+      setStatus(got ? "done" : "idle"); // saved-only with nothing saved: wait for the user
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
       setStatus("error");
     }
   }
+
+  // Show the team's saved analysis on arrival; never start a run (and spend quota) without a click.
+  useEffect(() => {
+    run("saved-only");
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- once, for the team the page opened with
+  }, []);
 
   const mix = useMemo(() => normalize(weights), [weights]);
   const top = useMemo(() => {
@@ -210,11 +227,11 @@ export default function FanfitConsole({ initial = PRESETS[0] }: { initial?: { te
           <Field label="Team" value={team} onChange={setTeam} />
           <Field label="Home city" value={city} onChange={setCity} />
           <button
-            onClick={run}
+            onClick={() => run()}
             disabled={running || !team.trim() || !city.trim()}
             className="rounded-full bg-accent px-6 py-2.5 text-sm font-semibold text-bg disabled:opacity-50"
           >
-            {running ? "Running…" : "Find sponsors (~1–2 min)"}
+            {running ? "Running…" : "Find sponsors (~2–3 min)"}
           </button>
         </div>
         <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
@@ -233,6 +250,14 @@ export default function FanfitConsole({ initial = PRESETS[0] }: { initial?: { te
             </button>
           ))}
         </div>
+        {savedAt && !running && (
+          <p className="mt-3 flex flex-wrap items-center gap-3 text-xs text-muted">
+            Saved analysis from {new Date(savedAt).toLocaleString()}. Results load instantly and cost nothing.
+            <button onClick={() => run("fresh")} className="rounded-full border border-accent px-3 py-1 font-semibold text-accent">
+              Re-run with fresh data (~2–3 min)
+            </button>
+          </p>
+        )}
         {error && <p className="mt-3 text-sm text-loss">{error}</p>}
       </section>
 
