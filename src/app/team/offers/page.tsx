@@ -174,7 +174,13 @@ export default async function TeamOffersPage({ searchParams }: PageProps<"/team/
         ) : (
           <>
             <p className="mt-4 text-sm">
-              {judged.length ? (
+              {showSim ? (
+                // Simulated claims pick ages at random: a hit rate or lift here would read as a (bad) result. Shown on real data only.
+                <span className="text-muted">
+                  Demo data: simulated claims pick an age at random, so only the predictions are shown here. Share and lift appear on the
+                  Real tab once fans claim real offers.
+                </span>
+              ) : judged.length ? (
                 <>
                   <span className="font-semibold">
                     {hits} of {judged.length}
@@ -192,8 +198,8 @@ export default async function TeamOffersPage({ searchParams }: PageProps<"/team/
                     <th className="py-2 pr-3 font-normal">Business</th>
                     <th className="py-2 pr-3 font-normal">FanFit predicted</th>
                     <th className="py-2 pr-3 font-normal">Most claims from</th>
-                    <th className="py-2 pr-3 text-right font-normal">Predicted group&apos;s share</th>
-                    <th className="py-2 text-right font-normal">Lift</th>
+                    {!showSim && <th className="py-2 pr-3 text-right font-normal">Predicted group&apos;s share</th>}
+                    {!showSim && <th className="py-2 text-right font-normal">Lift</th>}
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-line">
@@ -203,32 +209,31 @@ export default async function TeamOffersPage({ searchParams }: PageProps<"/team/
                       <td className="py-2.5 pr-3">{p ? AGE_LABEL[p.driver] : <span className="text-muted">not in the analysis</span>}</td>
                       <td className="py-2.5 pr-3">
                         {top ? (
-                          <span className={p && top === p.driver ? "font-semibold text-gain" : ""}>
+                          <span className={!showSim && p && top === p.driver ? "font-semibold text-gain" : ""}>
                             {AGE_LABEL[top as keyof typeof AGE_LABEL]}
                           </span>
                         ) : (
                           <span className="text-muted">no claims with an age</span>
                         )}
                       </td>
-                      <td className="py-2.5 pr-3 text-right font-mono">
-                        {share === null ? "—" : `${Math.round(share * 100)}%`}
-                        <span className="ml-1 text-xs text-muted">of {aged}</span>
-                      </td>
-                      <td
-                        className={`py-2.5 text-right font-mono ${lift === null || aged < MIN_AGED ? "text-muted" : lift > 1 ? "text-gain" : "text-loss"}`}
-                      >
-                        {lift === null ? "—" : aged < MIN_AGED ? "too few" : `${lift.toFixed(1)}×`}
-                      </td>
+                      {!showSim && (
+                        <>
+                          <td className="py-2.5 pr-3 text-right font-mono">
+                            {share === null ? "—" : `${Math.round(share * 100)}%`}
+                            <span className="ml-1 text-xs text-muted">of {aged}</span>
+                          </td>
+                          <td
+                            className={`py-2.5 text-right font-mono ${lift === null || aged < MIN_AGED ? "text-muted" : lift > 1 ? "text-gain" : "text-loss"}`}
+                          >
+                            {lift === null ? "—" : aged < MIN_AGED ? "too few" : `${lift.toFixed(1)}×`}
+                          </td>
+                        </>
+                      )}
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
-            {showSim && (
-              <p className="mt-3 text-xs text-warn">
-                Simulated claims pick an age at random, so on the Demo tab this shows how the check reads, not a result.
-              </p>
-            )}
           </>
         )}
       </section>
