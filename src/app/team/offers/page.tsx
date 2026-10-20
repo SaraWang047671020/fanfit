@@ -8,6 +8,7 @@ import { currentUser } from "@/lib/supabase/server";
 import AccountBar from "../../AccountBar";
 import { PredictedInfo } from "../../Explain";
 import { CopyLink, OfferControls, SimulatedControls } from "./OfferControls";
+import PageHeader from "../../PageHeader";
 
 export const metadata: Metadata = { title: "FanFit · Offers and fan map" };
 
@@ -84,9 +85,7 @@ export default async function TeamOffersPage({ searchParams }: PageProps<"/team/
   return (
     <main className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
       <AccountBar name={profile.display_name ?? user.email ?? ""} org={team?.name ?? "Your team"} role="team" tour="team-offers" />
-      <header className="mt-6">
-        <p className="text-xs font-bold uppercase tracking-[0.14em] text-gain">Fan map offers</p>
-        <h1 className="mt-2 text-4xl font-bold">Offers, claims and redemptions</h1>
+      <PageHeader side="team" icon="ticket" photo="/images/cafe.jpg" eyebrow={<>Fan map offers</>} title={<>Offers, claims and redemptions</>}>
         <p className="mt-3 max-w-3xl text-muted">
           Offers from partner businesses appear on your public fan map. Fans claim a code, staff redeem it with the business&apos;s
           redemption link, and the results land here next to the fit FanFit predicted. Add offers from the Local businesses tab of the
@@ -99,7 +98,7 @@ export default async function TeamOffersPage({ searchParams }: PageProps<"/team/
           </a>
           <CopyLink url={fanUrl} label="Copy link" />
         </div>
-      </header>
+      </PageHeader>
 
       <section data-tour="offer-results" className="mt-8 rounded-3xl border border-line bg-panel/90 p-6">
         <div className="flex flex-wrap items-baseline justify-between gap-3">

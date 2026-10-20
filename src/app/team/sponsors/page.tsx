@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { currentUser } from "@/lib/supabase/server";
 import AccountBar from "../../AccountBar";
 import SponsorList, { type ListedSponsor } from "./SponsorList";
+import PageHeader from "../../PageHeader";
 
 export const metadata: Metadata = { title: "FanFit · Your sponsors" };
 
@@ -26,15 +27,13 @@ export default async function TeamSponsorsPage() {
   return (
     <main className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6 sm:py-14">
       <AccountBar name={profile.display_name ?? user.email ?? ""} org={team?.name ?? "Your team"} role="team" />
-      <header className="mt-6">
-        <p className="text-xs font-bold uppercase tracking-[0.14em] text-gain">Your sponsors</p>
-        <h1 className="mt-2 text-4xl font-bold">Current sponsors of {team?.name}</h1>
+      <PageHeader side="team" icon="handshake" eyebrow={<>Your sponsors</>} title={<>Current sponsors of {team?.name}</>}>
         <p className="mt-3 max-w-3xl text-muted">
-          Keep this list current and FanFit uses it instead of web search: the sponsor finder sets aside brands that clash with a
-          category you have sold, and brands looking at {team?.name} see which categories are taken. Every sponsor here also shows
-          on your public fan map (set a location to give it a pin), so only add deals that are public.
+          Keep this list current and FanFit uses it instead of web search: the sponsor finder sets aside brands that clash with a category
+          you have sold, and brands looking at {team?.name} see which categories are taken. Every sponsor here also shows on your public fan
+          map (set a location to give it a pin), so only add deals that are public.
         </p>
-      </header>
+      </PageHeader>
       <div className="mt-8">
         <SponsorList sponsors={sponsors ?? []} />
       </div>

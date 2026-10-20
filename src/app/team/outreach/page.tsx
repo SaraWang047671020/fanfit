@@ -7,6 +7,7 @@ import { currentUser } from "@/lib/supabase/server";
 import AccountBar from "../../AccountBar";
 import AnswerButtons from "./AnswerButtons";
 import WithdrawPitch from "./WithdrawPitch";
+import PageHeader from "../../PageHeader";
 
 export const metadata: Metadata = { title: "FanFit · Outreach" };
 
@@ -63,14 +64,12 @@ export default async function TeamOutreachPage({ searchParams }: PageProps<"/tea
   return (
     <main className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6 sm:py-14">
       <AccountBar name={profile.display_name ?? user.email ?? ""} org={team?.name ?? "Your team"} role="team" />
-      <header className="mt-6">
-        <p className="text-xs font-bold uppercase tracking-[0.14em] text-gain">Outreach</p>
-        <h1 className="mt-2 text-4xl font-bold">Pitches and brand interest</h1>
+      <PageHeader side="team" icon="send" eyebrow={<>Outreach</>} title={<>Pitches and brand interest</>}>
         <p className="mt-3 max-w-3xl text-muted">
-          Pitch a brand from the sponsor finder (“✉ Prepare pitch”): FanFit builds a one-page report you can share by link, and you see when it
-          is opened. Brands that find you on FanFit write in here too.
+          Pitch a brand from the sponsor finder (“✉ Prepare pitch”): FanFit builds a one-page report you can share by link, and you see when
+          it is opened. Brands that find you on FanFit write in here too.
         </p>
-      </header>
+      </PageHeader>
 
       <nav className="mt-6 flex gap-2 border-b border-line pb-3" aria-label="Outreach">
         {[
@@ -92,8 +91,11 @@ export default async function TeamOutreachPage({ searchParams }: PageProps<"/tea
         <section className="mt-6 space-y-3">
           {!sent?.length && (
             <p className="rounded-3xl border border-line bg-panel/90 p-6 text-sm text-muted">
-              No pitches yet. In the <Link href="/fanfit" className="text-accent">sponsor finder</Link>, open a brand under Who to call and use “✉
-              Prepare pitch”.
+              No pitches yet. In the{" "}
+              <Link href="/fanfit" className="text-accent">
+                sponsor finder
+              </Link>
+              , open a brand under Who to call and use “✉ Prepare pitch”.
             </p>
           )}
           {(sent ?? []).map((p) => (
@@ -101,7 +103,9 @@ export default async function TeamOutreachPage({ searchParams }: PageProps<"/tea
               <div className="min-w-0 flex-1">
                 <p className="font-semibold">
                   {p.brand_name}
-                  {p.demo && <span className="ml-2 rounded-full border border-warn px-2 py-0.5 text-[10px] font-semibold text-warn">DEMO</span>}
+                  {p.demo && (
+                    <span className="ml-2 rounded-full border border-warn px-2 py-0.5 text-[10px] font-semibold text-warn">DEMO</span>
+                  )}
                   {p.report && <span className="ml-2 text-xs font-normal text-gain">{p.report.body.fit.band} fit</span>}
                 </p>
                 <p className="mt-1 text-sm text-muted">“{p.message}”</p>
@@ -122,7 +126,10 @@ export default async function TeamOutreachPage({ searchParams }: PageProps<"/tea
                 </p>
                 <WithdrawPitch id={p.id} />
               </div>
-              <span className={`rounded-full border px-3 py-1 text-xs font-semibold ${ANSWER[p.status].tone}`} title="Brands on FanFit answer here">
+              <span
+                className={`rounded-full border px-3 py-1 text-xs font-semibold ${ANSWER[p.status].tone}`}
+                title="Brands on FanFit answer here"
+              >
                 {ANSWER[p.status].label}
               </span>
             </article>
@@ -132,20 +139,27 @@ export default async function TeamOutreachPage({ searchParams }: PageProps<"/tea
         <section className="mt-6 space-y-4">
           {!received.length && (
             <p className="rounded-3xl border border-line bg-panel/90 p-6 text-sm text-muted">
-              No brands have reached out yet. Brands see your team ranked for their audience; keep your sponsor list current so they know which
-              categories are open.
+              No brands have reached out yet. Brands see your team ranked for their audience; keep your sponsor list current so they know
+              which categories are open.
             </p>
           )}
           {received.map((n) => {
-            const covered = new Set<string>(SPONSOR_CATEGORIES.filter((c) => n.sponsor_categories.includes(c.key)).flatMap((c) => c.covers));
+            const covered = new Set<string>(
+              SPONSOR_CATEGORIES.filter((c) => n.sponsor_categories.includes(c.key)).flatMap((c) => c.covers),
+            );
             const clash = (listed ?? []).filter((s) => covered.has(s.category));
             const labels = SPONSOR_CATEGORIES.filter((c) => n.sponsor_categories.includes(c.key)).map((c) => c.label);
             return (
-              <article key={n.id} className={`rounded-3xl border bg-panel/90 p-6 ${n.status === "new" ? "border-accent/50" : "border-line"}`}>
+              <article
+                key={n.id}
+                className={`rounded-3xl border bg-panel/90 p-6 ${n.status === "new" ? "border-accent/50" : "border-line"}`}
+              >
                 <div className="flex flex-wrap items-baseline justify-between gap-2">
                   <p className="text-lg font-semibold">
                     {n.sponsor_name}
-                    {n.demo && <span className="ml-2 rounded-full border border-warn px-2 py-0.5 text-[10px] font-semibold text-warn">DEMO</span>}
+                    {n.demo && (
+                      <span className="ml-2 rounded-full border border-warn px-2 py-0.5 text-[10px] font-semibold text-warn">DEMO</span>
+                    )}
                   </p>
                   <p className="text-xs text-muted">{new Date(n.created_at).toLocaleDateString()}</p>
                 </div>

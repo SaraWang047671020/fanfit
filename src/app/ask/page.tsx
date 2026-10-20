@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { currentUser } from "@/lib/supabase/server";
 import AccountBar from "../AccountBar";
 import AskConsole from "./AskConsole";
+import PageHeader from "../PageHeader";
 
 export const metadata: Metadata = { title: "FanFit · Ask FanFit" };
 
@@ -10,11 +11,13 @@ export default async function AskPage() {
   const { supabase, user, profile } = await currentUser();
   if (!user) redirect("/login?next=/ask");
   const isTeam = profile?.role === "team" && profile.team_approved;
-  if (!(isTeam || profile?.role === "sponsor")) redirect(profile?.role === "team" ? "/fanfit" : profile?.role === "fan" ? "/fans" : "/onboarding");
+  if (!(isTeam || profile?.role === "sponsor"))
+    redirect(profile?.role === "team" ? "/fanfit" : profile?.role === "fan" ? "/fans" : "/onboarding");
 
   const org = isTeam
-    ? (await supabase.from("teams").select("name").eq("id", profile!.team_id!).single<{ name: string }>()).data?.name ?? "Your team"
-    : (await supabase.from("sponsors").select("name").eq("id", profile!.sponsor_id!).single<{ name: string }>()).data?.name ?? "Your brand";
+    ? ((await supabase.from("teams").select("name").eq("id", profile!.team_id!).single<{ name: string }>()).data?.name ?? "Your team")
+    : ((await supabase.from("sponsors").select("name").eq("id", profile!.sponsor_id!).single<{ name: string }>()).data?.name ??
+      "Your brand");
   const examples = isTeam
     ? [
         "Which banks would fit our fans best, and do any clash with our current sponsors?",
@@ -30,14 +33,12 @@ export default async function AskPage() {
   return (
     <main className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6 sm:py-14">
       <AccountBar name={profile!.display_name ?? user.email ?? ""} org={org} role={isTeam ? "team" : "sponsor"} tour="ask" />
-      <header className="mt-6">
-        <p className="text-xs font-bold uppercase tracking-[0.14em] text-gain">Ask FanFit</p>
-        <h1 className="mt-2 text-4xl font-bold">Give the agent a goal</h1>
+      <PageHeader side={isTeam ? "team" : "sponsor"} icon="sparkles" eyebrow={<>Ask FanFit</>} title={<>Give the agent a goal</>}>
         <p className="mt-3 max-w-3xl text-muted">
-          The agent plans, calls FanFit&apos;s Qloo tools (fit rankings, fan profiles, shared tastes, sponsor checks, news) and answers
-          with picks it can back up. It can only name teams, brands and places a tool returned; every step is shown.
+          The agent plans, calls FanFit&apos;s Qloo tools (fit rankings, fan profiles, shared tastes, sponsor checks, news) and answers with
+          picks it can back up. It can only name teams, brands and places a tool returned; every step is shown.
         </p>
-      </header>
+      </PageHeader>
       <div className="mt-8">
         <AskConsole examples={examples} role={isTeam ? "team" : "sponsor"} />
       </div>

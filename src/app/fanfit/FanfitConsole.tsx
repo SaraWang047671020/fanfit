@@ -7,6 +7,7 @@ import ActivationPanel from "./ActivationPanel";
 import { CategoryInfo, FanMixInfo, WhoToCallInfo } from "../Explain";
 import OfferButton from "./OfferButton";
 import PitchComposer from "../PitchComposer";
+import { Monogram } from "../Art";
 import {
   AGES,
   AGE_LABEL,
@@ -644,6 +645,7 @@ function Card({
     <li data-tour={tour} className="rounded-xl border border-line bg-panel-2 p-4 text-sm">
       <div className="flex items-baseline gap-3">
         <span className="w-6 font-mono text-lg font-bold">{rank ?? "—"}</span>
+        <Monogram name={row.name} />
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-baseline justify-between gap-2">
             <span className="font-semibold">{row.name}</span>

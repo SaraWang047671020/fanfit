@@ -32,7 +32,7 @@ Everything below runs on the live site with the shared demo accounts: no sign-up
 ### More to try
 
 **Team**
-- **✦ Ask**: tap an example ("Which banks would fit our fans best, and do any clash with our current sponsors?").
+- **Ask**: tap an example ("Which banks would fit our fans best, and do any clash with our current sponsors?").
   Watch the agent pick tools on the left; every name in the answer comes from a tool.
 - **By category** and **Fan mix**: drag a fan-mix slider and watch *Who to call* re-rank.
 - **Local businesses** tab under *Who to call* → **+ Fan map offer** publishes a deal to the club's fan page
@@ -41,7 +41,7 @@ Everything below runs on the live site with the shared demo accounts: no sign-up
   so it shows predictions only; share and lift appear on *Real* once fans claim real offers.
 
 **Sponsor**
-- **✦ Ask FanFit**: "Find three NBA teams whose fans love us and whose category is still open."
+- **Ask FanFit**: "Find three NBA teams whose fans love us and whose category is still open."
 - A team page's tabs: **Audience fit**, **What fans of both love**, **Sponsors, timing & activation** (**Check sponsors and news**, **✦ Activation idea**).
 
 **Fan**
@@ -258,6 +258,17 @@ to enable the one-click demo accounts.
 
 Environment variables are documented in `.env.example`. `LIVE_RUNS_DISABLED=true` switches off every route that spends
 Qloo or OpenAI calls; saved results keep working.
+
+## Image credits
+
+Photos are free-licence stock (no attribution required; credited anyway), cropped and compressed so no club crest or
+brand logo is legible. Everything else is drawn in code (`src/app/Art.tsx`); FanFit shows no team or brand logos.
+
+- `public/images/stadium.jpg`: stadium at night (source link to be added)
+- `public/images/pitch.jpg`: aerial football pitch (source link to be added)
+- `public/images/cafe.jpg`: café counter (source link to be added)
+- `public/images/crowd.jpg`: fans cheering at a ballpark (source link to be added)
+- `public/images/arena.jpg`: basketball arena (source link to be added)
 
 ## License
 

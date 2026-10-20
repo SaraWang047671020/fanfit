@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { TASTE_TYPES, type Taste, type TasteKind, matchPlaces, suggestTastes } from "@/lib/fan-taste";
 import { currentUser } from "@/lib/supabase/server";
+import { Photo } from "../../Art";
 import Tour from "../../Tour";
 import FanOffers, { type FanOffer, type Partner } from "../FanOffers";
 import TastePicker from "./TastePicker";
@@ -54,10 +55,15 @@ export default async function FansHome() {
 
   return (
     <main className="mx-auto w-full max-w-5xl px-4 py-6 sm:py-10">
-      <h1 className="text-3xl font-bold sm:text-4xl">Deals from your team&apos;s partners</h1>
-      <p className="mt-2 text-muted">
-        Tap ♡ on your teams to see all their deals and partners on one map, then claim a code to use at the counter.
-      </p>
+      <header className="relative overflow-hidden rounded-3xl p-6 text-white sm:p-8">
+        <Photo src="/images/crowd.jpg" tint="bg-gradient-to-r from-fan/90 via-fan/60 to-ink/30" opacity={1} priority />
+        <div className="relative">
+          <h1 className="text-3xl font-bold sm:text-4xl">Deals from your team&apos;s partners</h1>
+          <p className="mt-2 max-w-xl text-white/90">
+            Tap ♡ on your teams to see all their deals and partners on one map, then claim a code to use at the counter.
+          </p>
+        </div>
+      </header>
       <div className="mt-6">
         {isFan ? (
           <TastePicker tastes={tastes} suggestions={suggestions} basis={basis} />

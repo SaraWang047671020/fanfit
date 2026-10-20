@@ -5,6 +5,7 @@ import { fitBand } from "@/lib/sponsor-fit-band";
 import { currentUser } from "@/lib/supabase/server";
 import AccountBar from "../../AccountBar";
 import PitchAnswer from "./PitchAnswer";
+import PageHeader from "../../PageHeader";
 
 export const metadata: Metadata = { title: "FanFit · Outreach" };
 
@@ -49,7 +50,10 @@ export default async function OutreachPage({ searchParams }: PageProps<"/sponsor
       .select("team_id, message, target, fit_z, status, created_at, report:pitch_reports(token, views)")
       .order("created_at", { ascending: false })
       .returns<Note[]>(),
-    supabase.from("teams").select("id, name, league, city, claimed_at").returns<{ id: string; name: string; league: string; city: string; claimed_at: string | null }[]>(),
+    supabase
+      .from("teams")
+      .select("id, name, league, city, claimed_at")
+      .returns<{ id: string; name: string; league: string; city: string; claimed_at: string | null }[]>(),
     supabase.rpc("brand_inbox"),
   ]);
   const teamOf = new Map((teams ?? []).map((t) => [t.id, t]));
@@ -59,14 +63,12 @@ export default async function OutreachPage({ searchParams }: PageProps<"/sponsor
   return (
     <main className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6 sm:py-14">
       <AccountBar name={profile.display_name ?? user.email ?? ""} org={sponsor?.name ?? "Your brand"} role="sponsor" />
-      <header className="mt-6">
-        <p className="text-xs font-bold uppercase tracking-[0.14em] text-gain">Outreach</p>
-        <h1 className="mt-2 text-4xl font-bold">Your notes and team pitches</h1>
+      <PageHeader side="sponsor" icon="send" eyebrow={<>Outreach</>} title={<>Your notes and team pitches</>}>
         <p className="mt-3 max-w-3xl text-muted">
-          Notes you sent from a team&apos;s page carry a FanFit report on why {sponsor?.name ?? "your brand"} fits their fans. Teams that find you in
-          their sponsor finder can pitch you here too.
+          Notes you sent from a team&apos;s page carry a FanFit report on why {sponsor?.name ?? "your brand"} fits their fans. Teams that
+          find you in their sponsor finder can pitch you here too.
         </p>
-      </header>
+      </PageHeader>
 
       <nav className="mt-6 flex gap-2 border-b border-line pb-3" aria-label="Outreach">
         {[
@@ -88,8 +90,11 @@ export default async function OutreachPage({ searchParams }: PageProps<"/sponsor
         <section className="mt-6 rounded-3xl border border-line bg-panel/90 p-6">
           {!notes?.length ? (
             <p className="text-sm text-muted">
-              No notes yet. Open a team from the <Link href="/sponsor" className="text-accent">ranking</Link> and use “Tell them you&apos;re
-              interested”.
+              No notes yet. Open a team from the{" "}
+              <Link href="/sponsor" className="text-accent">
+                ranking
+              </Link>{" "}
+              and use “Tell them you&apos;re interested”.
             </p>
           ) : (
             <ul className="divide-y divide-line">
@@ -123,7 +128,9 @@ export default async function OutreachPage({ searchParams }: PageProps<"/sponsor
                         )}
                       </p>
                     </div>
-                    <span className={`rounded-full border px-3 py-1 text-xs font-semibold ${STATUS[n.status].tone}`}>{STATUS[n.status].label}</span>
+                    <span className={`rounded-full border px-3 py-1 text-xs font-semibold ${STATUS[n.status].tone}`}>
+                      {STATUS[n.status].label}
+                    </span>
                   </li>
                 );
               })}
@@ -134,7 +141,8 @@ export default async function OutreachPage({ searchParams }: PageProps<"/sponsor
         <section className="mt-6 space-y-4">
           {!pitches.length && (
             <p className="rounded-3xl border border-line bg-panel/90 p-6 text-sm text-muted">
-              No team has pitched you yet. Teams see brands their fans love in FanFit&apos;s sponsor finder and can send you a report from there.
+              No team has pitched you yet. Teams see brands their fans love in FanFit&apos;s sponsor finder and can send you a report from
+              there.
             </p>
           )}
           {pitches.map((p) => (
@@ -144,7 +152,9 @@ export default async function OutreachPage({ searchParams }: PageProps<"/sponsor
                   <Link href={`/sponsor/teams/${p.team_id}`} className="hover:text-accent">
                     {p.team_name}
                   </Link>
-                  {p.demo && <span className="ml-2 rounded-full border border-warn px-2 py-0.5 text-[10px] font-semibold text-warn">DEMO</span>}
+                  {p.demo && (
+                    <span className="ml-2 rounded-full border border-warn px-2 py-0.5 text-[10px] font-semibold text-warn">DEMO</span>
+                  )}
                   <span className="ml-2 text-xs font-normal text-muted">
                     {p.team_league} · {p.team_city}
                   </span>

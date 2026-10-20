@@ -9,6 +9,7 @@ import AccountBar from "../AccountBar";
 import { FitInfo } from "../Explain";
 import AudiencePicker from "./AudiencePicker";
 import TeamList, { type TeamRow } from "./TeamList";
+import PageHeader from "../PageHeader";
 
 export const metadata: Metadata = { title: "FanFit · Teams for your brand" };
 
@@ -24,22 +25,30 @@ export default async function SponsorPage({ searchParams }: PageProps<"/sponsor"
   const { supabase, user, profile } = await currentUser();
   if (!user) redirect("/login?next=/sponsor");
   if (profile?.role !== "sponsor") redirect(profile?.role === "team" ? "/fanfit" : "/onboarding");
-  const { data: sponsor } = await supabase.from("sponsors").select("id, name, qloo_id, categories").eq("id", profile.sponsor_id!).single<SponsorRow>();
+  const { data: sponsor } = await supabase
+    .from("sponsors")
+    .select("id, name, qloo_id, categories")
+    .eq("id", profile.sponsor_id!)
+    .single<SponsorRow>();
   if (!sponsor) redirect("/onboarding");
 
   const labels = SPONSOR_CATEGORIES.filter((c) => sponsor.categories.includes(c.key)).map((c) => c.label);
   return (
     <main className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
       <AccountBar name={profile.display_name ?? user.email ?? ""} org={sponsor.name} role="sponsor" tour="sponsor" />
-      <header data-tour="ranking" className="mt-6">
-        <p className="text-xs font-bold uppercase tracking-[0.14em] text-gain">FanFit for sponsors</p>
-        <h1 className="mt-2 text-4xl font-bold">Teams whose fans already love {sponsor.name}.</h1>
+      <PageHeader
+        side="sponsor"
+        icon="chart"
+        tour="ranking"
+        eyebrow={<>FanFit for sponsors</>}
+        title={<>Teams whose fans already love {sponsor.name}.</>}
+      >
         <p className="mt-3 max-w-3xl text-muted">
-          Every team in the directory, ranked by how much more their fans like {sponsor.name} than the typical big brand (Qloo taste
-          data). Your categories: {labels.join(", ") || "none set"}; teams that list a sponsor in them are marked taken.
+          Every team in the directory, ranked by how much more their fans like {sponsor.name} than the typical big brand (Qloo taste data).
+          Your categories: {labels.join(", ") || "none set"}; teams that list a sponsor in them are marked taken.
           <FitInfo brand={sponsor.name} />
         </p>
-      </header>
+      </PageHeader>
       <div className="mt-8 space-y-4">
         {sponsor.qloo_id && <AudiencePicker target={target} />}
         {sponsor.qloo_id ? (

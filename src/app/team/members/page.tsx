@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { currentUser } from "@/lib/supabase/server";
 import AccountBar from "../../AccountBar";
 import { DecideButtons } from "../RequestButtons";
+import PageHeader from "../../PageHeader";
 
 export const metadata: Metadata = { title: "FanFit · Team members" };
 
@@ -28,13 +29,11 @@ export default async function TeamMembersPage() {
   return (
     <main className="mx-auto w-full max-w-4xl px-4 py-10 sm:px-6 sm:py-14">
       <AccountBar name={profile.display_name ?? user.email ?? ""} org={team?.name ?? "Your team"} role="team" />
-      <header className="mt-6">
-        <p className="text-xs font-bold uppercase tracking-[0.14em] text-gain">Team members</p>
-        <h1 className="mt-2 text-4xl font-bold">Who can act for {team?.name}</h1>
+      <PageHeader side="team" icon="users" eyebrow={<>Team members</>} title={<>Who can act for {team?.name}</>}>
         <p className="mt-3 max-w-3xl text-muted">
           Members can edit the sponsor list and fan map offers. Approve only people you know work for the club; anyone can ask to join.
         </p>
-      </header>
+      </PageHeader>
 
       <section className="mt-8 rounded-3xl border border-line bg-panel/90 p-6">
         <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent">Waiting for approval ({pending.length})</p>

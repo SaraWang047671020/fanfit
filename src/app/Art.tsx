@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 // Drawn artwork (no image files, nothing to license): pitch lines for header bands, the home page's fit diagram,
 // and monogram avatars for teams and brands (real logos are trademarks, so FanFit never shows them).
 
@@ -76,5 +78,18 @@ export function Monogram({ name, size = "md" }: { name: string; size?: "sm" | "m
     <span aria-hidden className={`inline-flex shrink-0 items-center justify-center rounded-full font-bold text-white ${HUES[h % HUES.length]} ${dim}`}>
       {initials}
     </span>
+  );
+}
+
+/**
+ * A photo filling its (relative) parent, tinted so text on top stays readable. Photos are free-licence stock (see
+ * README, Image credits), cropped so no club crest or brand logo is legible.
+ */
+export function Photo({ src, tint, opacity = 0.35, priority = false }: { src: string; tint: string; opacity?: number; priority?: boolean }) {
+  return (
+    <>
+      <Image src={src} alt="" fill sizes="100vw" priority={priority} className="pointer-events-none object-cover" style={{ opacity }} />
+      <div className={`pointer-events-none absolute inset-0 ${tint}`} />
+    </>
   );
 }

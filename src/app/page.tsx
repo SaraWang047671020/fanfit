@@ -2,7 +2,7 @@ import { ChartColumn, Handshake, Heart, Info, MapPin, Radar, Send, ShieldCheck, 
 import type { Metadata } from "next";
 import Link from "next/link";
 import { currentUser } from "@/lib/supabase/server";
-import { FitDiagram, PitchLines } from "./Art";
+import { FitDiagram, Photo, PitchLines } from "./Art";
 
 export const metadata: Metadata = {
   title: "FanFit · Sponsorships your fans already love",
@@ -22,7 +22,7 @@ export default async function Home() {
 
       {/* Hero */}
       <section className="relative overflow-hidden bg-ink text-white">
-        <PitchLines className="pointer-events-none absolute inset-0 h-full w-full text-white/[0.06]" />
+        <Photo src="/images/stadium.jpg" tint="bg-gradient-to-r from-ink via-ink/85 to-ink/40" opacity={0.55} priority />
         <div className="pointer-events-none absolute -left-32 -top-32 h-96 w-96 rounded-full bg-team/40 blur-3xl" />
         <div className="pointer-events-none absolute -bottom-40 right-0 h-96 w-96 rounded-full bg-brand/40 blur-3xl" />
         <div className="relative mx-auto grid w-full max-w-6xl items-center gap-10 px-4 py-16 sm:px-6 sm:py-24 lg:grid-cols-[1.1fr_1fr]">
@@ -106,6 +106,7 @@ export default async function Home() {
           <div className="mt-8 grid gap-5 lg:grid-cols-3">
             <SideCard
               kind="team"
+              photo="/images/pitch.jpg"
               icon={<Trophy className="h-5 w-5" aria-hidden />}
               title="For teams"
               demo="Try the team demo"
@@ -119,6 +120,7 @@ export default async function Home() {
             />
             <SideCard
               kind="sponsor"
+              photo="/images/arena.jpg"
               icon={<Handshake className="h-5 w-5" aria-hidden />}
               title="For brands"
               demo="Try the brand demo"
@@ -132,6 +134,7 @@ export default async function Home() {
             />
             <SideCard
               kind="fan"
+              photo="/images/crowd.jpg"
               icon={<Heart className="h-5 w-5" aria-hidden />}
               title="For fans"
               demo="Try the fan demo"
@@ -341,7 +344,9 @@ function SideCard({
   demo,
   lead,
   points,
+  photo,
 }: {
+  photo?: string;
   kind: "team" | "sponsor" | "fan";
   icon: React.ReactNode;
   title: string;
@@ -353,8 +358,8 @@ function SideCard({
   const text = kind === "team" ? "text-team" : kind === "sponsor" ? "text-brand" : "text-fan";
   return (
     <article className="flex flex-col overflow-hidden rounded-3xl border border-line bg-panel shadow-sm">
-      <div className={`relative h-24 ${tone}`}>
-        <PitchLines className="absolute inset-0 h-full w-full text-white/20" />
+      <div className={`relative h-28 ${tone}`}>
+        {photo ? <Photo src={photo} tint={`${tone} opacity-60`} opacity={1} /> : <PitchLines className="absolute inset-0 h-full w-full text-white/20" />}
         <span className={`absolute -bottom-6 left-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-md ${text}`}>{icon}</span>
       </div>
       <div className="flex flex-1 flex-col p-6 pt-9">

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { fitBand } from "@/lib/sponsor-fit-band";
+import { Monogram } from "../Art";
 
 export interface TeamRow {
   id: string;
@@ -15,7 +16,13 @@ export interface TeamRow {
   category: { status: "taken"; by: string[] } | { status: "open" } | { status: "unknown" };
 }
 
-const BAND_TONE: Record<string, string> = { Strong: "text-gain", Good: "text-gain/80", Average: "text-muted", Weak: "text-muted", "No data": "text-muted" };
+const BAND_TONE: Record<string, string> = {
+  Strong: "text-gain",
+  Good: "text-gain/80",
+  Average: "text-muted",
+  Weak: "text-muted",
+  "No data": "text-muted",
+};
 
 export default function TeamList({ rows, targeted = false, query = "" }: { rows: TeamRow[]; targeted?: boolean; query?: string }) {
   const leagues = useMemo(() => [...new Set(rows.map((r) => r.league))].sort(), [rows]);
@@ -48,29 +55,48 @@ export default function TeamList({ rows, targeted = false, query = "" }: { rows:
           const rank = rows.indexOf(r) + 1;
           const moved = targeted && r.overallRank ? r.overallRank - rank : 0;
           return (
-            <li key={r.id} data-tour={i === 0 ? "team-row" : undefined} className="grid grid-cols-[2rem_minmax(0,1fr)_auto] items-center gap-3 py-3 text-sm sm:grid-cols-[2rem_minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)]">
+            <li
+              key={r.id}
+              data-tour={i === 0 ? "team-row" : undefined}
+              className="grid grid-cols-[2rem_minmax(0,1fr)_auto] items-center gap-3 py-3 text-sm sm:grid-cols-[2rem_minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)]"
+            >
               <span className="font-mono text-xs text-muted">{i + 1}</span>
-              <div className="min-w-0">
-                <p className="truncate font-semibold">
-                  <Link href={`/sponsor/teams/${r.id}${query}`} className="hover:text-accent">
-                    {r.name}
-                  </Link>
-                  {r.onFanfit && <span className="ml-2 rounded-full border border-gain px-2 py-0.5 text-[10px] font-semibold text-gain">on FanFit</span>}
-                </p>
-                <p className="text-xs text-muted">
-                  {r.league} · {r.city}
-                  {moved !== 0 && (
-                    <span className={`ml-2 font-mono font-semibold ${moved > 0 ? "text-gain" : "text-loss"}`} title={`#${r.overallRank} for all fans`}>
-                      {moved > 0 ? "▲" : "▼"}
-                      {Math.abs(moved)}
-                    </span>
-                  )}
-                </p>
+              <div className="flex min-w-0 items-center gap-3">
+                <Monogram name={r.name} size="sm" />
+                <div className="min-w-0">
+                  <p className="truncate font-semibold">
+                    <Link href={`/sponsor/teams/${r.id}${query}`} className="hover:text-accent">
+                      {r.name}
+                    </Link>
+                    {r.onFanfit && (
+                      <span className="ml-2 rounded-full border border-gain px-2 py-0.5 text-[10px] font-semibold text-gain">
+                        on FanFit
+                      </span>
+                    )}
+                  </p>
+                  <p className="text-xs text-muted">
+                    {r.league} · {r.city}
+                    {moved !== 0 && (
+                      <span
+                        className={`ml-2 font-mono font-semibold ${moved > 0 ? "text-gain" : "text-loss"}`}
+                        title={`#${r.overallRank} for all fans`}
+                      >
+                        {moved > 0 ? "▲" : "▼"}
+                        {Math.abs(moved)}
+                      </span>
+                    )}
+                  </p>
+                </div>
               </div>
               <div className="text-right sm:text-left">
                 <p className={`text-xs font-semibold ${BAND_TONE[band]}`}>
                   {band}
-                  {r.z !== null && <span className="ml-1 font-mono font-normal text-muted">{r.z >= 0 ? "+" : ""}{r.z.toFixed(1)}σ</span>}
+                  {r.z !== null && (
+                    <span className="ml-1 font-mono font-normal text-muted">
+                      {r.z >= 0 ? "+" : ""}
+                      {r.z.toFixed(1)}σ
+                    </span>
+                  )}
                 </p>
                 <div className="mt-1 hidden h-1.5 rounded-full bg-panel-2 sm:block">
                   <div className="h-1.5 rounded-full bg-gain" style={{ width: `${Math.max(0, ((r.z ?? 0) / max) * 100)}%` }} />
@@ -91,8 +117,9 @@ export default function TeamList({ rows, targeted = false, query = "" }: { rows:
       </ol>
       {shown.length === 0 && <p className="mt-4 text-sm text-muted">No teams match these filters.</p>}
       <p className="mt-4 text-xs text-muted">
-        Open a team for why the fit is there, its current sponsors and an activation idea. Fit compares how much this team&apos;s fans like your brand with how they like 40 big brands (σ = standard deviations above
-        their usual). Women&apos;s league teams have thinner Qloo data, so treat their scores as rougher.
+        Open a team for why the fit is there, its current sponsors and an activation idea. Fit compares how much this team&apos;s fans like
+        your brand with how they like 40 big brands (σ = standard deviations above their usual). Women&apos;s league teams have thinner Qloo
+        data, so treat their scores as rougher.
       </p>
     </section>
   );

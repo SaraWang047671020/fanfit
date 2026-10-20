@@ -30,7 +30,7 @@ export default async function AccountBar({
       ? approved
         ? [
             { href: "/fanfit", label: "Find sponsors" },
-            { href: "/ask", label: "✦ Ask" },
+            { href: "/ask", label: "Ask" },
             { href: "/team/sponsors", label: "Our sponsors" },
             { href: "/team/offers", label: "Fan offers" },
             { href: "/team/outreach", label: "Outreach", badge: newNotes },
@@ -39,7 +39,7 @@ export default async function AccountBar({
         : []
       : [
           { href: "/sponsor", label: "Team ranking" },
-          { href: "/ask", label: "✦ Ask FanFit" },
+          { href: "/ask", label: "Ask FanFit" },
           { href: "/sponsor/outreach", label: "Outreach", badge: newNotes },
         ];
   return (

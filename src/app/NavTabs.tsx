@@ -1,8 +1,20 @@
 "use client";
 
 import Link from "next/link";
+import { ChartColumn, Handshake, Radar, Send, Sparkles, Ticket, Users } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+
+const ICON: Record<string, typeof Radar> = {
+  "/fanfit": Radar,
+  "/ask": Sparkles,
+  "/team/sponsors": Handshake,
+  "/team/offers": Ticket,
+  "/team/outreach": Send,
+  "/team/members": Users,
+  "/sponsor": ChartColumn,
+  "/sponsor/outreach": Send,
+};
 
 export default function NavTabs({ tabs }: { tabs: { href: string; label: string; badge?: number }[] }) {
   const path = usePathname();
@@ -43,6 +55,10 @@ export default function NavTabs({ tabs }: { tabs: { href: string; label: string;
                 aria-current={on ? "page" : undefined}
                 className={`flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1.5 font-medium ${on ? "bg-accent text-white" : "text-muted hover:bg-panel-2 hover:text-text"}`}
               >
+                {(() => {
+                  const I = ICON[t.href];
+                  return I ? <I className="h-4 w-4" aria-hidden /> : null;
+                })()}
                 {t.label}
                 {!!t.badge && (
                   <span
