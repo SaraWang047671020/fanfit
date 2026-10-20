@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { TASTE_TYPES, type Taste, type TasteKind, matchPlaces, suggestTastes } from "@/lib/fan-taste";
 import { currentUser } from "@/lib/supabase/server";
 import Tour from "../../Tour";
@@ -57,11 +58,13 @@ export default async function FansHome() {
       <p className="mt-2 text-muted">
         Tap ♡ on your teams to see all their deals and partners on one map, then claim a code to use at the counter.
       </p>
-      {isFan && (
-        <div className="mt-6">
+      <div className="mt-6">
+        {isFan ? (
           <TastePicker tastes={tastes} suggestions={suggestions} basis={basis} />
-        </div>
-      )}
+        ) : (
+          <TastePreview signedInAs={user ? (profile?.role ?? "none") : null} />
+        )}
+      </div>
       {mine.length > 0 && (
         <section data-tour="my-map" className="mt-6">
           <h2 className="text-xs font-bold uppercase tracking-[0.12em] text-accent">
@@ -82,5 +85,42 @@ export default async function FansHome() {
         <TeamSearch teams={all} followed={[...followed]} signedInAs={user ? (profile?.role ?? "none") : null} />
       </div>
     </main>
+  );
+}
+
+/**
+ * What "Your taste" does, for visitors who cannot use it here: signed out (try the fan demo or sign in), a team or
+ * sponsor account (tastes belong to fan accounts), or an account with no type yet. Otherwise the feature is invisible.
+ */
+function TastePreview({ signedInAs }: { signedInAs: string | null }) {
+  return (
+    <section className="rounded-2xl border border-dashed border-gain/50 bg-panel p-4">
+      <h2 className="text-xs font-bold uppercase tracking-[0.12em] text-accent">Your taste</h2>
+      <p className="mt-1 text-sm">
+        Pick brands, music, movies and shows you love, and Qloo orders your teams&apos; deals for you, with the reason: “because you
+        like Patagonia”.
+      </p>
+      <div className="mt-3 flex flex-wrap items-center gap-3 text-sm">
+        {signedInAs === "team" || signedInAs === "sponsor" ? (
+          <p className="text-xs text-muted">
+            You are signed in with a {signedInAs} account; tastes belong to fan accounts. Sign out and use “Try the fan demo” to see it.
+          </p>
+        ) : signedInAs === "none" ? (
+          <Link href="/fans/account" className="rounded-full bg-accent px-4 py-1.5 font-semibold text-white">
+            Continue as a fan
+          </Link>
+        ) : (
+          <>
+            <form action="/auth/demo" method="post">
+              <input type="hidden" name="as" value="fan" />
+              <button className="rounded-full bg-gain px-4 py-1.5 font-semibold text-white">Try the fan demo</button>
+            </form>
+            <Link href="/login?next=/fans" className="text-accent">
+              or sign in
+            </Link>
+          </>
+        )}
+      </div>
+    </section>
   );
 }
