@@ -32,12 +32,18 @@ export interface Partner {
   address: string;
   lat: number | null;
   lon: number | null;
+  team_id?: string; // set on the combined map of a fan's teams
+  team_name?: string;
 }
 
 const norm = (x: string) => x.toLowerCase().replace(/[^\p{L}\p{N}]/gu, "");
 /** The offer from this partner's business, if any (offers are tied to places, partners to the club's list). */
 const offerOf = (p: Partner, offers: FanOffer[]) =>
-  offers.find((o) => norm(o.place_name).includes(norm(p.name)) || norm(p.name).includes(norm(o.place_name)));
+  offers.find(
+    (o) =>
+      (!p.team_id || !o.team_id || o.team_id === p.team_id) &&
+      (norm(o.place_name).includes(norm(p.name)) || norm(p.name).includes(norm(o.place_name))),
+  );
 
 /** Great-circle distance in km. */
 function km(a: { lat: number; lon: number }, b: { lat: number; lon: number }) {
@@ -46,7 +52,20 @@ function km(a: { lat: number; lon: number }, b: { lat: number; lon: number }) {
   return 12742 * Math.asin(Math.sqrt(h));
 }
 
-export default function FanOffers({ offers, partners = [], emptyText }: { offers: FanOffer[]; partners?: Partner[]; emptyText: string }) {
+export default function FanOffers({
+  offers: allOffers,
+  partners: allPartners = [],
+  emptyText,
+  teams = [],
+}: {
+  offers: FanOffer[];
+  partners?: Partner[];
+  emptyText: string;
+  teams?: { id: string; name: string }[]; // 2+: show a team filter (combined map of a fan's teams)
+}) {
+  const [team, setTeam] = useState<string | null>(null);
+  const offers = useMemo(() => (team ? allOffers.filter((o) => o.team_id === team) : allOffers), [allOffers, team]);
+  const partners = useMemo(() => (team ? allPartners.filter((p) => p.team_id === team) : allPartners), [allPartners, team]);
   const [here, setHere] = useState<{ lat: number; lon: number } | null>(null);
   const [locating, setLocating] = useState<"idle" | "busy" | "denied">("idle");
   const [selected, setSelected] = useState<string | null>(null);
@@ -70,7 +89,7 @@ export default function FanOffers({ offers, partners = [], emptyText }: { offers
     );
   }
 
-  if (offers.length === 0 && partners.length === 0)
+  if (allOffers.length === 0 && allPartners.length === 0)
     return <p className="rounded-2xl border border-line bg-panel p-6 text-muted">{emptyText}</p>;
 
   const select = (id: string) => {
@@ -80,6 +99,21 @@ export default function FanOffers({ offers, partners = [], emptyText }: { offers
 
   return (
     <div className="space-y-4">
+      {teams.length > 1 && (
+        <div className="flex flex-wrap gap-2 text-sm" role="tablist" aria-label="Filter by team">
+          {[{ id: null, name: "All my teams" }, ...teams].map((t) => (
+            <button
+              key={t.id ?? "all"}
+              role="tab"
+              aria-selected={team === t.id}
+              onClick={() => setTeam(t.id)}
+              className={`rounded-full px-3 py-1.5 font-semibold ${team === t.id ? "bg-accent text-white" : "border border-line bg-panel text-muted hover:text-text"}`}
+            >
+              {t.name}
+            </button>
+          ))}
+        </div>
+      )}
       <OfferMap offers={offers} partners={partners} here={here} selected={selected} onSelect={select} />
       <div className="flex flex-wrap items-center gap-3 text-sm">
         <button onClick={nearMe} disabled={locating === "busy"} className="rounded-full border border-accent px-4 py-1.5 font-semibold text-accent disabled:opacity-50">
@@ -126,7 +160,7 @@ function Partners({ partners, offers, onDeal }: { partners: Partner[]; offers: F
         {partners.map((p) => {
           const deal = offerOf(p, offers);
           return (
-            <li key={p.name} className="rounded-2xl border border-line bg-panel px-4 py-3">
+            <li key={`${p.team_id ?? ""}:${p.name}`} className="rounded-2xl border border-line bg-panel px-4 py-3">
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
                   <p className="truncate font-semibold">
@@ -141,6 +175,7 @@ function Partners({ partners, offers, onDeal }: { partners: Partner[]; offers: F
                   <p className="text-xs text-muted">
                     {categoryLabel(p.category)}
                     {p.tier ? ` · ${p.tier}` : ""}
+                    {p.team_name ? ` · ${p.team_name}` : ""}
                   </p>
                   {p.address && <p className="text-xs text-muted">📍 {p.address}</p>}
                 </div>
@@ -200,14 +235,14 @@ function OfferMap({
         const pt: [number, number] = [p.lat!, p.lon!];
         points.push(pt);
         L.circleMarker(pt, { radius: 7, color: accent, weight: 3, fillColor: "#f5f7fb", fillOpacity: 1 })
-          .bindTooltip(`${p.name} · official partner`)
+          .bindTooltip(`${p.name} · ${p.team_name ? `${p.team_name} partner` : "official partner"}`)
           .addTo(layer.current!);
       }
       for (const o of placed) {
         const pt: [number, number] = [o.lat!, o.lon!];
         points.push(pt);
         L.circleMarker(pt, { radius: o.offer_id === selected ? 10 : 7, color: "#f5f7fb", weight: 2, fillColor: gain, fillOpacity: 1 })
-          .bindTooltip(`${o.place_name}: ${o.title}${o.demo ? " (demo)" : ""}`)
+          .bindTooltip(`${o.place_name}: ${o.title}${o.team_name ? ` · ${o.team_name}` : ""}${o.demo ? " (demo)" : ""}`)
           .on("click", () => onSelect(o.offer_id))
           .addTo(layer.current!);
       }

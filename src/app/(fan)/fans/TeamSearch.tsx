@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { FollowButton } from "./FanButtons";
 
 export interface FanTeam {
   id: string;
@@ -11,7 +12,7 @@ export interface FanTeam {
   live_offers: number;
 }
 
-export default function TeamSearch({ teams, followed }: { teams: FanTeam[]; followed: string[] }) {
+export default function TeamSearch({ teams, followed, signedInAs }: { teams: FanTeam[]; followed: string[]; signedInAs: string | null }) {
   const [q, setQ] = useState("");
   const norm = (s: string) => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
   const matches = useMemo(() => teams.filter((t) => norm(`${t.name} ${t.city} ${t.league}`).includes(norm(q.trim()))), [teams, q]);
@@ -31,17 +32,17 @@ export default function TeamSearch({ teams, followed }: { teams: FanTeam[]; foll
       />
       {q.trim() ? (
         <Section title={`${matches.length} result${matches.length === 1 ? "" : "s"}`}>
-          <Teams teams={matches} />
+          <Teams followed={followed} signedInAs={signedInAs} teams={matches} />
         </Section>
       ) : (
         <>
           {mine.length > 0 && (
             <Section title="Your teams">
-              <Teams teams={mine} />
+              <Teams followed={followed} signedInAs={signedInAs} teams={mine} />
             </Section>
           )}
           <Section title="Teams with deals now">
-            {withDeals.length ? <Teams teams={withDeals} /> : <p className="text-sm text-muted">No team has live deals yet. Check back soon.</p>}
+            {withDeals.length ? <Teams followed={followed} signedInAs={signedInAs} teams={withDeals} /> : <p className="text-sm text-muted">No team has live deals yet. Check back soon.</p>}
           </Section>
           {leagues.map((lg) => (
             <details key={lg} className="group">
@@ -49,7 +50,7 @@ export default function TeamSearch({ teams, followed }: { teams: FanTeam[]; foll
                 {lg} <span className="text-xs font-normal">({teams.filter((t) => t.league === lg).length} teams) ▾</span>
               </summary>
               <div className="mt-3">
-                <Teams teams={teams.filter((t) => t.league === lg)} />
+                <Teams followed={followed} signedInAs={signedInAs} teams={teams.filter((t) => t.league === lg)} />
               </div>
             </details>
           ))}
@@ -68,12 +69,16 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   );
 }
 
-function Teams({ teams }: { teams: FanTeam[] }) {
+function Teams({ teams, followed, signedInAs }: { teams: FanTeam[]; followed: string[]; signedInAs: string | null }) {
   return (
     <ul className="grid gap-2 sm:grid-cols-2">
       {teams.map((t) => (
-        <li key={t.id}>
-          <Link href={`/t/${t.id}`} className="flex items-center justify-between gap-3 rounded-2xl border border-line bg-panel px-4 py-3 hover:border-accent">
+        <li key={t.id} className="flex items-center gap-2">
+          <FollowButton teamId={t.id} teamName={t.name} following={followed.includes(t.id)} signedInAs={signedInAs} compact next="/fans" />
+          <Link
+            href={`/t/${t.id}`}
+            className="flex min-w-0 flex-1 items-center justify-between gap-3 rounded-2xl border border-line bg-panel px-4 py-3 hover:border-accent"
+          >
             <span className="min-w-0">
               <span className="block truncate font-semibold">{t.name}</span>
               <span className="block text-xs text-muted">
