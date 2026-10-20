@@ -185,11 +185,12 @@ function Partners({ partners, offers, onDeal }: { partners: Partner[]; offers: F
   return (
     <section className="pt-4">
       <h2 className="text-xs font-bold uppercase tracking-[0.12em] text-accent">Official partners</h2>
-      <ul className="mt-3 grid gap-2 sm:grid-cols-2">
+      {/* minmax(0,1fr): grid items otherwise grow to their longest line and push the page sideways on phones. */}
+      <ul className="mt-3 grid grid-cols-[minmax(0,1fr)] gap-2 sm:grid-cols-2">
         {partners.map((p) => {
           const deal = offerOf(p, offers);
           return (
-            <li key={`${p.team_id ?? ""}:${p.name}`} className="rounded-2xl border border-line bg-panel px-4 py-3">
+            <li key={`${p.team_id ?? ""}:${p.name}`} className="min-w-0 rounded-2xl border border-line bg-panel px-4 py-3">
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
                   <p className="truncate font-semibold">
@@ -206,7 +207,7 @@ function Partners({ partners, offers, onDeal }: { partners: Partner[]; offers: F
                     {p.tier ? ` · ${p.tier}` : ""}
                     {p.team_name ? ` · ${p.team_name}` : ""}
                   </p>
-                  {p.address && <p className="text-xs text-muted">📍 {p.address}</p>}
+                  {p.address && <p className="break-words text-xs text-muted">📍 {p.address}</p>}
                   {p.match && <MatchBadge m={p.match} />}
                 </div>
                 {deal && (
