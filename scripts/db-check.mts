@@ -115,3 +115,11 @@ for (const fn of ["handle_new_user", "create_offer_key"]) {
   ok(`${fn} is not callable through the API`, !!error && (error.code === "PGRST202" || /permission denied/i.test(error.message)), error?.code ?? "no error");
 }
 ok("signed-in team can still use my_team in RLS", ((await a.from("offers").select("id")).data ?? []).length > 0);
+
+// ---------------------------------------------------------------- partners on the fan map
+const { data: partnerRows } = await anon.rpc("fan_partners", { p_team: seattle.id });
+ok("anon sees the club's partners on the fan map", (partnerRows ?? []).length > 0);
+ok("partner rows carry only public fields", (partnerRows ?? []).every((r: Record<string, unknown>) => !("added_by" in r) && !("id" in r) && !("team_id" in r)));
+
+// ---------------------------------------------------------------- clean up what this run added to the shared test team
+await a.from("team_sponsors").delete().like("name", "Test sponsor %");

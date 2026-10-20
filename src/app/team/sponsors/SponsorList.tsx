@@ -2,7 +2,17 @@
 
 import { useState, useTransition } from "react";
 import { CATEGORIES, CATEGORY_KEYS, type Sponsor, categoryLabel } from "@/lib/fanfit-score";
-import { type SponsorInput, addSponsor, findSponsorsOnWeb, importSponsors, removeSponsor, updateSponsor } from "../actions";
+import {
+  type PlaceCandidate,
+  type SponsorInput,
+  addSponsor,
+  findSponsorPlaces,
+  findSponsorsOnWeb,
+  importSponsors,
+  removeSponsor,
+  setSponsorPlace,
+  updateSponsor,
+} from "../actions";
 
 export interface ListedSponsor {
   id: string;
@@ -10,6 +20,8 @@ export interface ListedSponsor {
   category: string;
   tier: string;
   source_url: string | null;
+  address: string;
+  lat: number | null;
 }
 
 const GROUP_LABEL: Record<string, string> = {
@@ -119,6 +131,7 @@ export default function SponsorList({ sponsors }: { sponsors: ListedSponsor[] })
                         {categoryLabel(s.category)}
                         {s.tier ? ` · ${s.tier}` : ""}
                       </p>
+                      <LocationPicker sponsor={s} />
                     </div>
                     <div className="flex gap-2">
                       <button onClick={() => setEditing(s.id)} className="rounded-full border border-line px-3 py-1 text-xs text-muted hover:border-accent hover:text-text">
@@ -148,6 +161,92 @@ export default function SponsorList({ sponsors }: { sponsors: ListedSponsor[] })
       </section>
 
       <WebImport />
+    </div>
+  );
+}
+
+/** Pin a sponsor to a Qloo place for the fan map, or leave it as a list-only (national) sponsor. */
+function LocationPicker({ sponsor }: { sponsor: ListedSponsor }) {
+  const [open, setOpen] = useState(false);
+  const [candidates, setCandidates] = useState<PlaceCandidate[] | null>(null);
+  const [query, setQuery] = useState(sponsor.name);
+  const [error, setError] = useState("");
+  const [pending, start] = useTransition();
+
+  const search = () =>
+    start(async () => {
+      setOpen(true);
+      setError("");
+      const r = await findSponsorPlaces(sponsor.id, query);
+      if (r.error) setError(r.error);
+      setCandidates(r.candidates ?? []);
+    });
+  const pick = (id: string | null) =>
+    start(async () => {
+      const r = await setSponsorPlace(sponsor.id, id);
+      if ("error" in r && r.error) setError(r.error);
+      else {
+        setOpen(false);
+        setCandidates(null);
+      }
+    });
+
+  return (
+    <div className="mt-1 text-xs">
+      {sponsor.lat !== null ? (
+        <p className="text-gain">
+          📍 {sponsor.address || "On the fan map"}{" "}
+          <button onClick={search} disabled={pending} className="ml-1 text-muted underline hover:text-text">Change</button>
+          <button onClick={() => pick(null)} disabled={pending} className="ml-2 text-muted underline hover:text-text">Remove pin</button>
+        </p>
+      ) : (
+        !open && (
+          <button onClick={search} disabled={pending} className="text-accent hover:underline disabled:opacity-50">
+            {pending ? "Searching places…" : "📍 Set a location for the fan map"}
+          </button>
+        )
+      )}
+      {open && (
+        <div className="mt-2 space-y-1 rounded-lg border border-line bg-bg/60 p-2">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              search();
+            }}
+            className="flex gap-2 px-2 pb-1"
+          >
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              aria-label="Search places"
+              placeholder="Name as it appears on the map, e.g. Providence Swedish"
+              className="w-full rounded border border-line bg-panel-2 px-2 py-1 text-xs outline-none focus:border-accent"
+            />
+            <button disabled={pending} className="rounded border border-accent px-2 text-accent disabled:opacity-50">
+              Search
+            </button>
+          </form>
+          {pending && <p className="px-2 text-muted">Searching Qloo places…</p>}
+          {candidates?.map((c) => (
+            <button key={c.id} onClick={() => pick(c.id)} disabled={pending} className="block w-full rounded px-2 py-1 text-left hover:bg-panel-2 disabled:opacity-50">
+              <span className="font-semibold text-text">{c.name}</span> <span className="text-muted">{c.address}</span>
+              {c.inCity && <span className="ml-1 text-gain">· in your city</span>}
+            </button>
+          ))}
+          {!pending && candidates?.length === 0 && (
+            <p className="px-2 text-muted">No place with that name in Qloo. Try the name as it appears on the map, or list it without a pin.</p>
+          )}
+          <div className="flex gap-3 px-2 pt-1">
+            <button onClick={() => pick(null)} disabled={pending} className="text-muted underline hover:text-text">
+              No physical location (list only)
+            </button>
+            <button onClick={() => setOpen(false)} className="text-muted underline hover:text-text">
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+      {error && <p className="mt-1 text-loss">{error}</p>}
     </div>
   );
 }

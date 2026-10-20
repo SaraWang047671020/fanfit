@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { createClient, currentUser } from "@/lib/supabase/server";
 import { FollowButton } from "../../fans/FanButtons";
-import FanOffers, { type FanOffer } from "../../FanOffers";
+import FanOffers, { type FanOffer, type Partner } from "../../FanOffers";
 
 // fan_offers returns one row per live offer, or a single row with null offer fields when the team has none.
 type Row = { team_name: string; team_city: string } & ({ offer_id: string } & Omit<FanOffer, "offer_id"> | { offer_id: null });
@@ -26,8 +26,11 @@ export default async function FanMapPage({ params }: PageProps<"/t/[team]">) {
   const rows = await load(team);
   if (!rows) notFound();
   const { supabase, user, profile } = await currentUser();
-  const following =
-    profile?.role === "fan" && !!(await supabase.from("fan_follows").select("team_id").eq("team_id", team).maybeSingle()).data;
+  const [follow, { data: partners }] = await Promise.all([
+    profile?.role === "fan" ? supabase.from("fan_follows").select("team_id").eq("team_id", team).maybeSingle() : Promise.resolve({ data: null }),
+    supabase.rpc("fan_partners", { p_team: team }),
+  ]);
+  const following = !!follow.data;
   const offers: FanOffer[] = rows.flatMap((r) =>
     r.offer_id === null
       ? []
@@ -39,10 +42,14 @@ export default async function FanMapPage({ params }: PageProps<"/t/[team]">) {
         <p className="text-xs font-bold uppercase tracking-[0.14em] text-gain">{rows[0].team_name} · fan offers</p>
         <FollowButton teamId={team} following={following} signedInAs={user ? (profile?.role ?? "none") : null} />
       </div>
-      <h1 className="mt-2 text-3xl font-bold sm:text-4xl">Deals from {rows[0].team_name} partners around {rows[0].team_city.split(",")[0]}</h1>
-      <p className="mt-3 text-muted">Claim a code, show it at the counter. Businesses are partners picked for what this team&apos;s fans love.</p>
+      <h1 className="mt-2 text-3xl font-bold sm:text-4xl">{rows[0].team_name} partners and deals around {rows[0].team_city.split(",")[0]}</h1>
+      <p className="mt-3 text-muted">The club&apos;s official partners, plus deals you can claim and show at the counter.</p>
       <div className="mt-6">
-        <FanOffers offers={offers} emptyText={`${rows[0].team_name} has no live offers right now. Check back soon.`} />
+        <FanOffers
+          offers={offers}
+          partners={(partners ?? []) as Partner[]}
+          emptyText={`${rows[0].team_name} has no deals right now. Check back soon.`}
+        />
       </div>
       <p className="mt-10 text-xs text-muted">
         Powered by FanFit · <a href="/privacy" className="hover:text-text">Privacy</a> · <a href="/terms" className="hover:text-text">Terms</a>

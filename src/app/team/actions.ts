@@ -140,3 +140,69 @@ export async function importSponsors(items: SponsorInput[]) {
     return { error: e instanceof Error ? e.message : String(e) };
   }
 }
+
+// ---------------------------------------------------------------- sponsor locations for the fan map
+
+export interface PlaceCandidate {
+  id: string;
+  name: string;
+  address: string;
+  inCity: boolean;
+}
+
+/**
+ * Qloo places that could be this sponsor in the team's city. Qloo search cannot filter by location, so it searches the
+ * name (or the club's own wording, e.g. "Providence Swedish") alone and with the city, keeps places whose name matches,
+ * and puts those in the team's city first. The club picks one.
+ */
+export async function findSponsorPlaces(sponsorId: string, query?: string): Promise<{ candidates?: PlaceCandidate[]; error?: string }> {
+  try {
+    const { supabase, teamId } = await teamMember();
+    const [{ data: s }, { data: team }] = await Promise.all([
+      supabase.from("team_sponsors").select("name").eq("id", sponsorId).single<{ name: string }>(),
+      supabase.from("teams").select("city").eq("id", teamId).single<{ city: string }>(),
+    ]);
+    if (!s || !team) return { error: "Sponsor not found." };
+    const cityName = team.city.split(",")[0].trim();
+    const search = (query: string) =>
+      get("/search", { query, types: "urn:entity:place", take: 8 }, (raw) =>
+        ((raw as { results?: RawEntity[] }).results ?? []).map((e) => ({ id: e.entity_id, name: e.name, address: e.properties?.address ?? "" })),
+      );
+    const term = query?.trim().slice(0, 80) || s.name;
+    const [a, b] = await Promise.all([search(term), search(`${term} ${cityName}`)]);
+    const seen = new Set<string>();
+    const norm = (x: string) => x.toLowerCase().replace(/[^\p{L}\p{N}]/gu, "");
+    // A place matches when it shares the first word of the search ("Providence Swedish Cancer Institute" for "Providence"),
+    // so city landmarks that only matched the city name drop out.
+    const key = norm(term.split(/\s+/)[0]);
+    const candidates = [...a, ...b]
+      .filter((p) => !seen.has(p.id) && seen.add(p.id))
+      .filter((p) => norm(p.name).includes(key))
+      .map((p) => ({ ...p, inCity: p.address.toLowerCase().includes(cityName.toLowerCase()) }))
+      .sort((x, y) => Number(y.inCity) - Number(x.inCity))
+      .slice(0, 6);
+    return { candidates };
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : String(e) };
+  }
+}
+
+/** Pin a sponsor to a Qloo place (address and coordinates fetched on the server), or clear it with null. */
+export async function setSponsorPlace(sponsorId: string, placeId: string | null) {
+  try {
+    const { supabase } = await teamMember();
+    let patch: { place_qloo_id: string | null; address: string; lat: number | null; lon: number | null } = { place_qloo_id: null, address: "", lat: null, lon: null };
+    if (placeId) {
+      const [place] = await get("/entities", { entity_ids: placeId }, (raw) =>
+        ((raw as { results?: (RawEntity & { location?: { lat?: number; lon?: number } })[] }).results ?? []),
+      );
+      if (!place?.location?.lat) return { error: "Qloo has no coordinates for this place." };
+      patch = { place_qloo_id: place.entity_id, address: place.properties?.address ?? "", lat: place.location.lat, lon: place.location.lon ?? null };
+    }
+    const { error } = await supabase.from("team_sponsors").update(patch).eq("id", sponsorId); // RLS: own team only
+    revalidatePath("/team/sponsors");
+    return error ? { error: error.message } : { ok: true };
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : String(e) };
+  }
+}

@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import QRCode from "qrcode";
 import "leaflet/dist/leaflet.css";
 import { type SavedCode, useSavedCodes } from "@/lib/fan-codes";
-import { AGES, AGE_LABEL } from "@/lib/fanfit-score";
+import { AGES, AGE_LABEL, categoryLabel } from "@/lib/fanfit-score";
 import { createClient } from "@/lib/supabase/client";
 
 export interface FanOffer {
@@ -22,6 +22,22 @@ export interface FanOffer {
   team_name?: string;
 }
 
+/** A sponsor on the club's list. Shown on the fan map whether or not it has an offer; pinned when it has a location. */
+export interface Partner {
+  name: string;
+  category: string;
+  tier: string;
+  source_url: string | null;
+  address: string;
+  lat: number | null;
+  lon: number | null;
+}
+
+const norm = (x: string) => x.toLowerCase().replace(/[^\p{L}\p{N}]/gu, "");
+/** The offer from this partner's business, if any (offers are tied to places, partners to the club's list). */
+const offerOf = (p: Partner, offers: FanOffer[]) =>
+  offers.find((o) => norm(o.place_name).includes(norm(p.name)) || norm(p.name).includes(norm(o.place_name)));
+
 /** Great-circle distance in km. */
 function km(a: { lat: number; lon: number }, b: { lat: number; lon: number }) {
   const r = (d: number) => (d * Math.PI) / 180;
@@ -29,7 +45,7 @@ function km(a: { lat: number; lon: number }, b: { lat: number; lon: number }) {
   return 12742 * Math.asin(Math.sqrt(h));
 }
 
-export default function FanOffers({ offers, emptyText }: { offers: FanOffer[]; emptyText: string }) {
+export default function FanOffers({ offers, partners = [], emptyText }: { offers: FanOffer[]; partners?: Partner[]; emptyText: string }) {
   const [here, setHere] = useState<{ lat: number; lon: number } | null>(null);
   const [locating, setLocating] = useState<"idle" | "busy" | "denied">("idle");
   const [selected, setSelected] = useState<string | null>(null);
@@ -53,12 +69,17 @@ export default function FanOffers({ offers, emptyText }: { offers: FanOffer[]; e
     );
   }
 
-  if (offers.length === 0)
+  if (offers.length === 0 && partners.length === 0)
     return <p className="rounded-2xl border border-line bg-panel p-6 text-muted">{emptyText}</p>;
+
+  const select = (id: string) => {
+    setSelected(id);
+    document.getElementById(`offer-${id}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
+  };
 
   return (
     <div className="space-y-4">
-      <OfferMap offers={offers} here={here} selected={selected} onSelect={setSelected} />
+      <OfferMap offers={offers} partners={partners} here={here} selected={selected} onSelect={select} />
       <div className="flex flex-wrap items-center gap-3 text-sm">
         <button onClick={nearMe} disabled={locating === "busy"} className="rounded-full border border-accent px-4 py-1.5 font-semibold text-accent disabled:opacity-50">
           {locating === "busy" ? "Locating…" : here ? "Sorted by distance" : "Near me"}
@@ -67,6 +88,7 @@ export default function FanOffers({ offers, emptyText }: { offers: FanOffer[]; e
           {locating === "denied" ? "Location is off; sorted by fit instead." : "Your location stays on this device."}
         </span>
       </div>
+      {offers.length === 0 && <p className="rounded-2xl border border-line bg-panel p-4 text-sm text-muted">{emptyText}</p>}
       <ol className="space-y-3">
         {sorted.map((o) => (
           <OfferCard
@@ -89,17 +111,60 @@ export default function FanOffers({ offers, emptyText }: { offers: FanOffer[]; e
           />
         ))}
       </ol>
+      {partners.length > 0 && <Partners partners={partners} offers={offers} onDeal={select} />}
     </div>
+  );
+}
+
+function Partners({ partners, offers, onDeal }: { partners: Partner[]; offers: FanOffer[]; onDeal: (offerId: string) => void }) {
+  return (
+    <section className="pt-4">
+      <h2 className="text-xs font-bold uppercase tracking-[0.12em] text-accent">Official partners</h2>
+      <ul className="mt-3 grid gap-2 sm:grid-cols-2">
+        {partners.map((p) => {
+          const deal = offerOf(p, offers);
+          return (
+            <li key={p.name} className="rounded-2xl border border-line bg-panel px-4 py-3">
+              <div className="flex items-start justify-between gap-2">
+                <div className="min-w-0">
+                  <p className="truncate font-semibold">
+                    {p.source_url ? (
+                      <a href={p.source_url} target="_blank" rel="noreferrer" className="hover:text-accent">
+                        {p.name}
+                      </a>
+                    ) : (
+                      p.name
+                    )}
+                  </p>
+                  <p className="text-xs text-muted">
+                    {categoryLabel(p.category)}
+                    {p.tier ? ` · ${p.tier}` : ""}
+                  </p>
+                  {p.address && <p className="text-xs text-muted">📍 {p.address}</p>}
+                </div>
+                {deal && (
+                  <button onClick={() => onDeal(deal.offer_id)} className="shrink-0 rounded-full bg-gain/15 px-2.5 py-1 text-xs font-semibold text-gain">
+                    Deal
+                  </button>
+                )}
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
   );
 }
 
 function OfferMap({
   offers,
+  partners,
   here,
   selected,
   onSelect,
 }: {
   offers: FanOffer[];
+  partners: Partner[];
   here: { lat: number; lon: number } | null;
   selected: string | null;
   onSelect: (id: string) => void;
@@ -108,6 +173,8 @@ function OfferMap({
   const map = useRef<import("leaflet").Map | null>(null);
   const layer = useRef<import("leaflet").LayerGroup | null>(null);
   const placed = useMemo(() => offers.filter((o) => o.lat !== null && o.lon !== null), [offers]);
+  // Partners already shown through their offer get no second pin.
+  const pinnedPartners = useMemo(() => partners.filter((p) => p.lat !== null && p.lon !== null && !offerOf(p, offers)), [partners, offers]);
 
   useEffect(() => {
     let cancelled = false;
@@ -123,8 +190,17 @@ function OfferMap({
         layer.current = L.layerGroup().addTo(map.current);
       }
       layer.current!.clearLayers();
-      const gain = getComputedStyle(document.documentElement).getPropertyValue("--gain").trim() || "#5fe0c1";
+      const css = getComputedStyle(document.documentElement);
+      const gain = css.getPropertyValue("--gain").trim() || "#5fe0c1";
+      const accent = css.getPropertyValue("--accent").trim() || "#8fa4ff";
       const points: [number, number][] = [];
+      for (const p of pinnedPartners) {
+        const pt: [number, number] = [p.lat!, p.lon!];
+        points.push(pt);
+        L.circleMarker(pt, { radius: 7, color: accent, weight: 3, fillColor: "#0b0d12", fillOpacity: 1 })
+          .bindTooltip(`${p.name} · official partner`)
+          .addTo(layer.current!);
+      }
       for (const o of placed) {
         const pt: [number, number] = [o.lat!, o.lon!];
         points.push(pt);
@@ -144,12 +220,20 @@ function OfferMap({
     return () => {
       cancelled = true;
     };
-  }, [placed, here, selected, onSelect]);
+  }, [placed, pinnedPartners, here, selected, onSelect]);
 
   useEffect(() => () => void map.current?.remove(), []);
 
-  if (placed.length === 0) return null;
-  return <div ref={box} className="h-72 w-full overflow-hidden rounded-2xl border border-line sm:h-96" aria-label="Map of partner businesses" />;
+  if (placed.length === 0 && pinnedPartners.length === 0) return null;
+  return (
+    <div>
+      <div ref={box} className="h-72 w-full overflow-hidden rounded-2xl border border-line sm:h-96" aria-label="Map of partner businesses and deals" />
+      <p className="mt-2 flex gap-4 text-xs text-muted">
+        <span><span className="mr-1 inline-block h-2.5 w-2.5 rounded-full bg-gain align-middle" />Deal</span>
+        <span><span className="mr-1 inline-block h-2.5 w-2.5 rounded-full border-2 border-accent align-middle" />Official partner</span>
+      </p>
+    </div>
+  );
 }
 
 function OfferCard({
@@ -181,7 +265,7 @@ function OfferCard({
   }
 
   return (
-    <li className={`rounded-2xl border bg-panel p-4 ${highlighted ? "border-accent" : "border-line"}`}>
+    <li id={`offer-${o.offer_id}`} className={`scroll-mt-20 rounded-2xl border bg-panel p-4 ${highlighted ? "border-accent" : "border-line"}`}>
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <p className="font-semibold">{o.place_name}</p>
         {distance !== null && <span className="font-mono text-xs text-muted">{distance < 1 ? `${Math.round(distance * 1000)} m` : `${distance.toFixed(1)} km`}</span>}

@@ -16,7 +16,7 @@ export default async function TeamSponsorsPage() {
     supabase.from("teams").select("name").eq("id", profile.team_id!).single<{ name: string }>(),
     supabase
       .from("team_sponsors")
-      .select("id, name, category, tier, source_url")
+      .select("id, name, category, tier, source_url, address, lat")
       .eq("team_id", profile.team_id!)
       .order("category")
       .order("name")
@@ -35,8 +35,8 @@ export default async function TeamSponsorsPage() {
         <h1 className="mt-2 text-4xl font-bold">Current sponsors of {team?.name}</h1>
         <p className="mt-3 max-w-3xl text-muted">
           Keep this list current and FanFit uses it instead of web search: the sponsor finder sets aside brands that clash with a
-          category you have sold, and brands looking at {team?.name} see which categories are taken. Sponsors can see this list, so
-          only add deals that are public.
+          category you have sold, and brands looking at {team?.name} see which categories are taken. Every sponsor here also shows
+          on your public fan map (set a location to give it a pin), so only add deals that are public.
         </p>
       </header>
       <div className="mt-8">
