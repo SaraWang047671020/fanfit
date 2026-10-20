@@ -82,6 +82,11 @@ const TOURS: Record<string, Step[]> = {
   ],
   fans: [
     {
+      el: "taste",
+      title: "Your taste",
+      body: "Add brands, artists, movies or shows you love. Qloo then orders your teams' deals for you and says why.",
+    },
+    {
       el: "my-map",
       title: "All your teams on one map",
       body: "Deals and official partners of every team you follow. Filter by team, sort by distance, and claim a code to show at the counter.",

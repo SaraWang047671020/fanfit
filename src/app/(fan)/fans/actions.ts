@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { TASTE_TYPES, type Taste, searchTastes } from "@/lib/fan-taste";
 import { createClient } from "@/lib/supabase/server";
 
 export async function joinFan() {
@@ -21,4 +22,32 @@ export async function setFollow(teamId: string, follow: boolean) {
   revalidatePath("/fans", "layout");
   revalidatePath(`/t/${teamId}`);
   return error ? { error: error.message } : { ok: true };
+}
+
+/** Qloo search for the taste picker (signed-in fans only: it spends API quota). */
+export async function findTastes(query: string) {
+  const q = query.trim().slice(0, 80);
+  if (q.length < 2) return { results: [] as Taste[] };
+  const supabase = await createClient();
+  const { data } = await supabase.auth.getUser();
+  if (!data.user) return { error: "Sign in to save your taste.", results: [] as Taste[] };
+  try {
+    return { results: await searchTastes(q) };
+  } catch {
+    return { error: "Search is unavailable right now.", results: [] as Taste[] };
+  }
+}
+
+/** Add or remove one of the signed-in fan's tastes. RLS keeps it to their own rows (at most 8). */
+export async function setTaste(taste: Taste, add: boolean) {
+  const supabase = await createClient();
+  const { data } = await supabase.auth.getUser();
+  if (!data.user) return { error: "Sign in to save your taste." };
+  if (add && !(taste.kind in TASTE_TYPES)) return { error: "Unknown kind." };
+  const { error } = add
+    ? await supabase.from("fan_tastes").insert({ entity_id: taste.entity_id.slice(0, 64), name: taste.name.slice(0, 200), kind: taste.kind })
+    : await supabase.from("fan_tastes").delete().eq("user_id", data.user.id).eq("entity_id", taste.entity_id);
+  revalidatePath("/fans", "layout");
+  if (error) return { error: error.message.includes("row-level security") ? "You can keep up to 8 tastes." : error.message };
+  return { ok: true };
 }

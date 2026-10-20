@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import QRCode from "qrcode";
 import "leaflet/dist/leaflet.css";
 import { type SavedCode, useSavedCodes } from "@/lib/fan-codes";
+import type { Match } from "@/lib/fan-taste";
 import { AGES, AGE_LABEL, categoryLabel } from "@/lib/fanfit-score";
 import { createClient } from "@/lib/supabase/client";
 
@@ -21,6 +22,8 @@ export interface FanOffer {
   team_id?: string; // set on cross-team lists (deals near me)
   team_name?: string;
   demo?: boolean; // not agreed with the business: labelled, codes not valid in store
+  place_qloo_id?: string;
+  match?: Match; // how well it fits the signed-in fan's tastes (Qloo), when they have set some
 }
 
 /** A sponsor on the club's list. Shown on the fan map whether or not it has an offer; pinned when it has a location. */
@@ -34,6 +37,8 @@ export interface Partner {
   lon: number | null;
   team_id?: string; // set on the combined map of a fan's teams
   team_name?: string;
+  place_qloo_id?: string | null;
+  match?: Match;
 }
 
 const norm = (x: string) => x.toLowerCase().replace(/[^\p{L}\p{N}]/gu, "");
@@ -66,16 +71,26 @@ export default function FanOffers({
   const [team, setTeam] = useState<string | null>(null);
   const offers = useMemo(() => (team ? allOffers.filter((o) => o.team_id === team) : allOffers), [allOffers, team]);
   const partners = useMemo(() => (team ? allPartners.filter((p) => p.team_id === team) : allPartners), [allPartners, team]);
+  const forYou = allOffers.some((o) => o.match) || allPartners.some((p) => p.match);
+  const [order, setOrder] = useState<"you" | "fit">("you");
   const [here, setHere] = useState<{ lat: number; lon: number } | null>(null);
+  const byTaste = forYou && order === "you" && !here; // the first taste added switches the list to "For you"
   const [locating, setLocating] = useState<"idle" | "busy" | "denied">("idle");
   const [selected, setSelected] = useState<string | null>(null);
   const { codes, remember } = useSavedCodes();
 
   const sorted = useMemo(() => {
-    if (!here) return offers; // already ordered by fit
-    const d = (o: FanOffer) => (o.lat === null || o.lon === null ? Infinity : km(here, { lat: o.lat, lon: o.lon }));
-    return [...offers].sort((a, b) => d(a) - d(b));
-  }, [offers, here]);
+    if (here) {
+      const d = (o: FanOffer) => (o.lat === null || o.lon === null ? Infinity : km(here, { lat: o.lat, lon: o.lon }));
+      return [...offers].sort((a, b) => d(a) - d(b));
+    }
+    if (byTaste) return [...offers].sort((a, b) => (b.match?.score ?? -1) - (a.match?.score ?? -1));
+    return offers; // already ordered by fit
+  }, [offers, here, byTaste]);
+  const shownPartners = useMemo(
+    () => (byTaste ? [...partners].sort((a, b) => (b.match?.score ?? -1) - (a.match?.score ?? -1)) : partners),
+    [partners, byTaste],
+  );
 
   function nearMe() {
     setLocating("busy");
@@ -116,6 +131,18 @@ export default function FanOffers({
       )}
       <OfferMap offers={offers} partners={partners} here={here} selected={selected} onSelect={select} />
       <div className="flex flex-wrap items-center gap-3 text-sm">
+        {forYou && (
+          <button
+            onClick={() => {
+              setHere(null);
+              setOrder(order === "you" ? "fit" : "you");
+            }}
+            aria-pressed={byTaste}
+            className={`rounded-full px-4 py-1.5 font-semibold ${byTaste ? "bg-gain text-white" : "border border-gain text-gain"}`}
+          >
+            ✦ For you
+          </button>
+        )}
         <button onClick={nearMe} disabled={locating === "busy"} className="rounded-full border border-accent px-4 py-1.5 font-semibold text-accent disabled:opacity-50">
           {locating === "busy" ? "Locating…" : here ? "Sorted by distance" : "Near me"}
         </button>
@@ -147,7 +174,7 @@ export default function FanOffers({
           />
         ))}
       </ol>
-      {partners.length > 0 && <Partners partners={partners} offers={offers} onDeal={select} />}
+      {partners.length > 0 && <Partners partners={shownPartners} offers={offers} onDeal={select} />}
     </div>
   );
 }
@@ -178,6 +205,7 @@ function Partners({ partners, offers, onDeal }: { partners: Partner[]; offers: F
                     {p.team_name ? ` · ${p.team_name}` : ""}
                   </p>
                   {p.address && <p className="text-xs text-muted">📍 {p.address}</p>}
+                  {p.match && <MatchBadge m={p.match} />}
                 </div>
                 {deal && (
                   <button onClick={() => onDeal(deal.offer_id)} className="shrink-0 rounded-full bg-gain/15 px-2.5 py-1 text-xs font-semibold text-gain">
@@ -315,6 +343,7 @@ function OfferCard({
           {o.team_name} partner
         </a>
       )}
+      {o.match && <MatchBadge m={o.match} />}
       {o.demo && <DemoBadge />}
       <p className="mt-2 text-lg font-semibold text-gain">{o.title}</p>
       {o.details && <p className="text-sm text-muted">{o.details}</p>}
@@ -346,6 +375,20 @@ function OfferCard({
         </div>
       )}
     </li>
+  );
+}
+
+/**
+ * Match is a rank among this fan's own places (not an absolute score), so it shows as a tier: the top quarter is a
+ * strong match, the upper half a good one, the rest gets no label.
+ */
+function MatchBadge({ m }: { m: Match }) {
+  if (m.score < 50) return null;
+  return (
+    <p className="mt-1 text-xs">
+      <span className="font-semibold text-gain">✦ {m.score >= 75 ? "Strong match" : "Good match"} for your taste</span>
+      <span className="text-muted"> · because you like {m.because}</span>
+    </p>
   );
 }
 

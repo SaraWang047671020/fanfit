@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import { type Taste, matchPlaces } from "@/lib/fan-taste";
 import { currentUser } from "@/lib/supabase/server";
 import Tour from "../../Tour";
 import FanOffers, { type FanOffer, type Partner } from "../FanOffers";
+import TastePicker from "./TastePicker";
 import TeamSearch, { type FanTeam } from "./TeamSearch";
 
 export const metadata: Metadata = { title: "FanFit for fans · Deals from your team's partners" };
@@ -9,10 +11,12 @@ export const metadata: Metadata = { title: "FanFit for fans · Deals from your t
 export default async function FansHome() {
   const { supabase, user, profile } = await currentUser();
   const isFan = !!user && profile?.role === "fan";
-  const [{ data: teams }, { data: follows }] = await Promise.all([
+  const [{ data: teams }, { data: follows }, { data: tasteRows }] = await Promise.all([
     supabase.rpc("fan_teams"),
     isFan ? supabase.from("fan_follows").select("team_id") : Promise.resolve({ data: [] as { team_id: string }[] }),
+    isFan ? supabase.from("fan_tastes").select("entity_id, name, kind").order("created_at") : Promise.resolve({ data: [] as Taste[] }),
   ]);
+  const tastes = (tasteRows ?? []) as Taste[];
   const all = (teams ?? []) as FanTeam[];
   const followed = new Set((follows ?? []).map((f) => f.team_id));
   const mine = all.filter((t) => followed.has(t.id));
@@ -29,12 +33,23 @@ export default async function FansHome() {
     partners = lists.flatMap(({ data }, i) => ((data ?? []) as Partner[]).map((p) => ({ ...p, team_id: mine[i].id, team_name: mine[i].name })));
   }
 
+  // For you: order the map's deals and partner businesses by this fan's tastes (Qloo).
+  const ids = [...offers.map((o) => o.place_qloo_id), ...partners.map((p) => p.place_qloo_id)].filter((x): x is string => !!x);
+  const matches = await matchPlaces(tastes, ids);
+  offers = offers.map((o) => ({ ...o, match: o.place_qloo_id ? matches.get(o.place_qloo_id) : undefined }));
+  partners = partners.map((p) => ({ ...p, match: p.place_qloo_id ? matches.get(p.place_qloo_id) : undefined }));
+
   return (
     <main className="mx-auto w-full max-w-5xl px-4 py-6 sm:py-10">
       <h1 className="text-3xl font-bold sm:text-4xl">Deals from your team&apos;s partners</h1>
       <p className="mt-2 text-muted">
         Tap ♡ on your teams to see all their deals and partners on one map, then claim a code to use at the counter.
       </p>
+      {isFan && (
+        <div className="mt-6">
+          <TastePicker tastes={tastes} />
+        </div>
+      )}
       {mine.length > 0 && (
         <section data-tour="my-map" className="mt-6">
           <h2 className="text-xs font-bold uppercase tracking-[0.12em] text-accent">

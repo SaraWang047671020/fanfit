@@ -179,3 +179,16 @@ ok("demo team cannot wipe simulated data", !!(await d.rpc("clear_simulated", { p
 ok("demo team cannot add simulated data", !!(await d.rpc("simulate_claims", { p_offer: seeded.id, p_count: 5 })).error);
 ok("users cannot mark themselves non-demo", !!(await d.from("profiles").update({ is_demo: false }).eq("user_id", did)).error);
 await a.from("offers").update({ active: false }).in("id", [seeded.id, dOffer!.id]);
+
+// ---------------------------------------------------------------- fan tastes (private, max 8)
+const ft = await user(`taste-${stamp}@example.test`);
+const ftOther = await user(`taste-other-${stamp}@example.test`);
+const ftId = (await ft.auth.getUser()).data.user!.id;
+ok("fan adds a taste", !(await ft.from("fan_tastes").insert({ entity_id: `E${stamp}`, name: "Patagonia", kind: "brand" })).error);
+ok("fan reads own tastes", ((await ft.from("fan_tastes").select("entity_id")).data ?? []).length === 1);
+ok("others cannot read a fan's tastes", ((await ftOther.from("fan_tastes").select("entity_id").eq("user_id", ftId)).data ?? []).length === 0);
+ok("cannot add a taste for someone else", !!(await ftOther.from("fan_tastes").insert({ user_id: ftId, entity_id: `X${stamp}`, name: "x", kind: "brand" })).error);
+ok("anon cannot read tastes", ((await anon.from("fan_tastes").select("entity_id")).data ?? []).length === 0);
+ok("rejects unknown kinds", !!(await ft.from("fan_tastes").insert({ entity_id: `K${stamp}`, name: "x", kind: "place" })).error);
+for (let i = 0; i < 7; i++) await ft.from("fan_tastes").insert({ entity_id: `M${i}${stamp}`, name: `t${i}`, kind: "artist" });
+ok("at most 8 tastes", !!(await ft.from("fan_tastes").insert({ entity_id: `N${stamp}`, name: "ninth", kind: "artist" })).error);

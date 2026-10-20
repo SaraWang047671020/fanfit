@@ -14,6 +14,7 @@ interface Tag { type?: string; name: string; tag_id?: string }
 interface Entity {
   entity_id: string;
   name: string;
+  types?: string[];
   tags?: Tag[];
   properties?: { address?: string };
   location?: { lat?: number; lon?: number };
@@ -23,6 +24,7 @@ interface Entity {
 const entity = (e: Entity): Entity => ({
   entity_id: e.entity_id,
   name: e.name,
+  ...(e.types?.length ? { types: e.types } : {}), // search results: brand vs artist (the fan taste picker)
   ...(e.tags ? { tags: e.tags.filter((t) => KEPT_TAGS.some((k) => t.type?.includes(k))).map(({ type, name }) => ({ type, name })) } : {}),
   ...(e.properties?.address ? { properties: { address: e.properties.address } } : {}),
   ...(typeof e.location?.lat === "number" ? { location: { lat: e.location.lat, lon: e.location.lon } } : {}), // places: fan map
