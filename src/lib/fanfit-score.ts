@@ -242,8 +242,13 @@ export function sameCompany(a: string, b: string) {
 }
 
 /** Same primary category = conflict. A secondary category or the same group = crowded (warning only). */
-export function checkConflicts(name: string, cats: Category[], sponsors: Sponsor[]) {
+/**
+ * Exclusivity against the club's current sponsors. `place`: a local business for a fan-map deal, not a category
+ * sponsorship, so only "already a sponsor" applies (a music venue is no clash with the club's restaurant partner).
+ */
+export function checkConflicts(name: string, cats: Category[], sponsors: Sponsor[], place = false) {
   const existing = sponsors.filter((s) => sameCompany(name, s.name));
+  if (place) return { existing, conflicts: [] as Sponsor[], crowded: [] as Sponsor[] };
   const others = sponsors.filter((s) => !existing.includes(s));
   const conflicts = others.filter((s) => s.category === cats[0] && s.category !== "other");
   const groups = new Set<string>([...cats, ...cats.map((c) => CATEGORIES[c])]);
@@ -260,16 +265,44 @@ export const TIMING_BOOST = 3; // each timing point moves a candidate up 3 place
  * The Find sponsors order: fit rank moved up TIMING_BOOST places per timing point; anything already signed or in a
  * current sponsor's category is set aside. Timing is passed in structurally so this file stays free of fanfit.ts.
  */
-export function rankWithTiming<T extends { existing: unknown[]; conflicts: unknown[]; timing: number }>(top: FitRow[], timings: Record<string, T>) {
+export function rankWithTiming<T extends { existing: unknown[]; conflicts: unknown[]; timing: number }>(
+  top: FitRow[],
+  timings: Record<string, T>,
+  kind: "brand" | "place" = "brand",
+) {
   const rows = top.map((row, i) => {
     const t = timings[row.id];
     return {
       row,
       fitRank: i + 1,
-      excluded: !!t && (t.existing.length > 0 || t.conflicts.length > 0),
+      // Places: only "already a sponsor" (also for runs saved before category clashes stopped applying to them).
+      excluded: !!t && (t.existing.length > 0 || (kind === "brand" && t.conflicts.length > 0)),
       key: i + 1 - TIMING_BOOST * (t?.timing ?? 0),
     };
   });
   const byKey = (a: (typeof rows)[number], b: (typeof rows)[number]) => a.key - b.key || a.fitRank - b.fitRank;
   return { ranked: rows.filter((r) => !r.excluded).sort(byKey), excluded: rows.filter((r) => r.excluded) };
+}
+
+/** How many open candidates "Who to call" aims for, and how deep into the fit ranking it may go to find them. */
+export const SHORTLIST: Record<Kind, { open: number; max: number }> = { brand: { open: 10, max: 40 }, place: { open: 12, max: 30 } };
+
+const blocked = (t: { existing: unknown[]; conflicts: unknown[] } | undefined, kind: Kind) =>
+  !!t && (t.existing.length > 0 || (kind === "brand" && t.conflicts.length > 0));
+
+/**
+ * The candidates to show, in fit order: enough to leave SHORTLIST.open callable ones once signed and clashing ones
+ * are set aside. A club with many sponsors (Seattle lists 23) would otherwise be left with one or two names.
+ * Unchecked candidates count as open; once checked, more are pulled in.
+ */
+export function shortlist(scored: FitRow[], timings: Record<string, { existing: unknown[]; conflicts: unknown[] }>, kind: Kind) {
+  const { open, max } = SHORTLIST[kind];
+  const out: FitRow[] = [];
+  let n = 0;
+  for (const r of scored) {
+    if (n >= open || out.length >= max) break;
+    out.push(r);
+    if (!blocked(timings[r.id], kind)) n++;
+  }
+  return out;
 }

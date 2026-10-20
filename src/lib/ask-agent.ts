@@ -14,6 +14,7 @@ import {
   type SponsorCategoryKey,
   checkConflicts,
   rankWithTiming,
+  shortlist,
   scoreBrands,
   weightsFromAffinity,
 } from "./fanfit-score";
@@ -214,28 +215,30 @@ function teamTools(ctx: Extract<AskContext, { role: "team" }>, seen: Map<string,
         else if (e.type === "timing") timings[e.timing.brandId] = e.timing;
         else if (e.type === "composition" && e.estimated) weights = weightsFromAffinity(e.age);
       }
-      const shown: Record<Kind, number> = { brand: 15, place: 12 };
       // Find sponsors checks timing for its first candidates only. Check the rest against the current sponsor list
-      // here (one category lookup, no Qloo) so an unchecked brand that is already signed never reads as open.
-      const top = (kind: Kind) => {
-        const b = buckets[kind];
-        return AGES.every((a) => b[a]) ? scoreBrands(b as Record<Age, BrandHit[]>, weights).slice(0, shown[kind]) : [];
-      };
-      const tops = { brand: top("brand"), place: top("place") };
-      const unchecked = [...tops.brand, ...tops.place].filter((r) => !timings[r.id]);
-      if (unchecked.length) {
-        const [{ sponsors }, cats] = await Promise.all([
-          currentSponsors(team.name, team.city),
-          brandCategories(unchecked.map((r) => ({ name: r.name, category: r.category }))),
-        ]);
-        for (const r of unchecked) {
-          const c = checkConflicts(r.name, cats.get(r.name) ?? ["other"], sponsors);
-          if (c.existing.length || c.conflicts.length)
-            timings[r.id] = { brandId: r.id, name: r.name, categories: cats.get(r.name) ?? [], timing: 0, whyNow: "", relationship: "", fitRisk: "", signals: [], ...c };
+      // here (one category lookup, no Qloo) so an unchecked brand that is already signed never reads as open, and pull
+      // in more candidates as signed ones drop out, the same way the page does.
+      const scored = { brand: [] as ReturnType<typeof scoreBrands>, place: [] as ReturnType<typeof scoreBrands> };
+      for (const k of ["brand", "place"] as const) {
+        const b = buckets[k];
+        if (AGES.every((a) => b[a])) scored[k] = scoreBrands(b as Record<Age, BrandHit[]>, weights);
+      }
+      let sponsors: Awaited<ReturnType<typeof currentSponsors>>["sponsors"] | null = null;
+      const tops = { brand: shortlist(scored.brand, timings, "brand"), place: shortlist(scored.place, timings, "place") };
+      for (let round = 0; round < 4; round++) {
+        const unchecked = (["brand", "place"] as const).flatMap((k) => tops[k].filter((r) => !timings[r.id]).map((r) => ({ r, k })));
+        if (!unchecked.length) break;
+        sponsors ??= (await currentSponsors(team.name, team.city)).sponsors;
+        const cats = await brandCategories(unchecked.map(({ r }) => ({ name: r.name, category: r.category })));
+        for (const { r, k } of unchecked) {
+          const c = checkConflicts(r.name, cats.get(r.name) ?? ["other"], sponsors, k === "place");
+          timings[r.id] = { brandId: r.id, name: r.name, categories: cats.get(r.name) ?? [], timing: 0, whyNow: "", relationship: "", fitRisk: "", signals: [], ...c, exclusivityOnly: true };
         }
+        tops.brand = shortlist(scored.brand, timings, "brand");
+        tops.place = shortlist(scored.place, timings, "place");
       }
       const out = (kind: Kind) => {
-        const { ranked, excluded } = rankWithTiming(tops[kind], timings);
+        const { ranked, excluded } = rankWithTiming(tops[kind], timings, kind);
         const row = (r: (typeof ranked)[number]) => {
           seen.set(r.row.id, { name: r.row.name, kind: kind === "place" ? "place" : "brand" });
           const t = timings[r.row.id];
@@ -245,9 +248,12 @@ function teamTools(ctx: Extract<AskContext, { role: "team" }>, seen: Map<string,
             category: r.row.category,
             fit_score: Math.round(r.row.score),
             strongest_age: AGE_LABEL[r.row.driver],
-            timing: t?.signals.length || t?.whyNow ? `${t.timing}/3` : "not checked",
+            timing: t && !t.exclusivityOnly ? `${t.timing}/3` : "not checked",
             why_now: t?.whyNow || undefined,
-            clash: t && (t.existing.length || t.conflicts.length) ? [...t.existing, ...t.conflicts].map((x) => x.name).join(", ") : undefined,
+            clash:
+              t && (t.existing.length || (kind === "brand" && t.conflicts.length))
+                ? [...t.existing, ...(kind === "brand" ? t.conflicts : [])].map((x) => x.name).join(", ")
+                : undefined,
           };
         };
         const aside = excluded.map(row);

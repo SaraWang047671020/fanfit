@@ -1,4 +1,4 @@
-import { type FanfitEvent, runFanfit, runTiming } from "@/lib/fanfit";
+import { type FanfitEvent, runExclusivity, runFanfit, runTiming } from "@/lib/fanfit";
 import { loadSavedRun, teamKey } from "@/lib/saved-runs";
 import { adminClient } from "@/lib/supabase/admin";
 import { currentUser } from "@/lib/supabase/server";
@@ -13,6 +13,19 @@ let running = 0;
 const str = (v: unknown, max: number) => (typeof v === "string" ? v.trim().slice(0, max) : "");
 const NDJSON = { "Content-Type": "application/x-ndjson; charset=utf-8", "Cache-Control": "no-store" };
 
+function candidates(list: unknown[], max: number) {
+  return (list as Record<string, unknown>[])
+    .slice(0, max)
+    .map((b) => ({
+      id: str(b?.id, 64),
+      name: str(b?.name, 120),
+      category: str(b?.category, 80),
+      // Local businesses carry an address; it switches the timing search to local-business signals.
+      ...(typeof b?.address === "string" ? { address: str(b.address, 200) } : {}),
+    }))
+    .filter((b) => b.id && b.name);
+}
+
 /** Keep only the last bucket event per kind and age group: the UI replaces buckets, so earlier ones are noise. */
 function trim(events: FanfitEvent[]) {
   const last = new Map<string, number>();
@@ -25,6 +38,7 @@ function trim(events: FanfitEvent[]) {
 //   { team, city, fresh: true }    full run even if a saved one exists
 //   { team, city, savedOnly: true } the saved run if any, else an empty stream (page load never starts a run)
 //   { team, city, brands: [...] }  timing + conflicts only, for candidates surfaced by the sliders
+//   { team, city, exclusivity: [...] } conflicts only (sponsor list, no news), for candidates timing never reached
 // Streams NDJSON, one FanfitEvent per line.
 export async function POST(req: Request) {
   if (process.env.LIVE_RUNS_DISABLED === "true")
@@ -36,22 +50,37 @@ export async function POST(req: Request) {
   if (!user || profile?.role !== "team" || !profile.team_approved)
     return Response.json({ error: "Available to approved team accounts." }, { status: 403 });
 
-  const body = (await req.json().catch(() => ({}))) as { team?: unknown; city?: unknown; brands?: unknown; fresh?: unknown; savedOnly?: unknown };
+  const body = (await req.json().catch(() => ({}))) as {
+    team?: unknown;
+    city?: unknown;
+    brands?: unknown;
+    exclusivity?: unknown;
+    fresh?: unknown;
+    savedOnly?: unknown;
+  };
   const team = str(body.team, 80);
   const city = str(body.city, 80);
   if (!team || !city) return Response.json({ error: "Enter a team and its city." }, { status: 400 });
-  const brands = Array.isArray(body.brands)
-    ? body.brands
-        .slice(0, 10)
-        .map((b) => ({
-          id: str(b?.id, 64),
-          name: str(b?.name, 120),
-          category: str(b?.category, 80),
-          // Local businesses carry an address; it switches the timing search to local-business signals.
-          ...(typeof b?.address === "string" ? { address: str(b.address, 200) } : {}),
-        }))
-        .filter((b) => b.id && b.name)
-    : null;
+  const brands = Array.isArray(body.brands) ? candidates(body.brands, 10) : null;
+
+  // Exclusivity only: no Qloo, no web search beyond the cached sponsor list, so no usage count.
+  if (Array.isArray(body.exclusivity)) {
+    const items = candidates(body.exclusivity, 30);
+    const encoder = new TextEncoder();
+    const stream = new ReadableStream({
+      async start(controller) {
+        const send = (e: FanfitEvent) => controller.enqueue(encoder.encode(JSON.stringify(e) + "\n"));
+        try {
+          if (items.length) await runExclusivity(team, city, items, send);
+        } catch (err) {
+          send({ type: "error", message: err instanceof Error ? err.message : String(err) });
+        } finally {
+          controller.close();
+        }
+      },
+    });
+    return new Response(stream, { headers: NDJSON });
+  }
 
   const db = adminClient();
 

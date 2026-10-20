@@ -51,6 +51,7 @@ export interface Timing {
   existing: Sponsor[];
   conflicts: Sponsor[];
   crowded: Sponsor[];
+  exclusivityOnly?: boolean; // checked against the sponsor list only: no news search, so timing is unknown
 }
 
 export interface CategoryHit {
@@ -456,7 +457,7 @@ export async function runTiming(team: string, city: string, brands: Candidate[],
         const brand = b;
         const categories = cats.get(brand.name)!;
         const t = await brandTiming(team, city, brand).catch(() => null);
-        const { existing, conflicts, crowded } = checkConflicts(brand.name, categories, sponsors);
+        const { existing, conflicts, crowded } = checkConflicts(brand.name, categories, sponsors, brand.address !== undefined);
         emit({
           type: "timing",
           timing: {
@@ -479,6 +480,28 @@ export async function runTiming(team: string, city: string, brands: Candidate[],
     }),
   );
   emit({ type: "step", id: "timing", label, status: "done", detail: `${brands.length} checked; conflicts decided by category rules` });
+}
+
+/**
+ * Exclusivity only, for candidates the timing step never reached: the sponsor list plus one category lookup, no news
+ * search and no Qloo. Keeps an already-signed brand from sitting at the top as if it were open.
+ */
+export async function runExclusivity(team: string, city: string, items: Candidate[], emit: Emit) {
+  const label = `Check exclusivity for ${items.length} more candidates (sponsor list only)`;
+  emit({ type: "step", id: "exclusivity", label, status: "running" });
+  const [{ sponsors, source }, cats] = await Promise.all([currentSponsors(team, city), brandCategories(items)]);
+  emit({ type: "sponsors", sponsors, source });
+  let flagged = 0;
+  for (const b of items) {
+    const categories = cats.get(b.name) ?? ["other"];
+    const c = checkConflicts(b.name, categories, sponsors, b.address !== undefined);
+    if (c.existing.length || c.conflicts.length) flagged++;
+    emit({
+      type: "timing",
+      timing: { brandId: b.id, name: b.name, categories, timing: 0, whyNow: "", relationship: "", fitRisk: "", signals: [], ...c, exclusivityOnly: true },
+    });
+  }
+  emit({ type: "step", id: "exclusivity", label, status: "done", detail: `${flagged} set aside as signed or clashing` });
 }
 
 export async function runFanfit(teamName: string, city: string, emit: Emit) {

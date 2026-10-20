@@ -19,6 +19,7 @@ import {
   TIMING_BOOST,
   normalize,
   rankWithTiming,
+  shortlist,
   sameCompany,
   scoreBrands,
   weightsFromAffinity,
@@ -35,7 +36,6 @@ const PRESETS = [
   { team: "Seattle Sounders FC", city: "Seattle, WA" },
   { team: "Portland Thorns FC", city: "Portland, OR" },
 ];
-const SHOWN: Record<Kind, number> = { brand: 15, place: 12 };
 const TABS: { kind: Kind; label: string; hint: string }[] = [
   { kind: "brand", label: "Brands", hint: "National and regional brands these fans love (Qloo brands, team + city as taste signals)." },
   {
@@ -207,12 +207,28 @@ export default function FanfitConsole({ initial = PRESETS[0] }: { initial?: { te
   const top = useMemo(() => {
     const score = (k: Kind) => {
       const b = buckets[k];
-      return complete(b) ? scoreBrands(b, mix).slice(0, SHOWN[k]) : [];
+      return complete(b) ? shortlist(scoreBrands(b, mix), timings, k) : [];
     };
     return { brand: score("brand"), place: score("place") };
-  }, [buckets, mix]);
-  const ranked = useMemo(() => ({ brand: rankWithTiming(top.brand, timings), place: rankWithTiming(top.place, timings) }), [top, timings]);
-  const unchecked = top[tab].filter((r) => !timings[r.id]);
+  }, [buckets, mix, timings]);
+  const ranked = useMemo(() => ({ brand: rankWithTiming(top.brand, timings), place: rankWithTiming(top.place, timings, "place") }), [top, timings]);
+  const unchecked = top[tab].filter((r) => !timings[r.id] || timings[r.id].exclusivityOnly);
+
+  // Once results are in (fresh or saved), check every shown candidate the timing step never reached against the
+  // sponsor list, so an already-signed brand does not sit at the top as if it were open. Cheap: no news, no Qloo.
+  const exclusivityAsked = useRef(new Set<string>());
+  useEffect(() => {
+    if (status !== "done" || !info) return;
+    const todo = (["brand", "place"] as const).flatMap((k) =>
+      top[k]
+        .filter((r) => !timings[r.id] && !exclusivityAsked.current.has(r.id))
+        .map(({ id, name, category, address }) => ({ id, name, category, ...(k === "place" ? { address: address ?? "" } : {}) })),
+    );
+    if (!todo.length) return;
+    todo.forEach((t) => exclusivityAsked.current.add(t.id));
+    stream({ team: info.name, city: info.city, exclusivity: todo }, runId.current).catch(() => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- stream is stable enough; re-run only when results change
+  }, [status, info, top, timings]);
 
   async function checkNew() {
     if (!info) return;
@@ -347,6 +363,7 @@ export default function FanfitConsole({ initial = PRESETS[0] }: { initial?: { te
                 activation={activations[r.row.id]}
                 onActivate={running ? undefined : () => activate(r.row, tab)}
                 offerable={tab === "place" && !running}
+                place={tab === "place"}
               />
             ))}
           </ol>
@@ -355,7 +372,7 @@ export default function FanfitConsole({ initial = PRESETS[0] }: { initial?: { te
               <p className="text-xs font-bold uppercase tracking-wider text-loss">Set aside: already signed or category conflict</p>
               <ol className="mt-3 space-y-3 opacity-75">
                 {current.excluded.map((r) => (
-                  <Card key={r.row.id} row={r.row} fitRank={r.fitRank} timing={timings[r.row.id]} />
+                  <Card key={r.row.id} row={r.row} fitRank={r.fitRank} timing={timings[r.row.id]} place={tab === "place"} />
                 ))}
               </ol>
             </div>
@@ -576,7 +593,9 @@ function Card({
   activation,
   onActivate,
   offerable,
+  place = false,
 }: {
+  place?: boolean;
   rank?: number;
   row: FitRow;
   fitRank: number;
@@ -589,9 +608,9 @@ function Card({
   if (timing) {
     if (timing.existing.length)
       flags.push({ tone: "text-loss", text: `Already a sponsor (${timing.existing.map((s) => s.name).join(", ")})` });
-    if (timing.conflicts.length)
+    if (timing.conflicts.length && !place)
       flags.push({ tone: "text-loss", text: `Conflicts with ${timing.conflicts.map((s) => `${s.name} (${s.category})`).join(", ")}` });
-    if (timing.crowded.length)
+    if (timing.crowded.length && !place)
       flags.push({ tone: "text-warn", text: `Same group as ${timing.crowded.map((s) => `${s.name} (${s.category})`).join(", ")}` });
     if (timing.relationship) flags.push({ tone: "text-warn", text: `Existing tie: ${timing.relationship}` });
     if (timing.fitRisk) flags.push({ tone: "text-muted", text: `Risk: ${timing.fitRisk}` });
@@ -612,7 +631,18 @@ function Card({
           </p>
           {row.noLocal && <p className="text-xs text-warn">No local data in Qloo for this city; scored on the team&apos;s fans alone.</p>}
           {row.address && <p className="text-xs text-muted">{row.address}</p>}
-          {timing ? (
+          {timing?.exclusivityOnly ? (
+            <>
+              {flags.map((f) => (
+                <p key={f.text} className={`mt-2 text-xs ${f.tone}`}>
+                  {f.text}
+                </p>
+              ))}
+              <p className="mt-2 text-xs text-muted">
+                {flags.length ? "" : "No clash with current sponsors. "}Timing not checked yet.
+              </p>
+            </>
+          ) : timing ? (
             <>
               <p className="mt-2">
                 <span className={`font-mono text-xs font-bold ${TIMING_TONE[timing.timing]}`}>timing {timing.timing}/3</span>{" "}
