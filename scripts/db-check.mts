@@ -2,6 +2,8 @@
 //   npx supabase start && npm run db:check
 import { createClient } from "@supabase/supabase-js";
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL!, key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!;
+// Secret key (local only) stands in for "an admin approved this" where no approved account exists yet.
+const service = createClient(url, process.env.SUPABASE_SECRET_KEY!, { auth: { persistSession: false } });
 const ok = (label: string, cond: boolean, extra = "") => console.log(`${cond ? "PASS" : "FAIL"}  ${label}${extra ? "  " + extra : ""}`);
 async function user(email: string) {
   const c = createClient(url, key, { auth: { persistSession: false } });
@@ -21,12 +23,16 @@ ok("signed-in user reads team directory", (teams?.length ?? 0) === 79, `n=${team
 const seattle = teams!.find((t) => t.name === "Seattle Sounders FC")!, other = teams!.find((t) => t.name === "Austin FC")!;
 ok("join_team works", !(await a.rpc("join_team", { p_team: seattle.id })).error);
 ok("cannot choose account type twice", !!(await a.rpc("join_team", { p_team: other.id })).error);
+// Pending until approved: no writes, no team data.
+ok("pending team account cannot add sponsors", !!(await a.from("team_sponsors").insert({ team_id: seattle.id, name: `Pending ${stamp}`, category: "airline" })).error);
+ok("pending team account sees no team requests", ((await a.rpc("team_requests")).data ?? []).length === 0);
+await service.from("profiles").update({ team_approved: true }).eq("user_id", pa!.user_id);
 ok("cannot change role directly", !!(await a.from("profiles").update({ role: "sponsor" }).eq("user_id", pa!.user_id)).error);
 ok("can edit display name", !(await a.from("profiles").update({ display_name: "Sounders sales" }).eq("user_id", pa!.user_id)).error);
 ok("team adds own sponsor", !(await a.from("team_sponsors").insert({ team_id: seattle.id, name: `Test sponsor ${stamp}`, category: "airline" })).error);
 ok("team cannot add another team's sponsor", !!(await a.from("team_sponsors").insert({ team_id: other.id, name: "Fake", category: "airline" })).error);
 const { data: claimed } = await a.from("teams").select("claimed_at").eq("id", seattle.id).single();
-ok("team marked as claimed", !!claimed?.claimed_at);
+ok("team marked as claimed", claimed !== null); // claimed_at is set by approval through decide_team_request (tested below)
 
 const b = await user(`brand-${stamp}@example.test`);
 const { data: sid, error: se } = await b.rpc("create_sponsor", { p_name: "Tillamook", p_qloo_id: "x", p_categories: ["beverage"] });
@@ -103,7 +109,7 @@ await a.from("offers").update({ active: false }).eq("id", live!.id); // keep rep
 const zero = "00000000-0000-0000-0000-000000000000";
 const anonCalls: [string, Record<string, unknown>][] = [
   ["my_claims", {}], ["join_fan", {}], ["attach_claims", { p_items: [] }], ["simulate_claims", { p_offer: zero, p_count: 1 }],
-  ["clear_simulated", { p_team: zero }], ["my_team", {}], ["my_sponsor", {}],
+  ["clear_simulated", { p_team: zero }], ["my_team", {}], ["my_sponsor", {}], ["team_requests", {}], ["decide_team_request", { p_user: zero, p_approve: true }], ["team_members", {}], ["is_admin", {}],
 ];
 for (const [fn, args] of anonCalls) {
   const { error } = await anon.rpc(fn, args);
@@ -123,3 +129,36 @@ ok("partner rows carry only public fields", (partnerRows ?? []).every((r: Record
 
 // ---------------------------------------------------------------- clean up what this run added to the shared test team
 await a.from("team_sponsors").delete().like("name", "Test sponsor %");
+
+// ---------------------------------------------------------------- team approval
+const a2 = await user(`team2-${stamp}@example.test`);
+await a2.rpc("join_team", { p_team: seattle.id });
+const a2id = (await a2.auth.getUser()).data.user!.id;
+ok("approved member sees a colleague's request", ((await a.rpc("team_requests")).data ?? []).some((r: { user_id: string }) => r.user_id === a2id));
+ok("requests show no other teams' people to a member", ((await a.rpc("team_requests")).data ?? []).every((r: { team_id: string }) => r.team_id === seattle.id));
+ok("sponsor cannot see team requests", ((await b.rpc("team_requests")).data ?? []).length === 0);
+ok("sponsor cannot approve", !!(await b.rpc("decide_team_request", { p_user: a2id, p_approve: true })).error);
+ok("pending user cannot approve themselves", !!(await a2.rpc("decide_team_request", { p_user: a2id, p_approve: true })).error);
+ok("member approves a colleague", !(await a.rpc("decide_team_request", { p_user: a2id, p_approve: true })).error);
+ok("approved colleague can edit the sponsor list", !(await a2.from("team_sponsors").insert({ team_id: seattle.id, name: `Test sponsor ${stamp}b`, category: "airline" })).error);
+ok("approval marks the team as on FanFit", !!(await a.from("teams").select("claimed_at").eq("id", seattle.id).single()).data?.claimed_at);
+ok("members list shows both", ((await a.rpc("team_members")).data ?? []).length >= 2);
+
+const a3 = await user(`team3-${stamp}@example.test`);
+await a3.rpc("join_team", { p_team: seattle.id });
+const a3id = (await a3.auth.getUser()).data.user!.id;
+ok("member rejects a request", !(await a.rpc("decide_team_request", { p_user: a3id, p_approve: false })).error);
+ok("rejected user can choose again", (await a3.from("profiles").select("role").single()).data?.role === null);
+
+const a4 = await user(`team4-${stamp}@example.test`);
+await a4.rpc("join_team", { p_team: other.id });
+ok("member of another team cannot approve", !!(await a.rpc("decide_team_request", { p_user: (await a4.auth.getUser()).data.user!.id, p_approve: true })).error);
+ok("pending user cancels the request", !(await a4.rpc("cancel_team_request")).error && (await a4.from("profiles").select("role").single()).data?.role === null);
+await a4.rpc("join_team", { p_team: other.id });
+const adm = await user(`admin-${stamp}@example.test`);
+await service.from("profiles").update({ is_admin: true }).eq("user_id", (await adm.auth.getUser()).data.user!.id);
+ok("admin sees requests for any team", ((await adm.rpc("team_requests")).data ?? []).some((r: { team_id: string }) => r.team_id === other.id));
+ok("admin approves any team's request", !(await adm.rpc("decide_team_request", { p_user: (await a4.auth.getUser()).data.user!.id, p_approve: true })).error);
+ok("users cannot make themselves admin", !!(await f.from("profiles").update({ is_admin: true }).eq("user_id", (await f.auth.getUser()).data.user!.id)).error);
+ok("users cannot approve themselves via the table", !!(await a3.from("profiles").update({ team_approved: true }).eq("user_id", a3id)).error);
+await a2.from("team_sponsors").delete().like("name", "Test sponsor %");

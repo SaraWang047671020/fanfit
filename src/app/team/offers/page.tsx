@@ -33,6 +33,7 @@ export default async function TeamOffersPage({ searchParams }: PageProps<"/team/
   const { supabase, user, profile } = await currentUser();
   if (!user) redirect("/login?next=/team/offers");
   if (profile?.role !== "team") redirect(profile?.role === "sponsor" ? "/sponsor" : "/onboarding");
+  if (!profile.team_approved) redirect("/fanfit"); // pending: the fanfit page explains
   const { sim } = await searchParams;
   const showSim = sim === "1";
 
@@ -62,6 +63,7 @@ export default async function TeamOffersPage({ searchParams }: PageProps<"/team/
         <div className="flex flex-wrap gap-4 text-sm">
           <Link href="/fanfit" className="text-muted hover:text-text">← Sponsor finder</Link>
           <Link href="/team/sponsors" className="text-muted hover:text-text">Your sponsors</Link>
+          <Link href="/team/members" className="text-muted hover:text-text">Team members</Link>
         </div>
         <p className="mt-3 text-xs font-bold uppercase tracking-[0.14em] text-gain">Fan map offers</p>
         <h1 className="mt-2 text-4xl font-bold">Offers, claims and redemptions</h1>

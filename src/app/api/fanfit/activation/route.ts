@@ -1,6 +1,7 @@
 import { type ActivationRequest, buildActivation } from "@/lib/fanfit-activation";
 import { AGES, type Age } from "@/lib/fanfit-score";
 import { errorResponse } from "@/lib/http";
+import { currentUser } from "@/lib/supabase/server";
 
 // ~6 Qloo calls + 1–2 model calls (+ the team's sponsor search if it is not cached yet).
 export const maxDuration = 120;
@@ -11,6 +12,9 @@ const str = (v: unknown, max: number) => (typeof v === "string" ? v.trim().slice
 export async function POST(req: Request) {
   if (process.env.LIVE_RUNS_DISABLED === "true")
     return Response.json({ error: "Live runs are disabled on this deployment." }, { status: 503 });
+  const { profile } = await currentUser();
+  if (!((profile?.role === "team" && profile.team_approved) || profile?.role === "sponsor"))
+    return Response.json({ error: "Available to approved team accounts and sponsors." }, { status: 403 });
   const b = (await req.json().catch(() => ({}))) as {
     team?: Record<string, unknown>;
     partner?: Record<string, unknown>;

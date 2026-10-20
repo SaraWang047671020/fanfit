@@ -3,7 +3,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-const PROTECTED = ["/fanfit", "/sponsor", "/team", "/onboarding", "/api/fanfit", "/api/sponsor"];
+const PROTECTED = ["/fanfit", "/sponsor", "/team", "/admin", "/onboarding", "/api/fanfit", "/api/sponsor"];
 
 export async function proxy(request: NextRequest) {
   const path = request.nextUrl.pathname;

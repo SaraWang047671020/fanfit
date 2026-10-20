@@ -1,4 +1,5 @@
 import { type FanfitEvent, runFanfit, runTiming } from "@/lib/fanfit";
+import { currentUser } from "@/lib/supabase/server";
 
 // A full run: ~30 Qloo calls (3 at a time) + ~12 web-search calls (4 at a time), about 1–2 minutes.
 export const maxDuration = 300;
@@ -17,6 +18,10 @@ export async function POST(req: Request) {
     return Response.json({ error: "Live runs are disabled on this deployment." }, { status: 503 });
   if (!process.env.OPENAI_API_KEY || !process.env.QLOO_API_KEY)
     return Response.json({ error: "OPENAI_API_KEY and QLOO_API_KEY must be set" }, { status: 500 });
+  // Runs spend Qloo quota and web searches: approved team accounts only.
+  const { profile } = await currentUser();
+  if (profile?.role !== "team" || !profile.team_approved)
+    return Response.json({ error: "Available to approved team accounts." }, { status: 403 });
 
   const body = (await req.json().catch(() => ({}))) as { team?: unknown; city?: unknown; brands?: unknown };
   const team = str(body.team, 80);

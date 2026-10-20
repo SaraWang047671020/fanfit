@@ -25,6 +25,8 @@ export type Profile = {
   role: "team" | "sponsor" | "fan" | null;
   team_id: string | null;
   sponsor_id: string | null;
+  team_approved: boolean; // team accounts: approved by an admin or a teammate (pending until then)
+  is_admin: boolean;
 };
 
 /** The signed-in user and their profile, or nulls when signed out. */

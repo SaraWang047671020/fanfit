@@ -11,6 +11,7 @@ export default async function TeamSponsorsPage() {
   const { supabase, user, profile } = await currentUser();
   if (!user) redirect("/login?next=/team/sponsors");
   if (profile?.role !== "team") redirect(profile?.role === "sponsor" ? "/sponsor" : profile?.role === "fan" ? "/fans" : "/onboarding");
+  if (!profile.team_approved) redirect("/fanfit"); // pending: the fanfit page explains
 
   const [{ data: team }, { data: sponsors }] = await Promise.all([
     supabase.from("teams").select("name").eq("id", profile.team_id!).single<{ name: string }>(),
@@ -30,6 +31,7 @@ export default async function TeamSponsorsPage() {
         <div className="flex flex-wrap gap-4 text-sm">
           <Link href="/fanfit" className="text-muted hover:text-text">← Sponsor finder</Link>
           <Link href="/team/offers" className="text-muted hover:text-text">Fan map offers</Link>
+          <Link href="/team/members" className="text-muted hover:text-text">Team members</Link>
         </div>
         <p className="mt-3 text-xs font-bold uppercase tracking-[0.14em] text-gain">Your sponsors</p>
         <h1 className="mt-2 text-4xl font-bold">Current sponsors of {team?.name}</h1>

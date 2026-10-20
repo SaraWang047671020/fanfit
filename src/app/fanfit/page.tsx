@@ -3,6 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { currentUser } from "@/lib/supabase/server";
 import AccountBar from "../AccountBar";
+import Pending from "../team/Pending";
 import FanfitConsole from "./FanfitConsole";
 
 export const metadata: Metadata = { title: "FanFit · Sponsor finder" };
@@ -12,11 +13,16 @@ export default async function FanfitPage() {
   if (!user) redirect("/login?next=/fanfit");
   if (profile?.role !== "team") redirect(profile?.role === "sponsor" ? "/sponsor" : "/onboarding");
   const { data: team } = await supabase.from("teams").select("name, city").eq("id", profile.team_id!).single<{ name: string; city: string }>();
+  if (!profile.team_approved) return <Pending name={profile.display_name ?? user.email ?? ""} team={team?.name ?? "your team"} />;
+  const { data: requests } = await supabase.rpc("team_requests");
 
   return (
     <main className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 sm:py-14">
       <AccountBar name={profile.display_name ?? user.email ?? ""} org={team?.name ?? "Your team"} role="team" />
       <div className="mt-3 flex flex-wrap justify-end gap-4 text-sm">
+        <Link href="/team/members" className="text-accent hover:underline">
+          Team members{requests?.length ? ` (${requests.length} waiting)` : ""} →
+        </Link>
         <Link href="/team/sponsors" className="text-accent hover:underline">
           Your sponsors list →
         </Link>

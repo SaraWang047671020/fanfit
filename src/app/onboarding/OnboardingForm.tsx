@@ -109,13 +109,16 @@ function TeamStep({ teams }: { teams: TeamOption[] }) {
           ))}
         </select>
       </label>
-      <p className="mt-2 text-xs text-muted">Teams Qloo has no taste data for are not listed yet.</p>
+      <p className="mt-2 text-xs text-muted">
+        Team accounts edit the club&apos;s public sponsor list and fan map, so access is approved by a teammate already on FanFit
+        or by the FanFit team. You can look around while you wait. Teams Qloo has no taste data for are not listed yet.
+      </p>
       <button
         disabled={!teamId || pending}
         onClick={() => start(async () => setError((await joinTeam(teamId))?.error ?? ""))}
         className="mt-4 rounded-full bg-accent px-6 py-2.5 text-sm font-semibold text-bg disabled:opacity-50"
       >
-        {pending ? "Saving…" : "Continue"}
+        {pending ? "Saving…" : "Request access"}
       </button>
       {error && <p className="mt-3 text-sm text-loss">{error}</p>}
     </section>
