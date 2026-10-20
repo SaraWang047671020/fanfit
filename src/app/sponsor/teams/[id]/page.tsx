@@ -42,7 +42,7 @@ export default async function SponsorTeamPage({ params }: PageProps<"/sponsor/te
 
   return (
     <main className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
-      <AccountBar name={profile.display_name ?? user.email ?? ""} org={sponsor.name} role="sponsor" />
+      <AccountBar name={profile.display_name ?? user.email ?? ""} org={sponsor.name} role="sponsor" tour="sponsor-team" />
       <Link href="/sponsor" className="mt-6 inline-block text-sm text-muted hover:text-text">
         ← All teams
       </Link>
@@ -54,7 +54,7 @@ export default async function SponsorTeamPage({ params }: PageProps<"/sponsor/te
         <h1 className="mt-2 text-4xl font-bold">
           {team.name} × {sponsor.name}
         </h1>
-        <p className="mt-3 text-muted">
+        <p data-tour="fit" className="mt-3 text-muted">
           <span className="font-semibold text-text">{fitBand(z)} fit</span>
           {z !== null && ` (${z >= 0 ? "+" : ""}${z.toFixed(1)}σ above how these fans like the typical big brand)`} · #{rank} of {fits.length} teams
           for {sponsor.name}.
@@ -63,6 +63,7 @@ export default async function SponsorTeamPage({ params }: PageProps<"/sponsor/te
 
       <div className="mt-8">
         <Tabs
+          tour="detail-tabs"
           tabs={[
             {
               key: "audience",

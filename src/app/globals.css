@@ -40,3 +40,40 @@ body {
 section.rounded-3xl {
   box-shadow: 0 1px 2px rgba(20, 26, 43, 0.04), 0 6px 20px rgba(20, 26, 43, 0.05);
 }
+
+/* Guided tour popovers (driver.js), in FanFit's colours. */
+.driver-popover.fanfit-tour {
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(20, 26, 43, 0.18);
+  max-width: 340px;
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+.driver-popover.fanfit-tour .driver-popover-title {
+  font-size: 1rem;
+  font-weight: 700;
+}
+.driver-popover.fanfit-tour .driver-popover-description {
+  color: var(--muted);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+.driver-popover.fanfit-tour .driver-popover-progress-text {
+  color: var(--muted);
+}
+.driver-popover.fanfit-tour .driver-popover-footer-btn {
+  border-radius: 9999px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--text);
+  text-shadow: none;
+  font-size: 0.8rem;
+  padding: 4px 12px;
+}
+.driver-popover.fanfit-tour .driver-popover-next-btn {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}

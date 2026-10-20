@@ -14,6 +14,7 @@ export default function NavTabs({ tabs }: { tabs: { href: string; label: string 
           <li key={t.href}>
             <Link
               href={t.href}
+              data-tour={`nav-${t.href}`}
               aria-current={on ? "page" : undefined}
               className={`block rounded-full px-3 py-1.5 font-medium ${on ? "bg-accent text-white" : "text-muted hover:bg-panel-2 hover:text-text"}`}
             >

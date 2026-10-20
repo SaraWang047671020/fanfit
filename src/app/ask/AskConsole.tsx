@@ -88,6 +88,7 @@ export default function AskConsole({ examples, role }: { examples: string[]; rol
     <div className="space-y-6">
       <section className="rounded-3xl border border-line bg-panel/90 p-6">
         <form
+          data-tour="ask-input"
           onSubmit={(e) => {
             e.preventDefault();
             if (question.trim().length >= 5) ask(question.trim());
@@ -106,7 +107,7 @@ export default function AskConsole({ examples, role }: { examples: string[]; rol
             {running ? "Working…" : "Ask"}
           </button>
         </form>
-        <div className="mt-3 flex flex-wrap gap-2 text-xs">
+        <div data-tour="ask-examples" className="mt-3 flex flex-wrap gap-2 text-xs">
           {examples.map((x) => (
             <button key={x} disabled={running} onClick={() => ask(x)} className="rounded-full border border-line px-3 py-1.5 text-left text-muted hover:border-accent hover:text-text disabled:opacity-50">
               {x}

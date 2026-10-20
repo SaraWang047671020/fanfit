@@ -25,7 +25,7 @@ export default function TeamList({ rows }: { rows: TeamRow[] }) {
 
   return (
     <section className="rounded-3xl border border-line bg-panel/90 p-6">
-      <div className="flex flex-wrap items-center gap-2 text-xs">
+      <div data-tour="filters" className="flex flex-wrap items-center gap-2 text-xs">
         {[null, ...leagues].map((lg) => (
           <button
             key={lg ?? "all"}
@@ -45,7 +45,7 @@ export default function TeamList({ rows }: { rows: TeamRow[] }) {
         {shown.map((r, i) => {
           const band = fitBand(r.z);
           return (
-            <li key={r.id} className="grid grid-cols-[2rem_minmax(0,1fr)_auto] items-center gap-3 py-3 text-sm sm:grid-cols-[2rem_minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)]">
+            <li key={r.id} data-tour={i === 0 ? "team-row" : undefined} className="grid grid-cols-[2rem_minmax(0,1fr)_auto] items-center gap-3 py-3 text-sm sm:grid-cols-[2rem_minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)]">
               <span className="font-mono text-xs text-muted">{i + 1}</span>
               <div className="min-w-0">
                 <p className="truncate font-semibold">

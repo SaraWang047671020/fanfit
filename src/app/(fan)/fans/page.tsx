@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { currentUser } from "@/lib/supabase/server";
+import Tour from "../../Tour";
 import FanOffers, { type FanOffer, type Partner } from "../FanOffers";
 import TeamSearch, { type FanTeam } from "./TeamSearch";
 
@@ -35,7 +36,7 @@ export default async function FansHome() {
         Tap ♡ on your teams to see all their deals and partners on one map, then claim a code to use at the counter.
       </p>
       {mine.length > 0 && (
-        <section className="mt-6">
+        <section data-tour="my-map" className="mt-6">
           <h2 className="text-xs font-bold uppercase tracking-[0.12em] text-accent">
             My teams&apos; map · {mine.map((t) => t.name).join(", ")}
           </h2>
@@ -49,6 +50,7 @@ export default async function FansHome() {
           </div>
         </section>
       )}
+      <Tour id="fans" auto={!!profile?.is_demo} aboveNav />
       <div className="mt-8">
         <TeamSearch teams={all} followed={[...followed]} signedInAs={user ? (profile?.role ?? "none") : null} />
       </div>

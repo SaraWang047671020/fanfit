@@ -72,8 +72,8 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 function Teams({ teams, followed, signedInAs }: { teams: FanTeam[]; followed: string[]; signedInAs: string | null }) {
   return (
     <ul className="grid gap-2 sm:grid-cols-2">
-      {teams.map((t) => (
-        <li key={t.id} className="flex items-center gap-2">
+      {teams.map((t, i) => (
+        <li key={t.id} data-tour={i === 0 ? "heart" : undefined} className="flex items-center gap-2">
           <FollowButton teamId={t.id} teamName={t.name} following={followed.includes(t.id)} signedInAs={signedInAs} compact next="/fans" />
           <Link
             href={`/t/${t.id}`}

@@ -31,6 +31,7 @@ export default function FanNav() {
             <li key={t.href}>
               <Link
                 href={t.href}
+                data-tour={t.href === "/fans/codes" ? "fan-nav-codes" : undefined}
                 aria-current={on ? "page" : undefined}
                 className={`flex h-full flex-col items-center justify-center gap-1 text-[11px] ${on ? "text-gain" : "text-muted hover:text-text"}`}
               >

@@ -251,7 +251,7 @@ export default function FanfitConsole({ initial = PRESETS[0] }: { initial?: { te
 
   return (
     <div className="space-y-6">
-      <section className="rounded-3xl border border-line bg-panel/90 p-6 sm:p-8">
+      <section data-tour="run" className="rounded-3xl border border-line bg-panel/90 p-6 sm:p-8">
         <div className="grid gap-4 sm:grid-cols-[1fr_1fr_auto] sm:items-end">
           <Field label="Team" value={team} onChange={setTeam} />
           <Field label="Home city" value={city} onChange={setCity} />
@@ -290,7 +290,7 @@ export default function FanfitConsole({ initial = PRESETS[0] }: { initial?: { te
         {error && <p className="mt-3 text-sm text-loss">{error}</p>}
       </section>
 
-      <div className="flex flex-wrap gap-2 border-b border-line pb-3" role="tablist" aria-label="Results">
+      <div data-tour="results-tabs" className="flex flex-wrap gap-2 border-b border-line pb-3" role="tablist" aria-label="Results">
         {VIEWS.map((v) => (
           <button
             key={v.key}
@@ -364,6 +364,7 @@ export default function FanfitConsole({ initial = PRESETS[0] }: { initial?: { te
                 onActivate={running ? undefined : () => activate(r.row, tab)}
                 offerable={tab === "place" && !running}
                 place={tab === "place"}
+                tour={i === 0 ? "who-to-call" : undefined}
               />
             ))}
           </ol>
@@ -594,8 +595,10 @@ function Card({
   onActivate,
   offerable,
   place = false,
+  tour,
 }: {
   place?: boolean;
+  tour?: string;
   rank?: number;
   row: FitRow;
   fitRank: number;
@@ -616,7 +619,7 @@ function Card({
     if (timing.fitRisk) flags.push({ tone: "text-muted", text: `Risk: ${timing.fitRisk}` });
   }
   return (
-    <li className="rounded-xl border border-line bg-panel-2 p-4 text-sm">
+    <li data-tour={tour} className="rounded-xl border border-line bg-panel-2 p-4 text-sm">
       <div className="flex items-baseline gap-3">
         <span className="w-6 font-mono text-lg font-bold">{rank ?? "—"}</span>
         <div className="min-w-0 flex-1">

@@ -26,8 +26,8 @@ export default async function SponsorPage() {
   const labels = SPONSOR_CATEGORIES.filter((c) => sponsor.categories.includes(c.key)).map((c) => c.label);
   return (
     <main className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
-      <AccountBar name={profile.display_name ?? user.email ?? ""} org={sponsor.name} role="sponsor" />
-      <header className="mt-6">
+      <AccountBar name={profile.display_name ?? user.email ?? ""} org={sponsor.name} role="sponsor" tour="sponsor" />
+      <header data-tour="ranking" className="mt-6">
         <p className="text-xs font-bold uppercase tracking-[0.14em] text-gain">FanFit for sponsors</p>
         <h1 className="mt-2 text-4xl font-bold">Teams whose fans already love {sponsor.name}.</h1>
         <p className="mt-3 max-w-3xl text-muted">
