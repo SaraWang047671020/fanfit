@@ -15,7 +15,7 @@ export default async function FanLayout({ children }: { children: React.ReactNod
     <div className="flex min-h-full flex-1 flex-col pb-[calc(4.5rem+env(safe-area-inset-bottom))]">
       <header className="sticky top-0 z-[1000] border-b border-line bg-bg/90 backdrop-blur">
         <div className="mx-auto flex h-12 w-full max-w-5xl items-center justify-between px-4">
-          <Link href="/fans" className="text-sm font-bold">
+          <Link href="/" className="text-sm font-bold" title="About FanFit">
             <span className="text-gain">Fan</span>Fit
           </Link>
           {!profile?.is_demo && (profile?.role === "team" || profile?.role === "sponsor") ? (

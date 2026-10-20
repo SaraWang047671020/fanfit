@@ -1,6 +1,7 @@
 // Top navigation for team and sponsor pages: product tabs for the account's side, and the account menu (who is
 // signed in, demo side switching, sign out).
 import { currentUser } from "@/lib/supabase/server";
+import Link from "next/link";
 import AccountMenu from "./AccountMenu";
 import NavTabs from "./NavTabs";
 import Tour from "./Tour";
@@ -47,9 +48,9 @@ export default async function AccountBar({
       <nav data-tour="nav" className="sticky top-3 z-40 rounded-2xl border border-line bg-panel/95 px-3 py-2 shadow-sm backdrop-blur sm:px-4">
         {/* One line from sm up; on phones the tabs get their own full-width row that scrolls sideways. */}
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 sm:flex-nowrap">
-          <span className="shrink-0 text-sm font-bold">
+          <Link href="/" className="shrink-0 text-sm font-bold" title="About FanFit">
             <span className="text-gain">Fan</span>Fit
-          </span>
+          </Link>
           <div className="order-last -mx-1 w-full min-w-0 sm:order-none sm:mx-0 sm:w-auto sm:flex-1">
             <NavTabs tabs={tabs} />
           </div>
