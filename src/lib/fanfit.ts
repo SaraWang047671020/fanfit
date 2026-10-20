@@ -4,6 +4,7 @@
 
 import OpenAI from "openai";
 import { get, QlooError } from "./qloo";
+import { adminClient } from "./supabase/admin";
 import {
   AGES,
   AGE_LABEL,
@@ -72,7 +73,7 @@ export type FanfitEvent =
   | { type: "bucket"; kind: Kind; age: Age; items: BrandHit[] }
   // location = the signal used: the team's city, or "United States" when the city left fewer than CATEGORY_MIN brands.
   | { type: "category"; key: SponsorCategoryKey; location: string; considered: number; items: CategoryHit[] }
-  | { type: "sponsors"; sponsors: Sponsor[] }
+  | { type: "sponsors"; sponsors: Sponsor[]; source: "club" | "web" }
   | { type: "timing"; timing: Timing }
   | { type: "done"; ms: number }
   | { type: "error"; message: string };
@@ -332,6 +333,27 @@ export function teamSponsors(team: string, city: string) {
   return sponsorCache.get(key)!;
 }
 
+/**
+ * The team's current sponsors: the list the club keeps on FanFit when it has one (exact and stable), else web search.
+ * Matched by team name, since runs and activations know the team by name and city.
+ */
+export async function currentSponsors(team: string, city: string): Promise<{ sponsors: Sponsor[]; source: "club" | "web" }> {
+  const db = adminClient();
+  if (db) {
+    const { data } = await db
+      .from("team_sponsors")
+      .select("name, category, tier, source_url, teams!inner(name)")
+      .eq("teams.name", team)
+      .returns<{ name: string; category: Category; tier: string; source_url: string | null }[]>();
+    if (data?.length)
+      return {
+        sponsors: data.map((s) => ({ name: s.name, category: s.category, tier: s.tier, sourceUrl: s.source_url ?? "" })),
+        source: "club",
+      };
+  }
+  return { sponsors: await teamSponsors(team, city), source: "web" };
+}
+
 export async function brandCategories(brands: { name: string; category: string }[]) {
   const todo = brands.filter((b) => !categoryCache.has(norm(b.name)));
   if (todo.length) {
@@ -396,10 +418,17 @@ export interface Candidate {
 
 /** Timing + conflict checks for brands and local businesses; used by the full run and by "check new candidates". */
 export async function runTiming(team: string, city: string, brands: Candidate[], emit: Emit) {
-  emit({ type: "step", id: "sponsors", label: "Find the team's current sponsors (web search)", status: "running" });
-  const sponsors = await teamSponsors(team, city);
-  emit({ type: "sponsors", sponsors });
-  emit({ type: "step", id: "sponsors", label: "Find the team's current sponsors (web search)", status: "done", detail: `${sponsors.length} sponsors, mapped to exclusive categories` });
+  const sponsorLabel = "Current sponsors (the club's list on FanFit, else web search)";
+  emit({ type: "step", id: "sponsors", label: sponsorLabel, status: "running" });
+  const { sponsors, source } = await currentSponsors(team, city);
+  emit({ type: "sponsors", sponsors, source });
+  emit({
+    type: "step",
+    id: "sponsors",
+    label: sponsorLabel,
+    status: "done",
+    detail: `${sponsors.length} sponsors ${source === "club" ? "listed by the club" : "found by web search (the club has not listed its sponsors)"}`,
+  });
 
   const cats = await brandCategories(brands);
   const nPlaces = brands.filter((b) => b.address !== undefined).length;

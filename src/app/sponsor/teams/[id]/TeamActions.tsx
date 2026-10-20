@@ -7,7 +7,7 @@ import { AGE_LABEL, type Age, type Sponsor } from "@/lib/fanfit-score";
 import type { TeamNews } from "@/lib/sponsor-detail";
 import ActivationPanel from "../../../fanfit/ActivationPanel";
 
-type Check = { sponsors: Sponsor[]; inMyCategories: string[]; news: TeamNews };
+type Check = { sponsors: Sponsor[]; source: "club" | "web"; inMyCategories: string[]; news: TeamNews };
 type Load<T> = { status: "idle" } | { status: "loading" } | { status: "done"; data: T } | { status: "error"; message: string };
 
 const TIMING_TONE = ["text-muted", "text-warn", "text-gain/80", "text-gain"];
@@ -145,7 +145,9 @@ function CheckResult({ c }: { c: Check }) {
           {c.inMyCategories.length ? `Your category is taken: ${c.inMyCategories.join(", ")}` : "No current sponsor found in your categories."}
         </p>
         <details className="mt-1 text-xs">
-          <summary className="cursor-pointer text-muted">{c.sponsors.length} current sponsors found (web search; lists can miss deals)</summary>
+          <summary className="cursor-pointer text-muted">
+            {c.sponsors.length} current sponsors {c.source === "club" ? "listed by the club" : "found by web search (lists can miss deals)"}
+          </summary>
           <ul className="mt-1 space-y-0.5">
             {c.sponsors.map((s) => (
               <li key={s.name}>

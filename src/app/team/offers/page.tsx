@@ -55,9 +55,10 @@ export default async function TeamOffersPage({ searchParams }: PageProps<"/team/
     <main className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
       <AccountBar name={profile.display_name ?? user.email ?? ""} org={team?.name ?? "Your team"} role="team" />
       <header className="mt-6">
-        <Link href="/fanfit" className="text-sm text-muted hover:text-text">
-          ← Sponsor finder
-        </Link>
+        <div className="flex flex-wrap gap-4 text-sm">
+          <Link href="/fanfit" className="text-muted hover:text-text">← Sponsor finder</Link>
+          <Link href="/team/sponsors" className="text-muted hover:text-text">Your sponsors</Link>
+        </div>
         <p className="mt-3 text-xs font-bold uppercase tracking-[0.14em] text-gain">Fan map offers</p>
         <h1 className="mt-2 text-4xl font-bold">Offers, claims and redemptions</h1>
         <p className="mt-3 max-w-3xl text-muted">

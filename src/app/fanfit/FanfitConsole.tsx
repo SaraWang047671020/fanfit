@@ -56,6 +56,7 @@ export default function FanfitConsole({ initial = PRESETS[0] }: { initial?: { te
   const [weights, setWeights] = useState<Weights>(even());
   const [buckets, setBuckets] = useState<Record<Kind, Buckets>>({ brand: {}, place: {} });
   const [sponsors, setSponsors] = useState<Sponsor[]>([]);
+  const [sponsorSource, setSponsorSource] = useState<"club" | "web">("web");
   const [timings, setTimings] = useState<Record<string, Timing>>({});
   const [tab, setTab] = useState<Kind>("brand");
   const [checking, setChecking] = useState(false);
@@ -109,6 +110,7 @@ export default function FanfitConsole({ initial = PRESETS[0] }: { initial?: { te
         break;
       case "sponsors":
         setSponsors(e.sponsors);
+        setSponsorSource(e.source);
         break;
       case "timing":
         setTimings((t) => ({ ...t, [e.timing.brandId]: e.timing }));
@@ -270,7 +272,14 @@ export default function FanfitConsole({ initial = PRESETS[0] }: { initial?: { te
           {sponsors.length > 0 && (
             <section className="rounded-3xl border border-line bg-panel/90 p-6">
               <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent">Current sponsors found ({sponsors.length})</p>
-              <p className="mt-1 text-xs text-muted">From web search, used for exclusivity checks. Lists can miss deals; verify before outreach.</p>
+              <p className="mt-1 text-xs text-muted">
+                {sponsorSource === "club"
+                  ? "Your list on FanFit, used for exclusivity checks."
+                  : "From web search, used for exclusivity checks. Lists can miss deals; verify before outreach."}{" "}
+                <a href="/team/sponsors" className="text-accent">
+                  {sponsorSource === "club" ? "Edit the list →" : "Keep your own list →"}
+                </a>
+              </p>
               <ul className="mt-3 space-y-1.5 text-sm">
                 {sponsors.map((s) => (
                   <li key={s.name} className="flex items-baseline justify-between gap-3">

@@ -9,7 +9,7 @@
 
 import { get } from "./qloo";
 import { AGE_LABEL, type Age, type Kind, checkConflicts } from "./fanfit-score";
-import { type RawEntity, S, ask, brandCategories, category, entities, isSportsy, obj, tagNames, teamSponsors } from "./fanfit";
+import { type RawEntity, S, ask, brandCategories, category, entities, isSportsy, obj, tagNames, currentSponsors } from "./fanfit";
 
 const TAG_KINDS = {
   "lifestyle:qloo": "lifestyle",
@@ -99,7 +99,7 @@ export async function buildActivation(req: ActivationRequest): Promise<Activatio
         ? { "filter.type": coType, "signal.interests.entities": both, "filter.location.query": team.city, take: 20 }
         : { "filter.type": coType, "signal.interests.entities": both, "signal.location.query": team.city, take: 40 },
     ),
-    teamSponsors(team.name, team.city),
+    currentSponsors(team.name, team.city).then((r) => r.sponsors),
   ]);
 
   // Co-partner candidates: drop sports entities, the partner itself, and anything in a current sponsor's category.

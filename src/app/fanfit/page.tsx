@@ -16,8 +16,11 @@ export default async function FanfitPage() {
   return (
     <main className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 sm:py-14">
       <AccountBar name={profile.display_name ?? user.email ?? ""} org={team?.name ?? "Your team"} role="team" />
-      <div className="mt-3 flex justify-end">
-        <Link href="/team/offers" className="text-sm text-accent hover:underline">
+      <div className="mt-3 flex flex-wrap justify-end gap-4 text-sm">
+        <Link href="/team/sponsors" className="text-accent hover:underline">
+          Your sponsors list →
+        </Link>
+        <Link href="/team/offers" className="text-accent hover:underline">
           Fan map offers and results →
         </Link>
       </div>

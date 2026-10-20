@@ -163,6 +163,20 @@ export const CATEGORIES = {
 export type Category = keyof typeof CATEGORIES;
 export const CATEGORY_KEYS = Object.keys(CATEGORIES) as Category[];
 
+const LABELS: Partial<Record<Category, string>> = {
+  bank_credit_union: "Bank / credit union", investing_fintech: "Investing / fintech", sports_drink_hydration: "Sports drink / hydration",
+  coffee_tea: "Coffee / tea", snacks_packaged_food: "Snacks / packaged food", healthcare_provider: "Healthcare provider",
+  supplements_wellness: "Supplements / wellness", auto_dealer_service: "Auto dealer / service", tires_auto_parts: "Tires / auto parts",
+  hotel_travel: "Hotel / travel", rideshare_mobility: "Rideshare / mobility", jewelry_eyewear_watches: "Jewelry / eyewear / watches",
+  outdoor_gear_coolers: "Outdoor gear / coolers", cookware_kitchen: "Cookware / kitchen", furniture_home: "Furniture / home",
+  software_it: "Software / IT", energy_oil_gas: "Energy / oil & gas", shipping_logistics: "Shipping / logistics",
+  real_estate_construction: "Real estate / construction", beauty_personal_care: "Beauty / personal care",
+  nonprofit_government: "Nonprofit / government", other_spirits: "Other spirits",
+};
+/** "bank_credit_union" -> "Bank / credit union". */
+export const categoryLabel = (c: string) =>
+  LABELS[c as Category] ?? c.charAt(0).toUpperCase() + c.slice(1).replace(/_/g, " ");
+
 /**
  * Sponsorship categories for the per-category view. `tags` are Qloo industry tag slugs (urn:tag:industry:qloo:<slug>);
  * `exclude` drops brands that also carry one of these industry names (the tags are loose: Zoom is "telecommunications",

@@ -1,7 +1,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { type RawEntity, tagNames } from "@/lib/fanfit";
+import { type RawEntity, tagNames, teamSponsors } from "@/lib/fanfit";
+import { CATEGORY_KEYS, sameCompany } from "@/lib/fanfit-score";
 import { get } from "@/lib/qloo";
 import { currentUser } from "@/lib/supabase/server";
 
@@ -61,4 +62,81 @@ export async function clearSimulated() {
   const { supabase, teamId } = await teamMember();
   await supabase.rpc("clear_simulated", { p_team: teamId });
   revalidatePath("/team/offers");
+}
+
+// ---------------------------------------------------------------- the club's sponsor list (team_sponsors)
+
+export interface SponsorInput {
+  name: string;
+  category: string;
+  tier: string;
+  sourceUrl: string;
+}
+
+function cleanSponsor(s: SponsorInput) {
+  const name = s.name.trim().slice(0, 120);
+  if (!name) throw new Error("Enter the sponsor's name.");
+  if (!(CATEGORY_KEYS as readonly string[]).includes(s.category)) throw new Error("Pick a category.");
+  const url = s.sourceUrl.trim();
+  return { name, category: s.category, tier: s.tier.trim().slice(0, 80), source_url: /^https?:\/\//.test(url) ? url.slice(0, 500) : null };
+}
+
+const friendly = (message: string) =>
+  /duplicate key|team_sponsors_team_id_name_key/.test(message) ? "That sponsor is already on your list." : message;
+
+export async function addSponsor(input: SponsorInput) {
+  try {
+    const { supabase, user, teamId } = await teamMember();
+    const { error } = await supabase.from("team_sponsors").insert({ ...cleanSponsor(input), team_id: teamId, added_by: user.id });
+    revalidatePath("/team/sponsors");
+    return error ? { error: friendly(error.message) } : { ok: true };
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : String(e) };
+  }
+}
+
+export async function updateSponsor(id: string, input: SponsorInput) {
+  try {
+    const { supabase } = await teamMember();
+    const { error } = await supabase.from("team_sponsors").update(cleanSponsor(input)).eq("id", id); // RLS: own team only
+    revalidatePath("/team/sponsors");
+    return error ? { error: friendly(error.message) } : { ok: true };
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : String(e) };
+  }
+}
+
+export async function removeSponsor(id: string) {
+  const { supabase } = await teamMember();
+  await supabase.from("team_sponsors").delete().eq("id", id);
+  revalidatePath("/team/sponsors");
+}
+
+/** Web-search candidates for the list (same search the sponsor finder uses), minus sponsors already listed. */
+export async function findSponsorsOnWeb() {
+  try {
+    const { supabase, teamId } = await teamMember();
+    const [{ data: team }, { data: listed }] = await Promise.all([
+      supabase.from("teams").select("name, city").eq("id", teamId).single<{ name: string; city: string }>(),
+      supabase.from("team_sponsors").select("name").eq("team_id", teamId),
+    ]);
+    if (!team) return { error: "Team not found." };
+    const found = await teamSponsors(team.name, team.city);
+    const have = (listed ?? []).map((s) => s.name);
+    return { candidates: found.filter((f) => !have.some((h) => sameCompany(h, f.name))) };
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : String(e) };
+  }
+}
+
+export async function importSponsors(items: SponsorInput[]) {
+  try {
+    const { supabase, user, teamId } = await teamMember();
+    const rows = items.slice(0, 100).map((s) => ({ ...cleanSponsor(s), team_id: teamId, added_by: user.id }));
+    const { error } = await supabase.from("team_sponsors").upsert(rows, { onConflict: "team_id,name", ignoreDuplicates: true });
+    revalidatePath("/team/sponsors");
+    return error ? { error: friendly(error.message) } : { ok: true, count: rows.length };
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : String(e) };
+  }
 }
