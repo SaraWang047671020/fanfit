@@ -10,6 +10,7 @@ import { currentUser } from "@/lib/supabase/server";
 import AccountBar from "../../../AccountBar";
 import { FitInfo } from "../../../Explain";
 import Tabs from "../../../Tabs";
+import InterestCard, { type SentNote } from "./InterestCard";
 import TeamActions from "./TeamActions";
 
 export const metadata: Metadata = { title: "FanFit · Team detail" };
@@ -26,10 +27,11 @@ export default async function SponsorTeamPage({ params }: PageProps<"/sponsor/te
   if (!user) redirect(`/login?next=/sponsor/teams/${id}`);
   if (profile?.role !== "sponsor") redirect(profile?.role === "team" ? "/fanfit" : "/onboarding");
 
-  const [{ data: sponsor }, { data: teams }, { data: listed }] = await Promise.all([
+  const [{ data: sponsor }, { data: teams }, { data: listed }, { data: sent }] = await Promise.all([
     supabase.from("sponsors").select("name, qloo_id, categories").eq("id", profile.sponsor_id!).single<SponsorRow>(),
     supabase.from("teams").select("id, name, league, city, qloo_id, fit_mean, fit_sd, claimed_at").returns<DirectoryTeam[]>(),
     supabase.from("team_sponsors").select("name, category").eq("team_id", id).returns<{ name: string; category: string }[]>(),
+    supabase.from("sponsor_interest").select("status, created_at, message").eq("team_id", id).maybeSingle<SentNote>(),
   ]);
   const team = teams?.find((t) => t.id === id);
   if (!team || !sponsor) notFound();
@@ -63,6 +65,16 @@ export default async function SponsorTeamPage({ params }: PageProps<"/sponsor/te
         </p>
       </header>
 
+      <div className="mt-6">
+        <InterestCard
+          teamId={team.id}
+          teamName={team.name}
+          brand={sponsor.name}
+          onFanfit={!!team.claimed_at}
+          sent={sent}
+          email={user.email ?? ""}
+        />
+      </div>
       <div className="mt-8">
         <Tabs
           tour="detail-tabs"

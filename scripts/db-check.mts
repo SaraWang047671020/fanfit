@@ -192,3 +192,26 @@ ok("anon cannot read tastes", ((await anon.from("fan_tastes").select("entity_id"
 ok("rejects unknown kinds", !!(await ft.from("fan_tastes").insert({ entity_id: `K${stamp}`, name: "x", kind: "place" })).error);
 for (let i = 0; i < 7; i++) await ft.from("fan_tastes").insert({ entity_id: `M${i}${stamp}`, name: `t${i}`, kind: "artist" });
 ok("at most 8 tastes", !!(await ft.from("fan_tastes").insert({ entity_id: `N${stamp}`, name: "ninth", kind: "artist" })).error);
+
+// ---------------------------------------------------------------- sponsor interest (brand -> team notes)
+const bId = (await b.auth.getUser()).data.user!.id;
+const note = { sponsor_id: sid, team_id: seattle.id, message: "Let's talk", created_by: bId };
+ok("brand sends a note to a team", !(await b.from("sponsor_interest").insert(note)).error);
+ok("brand cannot send as another brand", !!(await b.from("sponsor_interest").insert({ ...note, sponsor_id: crypto.randomUUID() })).error);
+ok("brand cannot set its own fit score", !!(await b.from("sponsor_interest").insert({ ...note, team_id: other.id, fit_z: 9 } as never)).error);
+ok("brand cannot mark a note answered", ((await b.from("sponsor_interest").update({ status: "interested" }).eq("sponsor_id", sid).select()).data ?? []).length === 0);
+ok("team reads notes sent to it", ((await a.from("sponsor_interest").select("id").eq("sponsor_id", sid)).data ?? []).length === 1);
+ok("team answers a note", ((await a.from("sponsor_interest").update({ status: "interested" }).eq("sponsor_id", sid).select("responded_at")).data ?? [])[0]?.responded_at != null);
+ok("team cannot rewrite the note", !!(await a.from("sponsor_interest").update({ message: "edited" } as never).eq("sponsor_id", sid)).error);
+ok("anon cannot read notes", ((await anon.from("sponsor_interest").select("id")).data ?? []).length === 0);
+const dbrand = await user(`demo-brand-${stamp}@example.test`);
+const { data: dsid } = await dbrand.rpc("create_sponsor", { p_name: "Demo brand", p_qloo_id: "y", p_categories: ["apparel"] });
+const dbId = (await dbrand.auth.getUser()).data.user!.id;
+await service.from("profiles").update({ is_demo: true }).eq("user_id", dbId);
+ok("demo brand sends a note", !(await dbrand.from("sponsor_interest").insert({ sponsor_id: dsid, team_id: seattle.id, created_by: dbId })).error);
+ok("real team never sees demo notes", ((await a.from("sponsor_interest").select("id").eq("sponsor_id", dsid)).data ?? []).length === 0);
+ok("demo team sees demo notes", ((await d.from("sponsor_interest").select("id, demo").eq("sponsor_id", dsid)).data ?? [])[0]?.demo === true);
+ok("team inbox shows the brand name", ((await d.rpc("team_interest")).data ?? []).some((r: { sponsor_name: string }) => r.sponsor_name === "Demo brand"));
+ok("brands cannot read a team inbox", ((await b.rpc("team_interest")).data ?? []).length === 0);
+ok("brand withdraws its note", ((await b.from("sponsor_interest").delete().eq("sponsor_id", sid).select()).data ?? []).length === 1);
+await service.from("sponsor_interest").delete().in("sponsor_id", [sid, dsid]);

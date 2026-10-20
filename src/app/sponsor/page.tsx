@@ -81,5 +81,6 @@ async function Ranking({ sponsor, target }: { sponsor: SponsorRow; target: Targe
       category: conflicts.length ? { status: "taken", by: conflicts } : listed.has(team.id) ? { status: "open" } : { status: "unknown" },
     };
   });
-  return <TeamList rows={rows} targeted={!!target} />;
+  const query = target ? `?${new URLSearchParams(Object.entries(target).filter(([, v]) => v) as [string, string][])}` : "";
+  return <TeamList rows={rows} targeted={!!target} query={query} />;
 }

@@ -6,10 +6,14 @@ import { usePathname } from "next/navigation";
 export default function NavTabs({ tabs }: { tabs: { href: string; label: string }[] }) {
   const path = usePathname();
   if (!tabs.length) return null;
+  // The most specific tab wins (/sponsor/outreach, not /sponsor; /sponsor/teams/… still lights up Team ranking).
+  const active = tabs
+    .filter((t) => path === t.href || (t.href !== "/fanfit" && path.startsWith(t.href + "/")))
+    .sort((a, b) => b.href.length - a.href.length)[0]?.href;
   return (
     <ul className="flex flex-wrap gap-1 text-sm">
       {tabs.map((t) => {
-        const on = path === t.href || (t.href !== "/fanfit" && path.startsWith(t.href + "/"));
+        const on = t.href === active;
         return (
           <li key={t.href}>
             <Link

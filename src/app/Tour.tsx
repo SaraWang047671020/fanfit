@@ -63,6 +63,11 @@ const TOURS: Record<string, Step[]> = {
   ],
   "sponsor-team": [
     {
+      el: "interest",
+      title: "Reach out",
+      body: "Send the team a note. It lands in their FanFit inbox with your fit score attached; their answer shows up under Outreach.",
+    },
+    {
       el: "fit",
       title: "How strong the fit is",
       body: "How far above the typical big brand these fans rate yours, and where this team ranks among all teams for you.",

@@ -17,7 +17,7 @@ export interface TeamRow {
 
 const BAND_TONE: Record<string, string> = { Strong: "text-gain", Good: "text-gain/80", Average: "text-muted", Weak: "text-muted", "No data": "text-muted" };
 
-export default function TeamList({ rows, targeted = false }: { rows: TeamRow[]; targeted?: boolean }) {
+export default function TeamList({ rows, targeted = false, query = "" }: { rows: TeamRow[]; targeted?: boolean; query?: string }) {
   const leagues = useMemo(() => [...new Set(rows.map((r) => r.league))].sort(), [rows]);
   const [league, setLeague] = useState<string | null>(null);
   const [hideTaken, setHideTaken] = useState(true);
@@ -52,7 +52,7 @@ export default function TeamList({ rows, targeted = false }: { rows: TeamRow[]; 
               <span className="font-mono text-xs text-muted">{i + 1}</span>
               <div className="min-w-0">
                 <p className="truncate font-semibold">
-                  <Link href={`/sponsor/teams/${r.id}`} className="hover:text-accent">
+                  <Link href={`/sponsor/teams/${r.id}${query}`} className="hover:text-accent">
                     {r.name}
                   </Link>
                   {r.onFanfit && <span className="ml-2 rounded-full border border-gain px-2 py-0.5 text-[10px] font-semibold text-gain">on FanFit</span>}
