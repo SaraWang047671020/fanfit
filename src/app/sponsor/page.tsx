@@ -34,7 +34,7 @@ export default async function SponsorPage({ searchParams }: PageProps<"/sponsor"
 
   const labels = SPONSOR_CATEGORIES.filter((c) => sponsor.categories.includes(c.key)).map((c) => c.label);
   return (
-    <main className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
+    <main className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 sm:py-14">
       <AccountBar name={profile.display_name ?? user.email ?? ""} org={sponsor.name} role="sponsor" tour="sponsor" />
       <PageHeader
         side="sponsor"

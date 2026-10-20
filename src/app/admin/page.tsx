@@ -21,7 +21,7 @@ export default async function AdminPage() {
   const { data } = await supabase.rpc("team_requests");
   const requests = (data ?? []) as Request[];
   return (
-    <main className="mx-auto w-full max-w-4xl px-4 py-10 sm:px-6 sm:py-14">
+    <main className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 sm:py-14">
       <p className="text-xs font-bold uppercase tracking-[0.14em] text-gain">FanFit admin</p>
       <h1 className="mt-2 text-3xl font-bold">Team access requests</h1>
       <p className="mt-3 text-muted">

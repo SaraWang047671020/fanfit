@@ -61,7 +61,7 @@ export default async function OutreachPage({ searchParams }: PageProps<"/sponsor
   const fresh = pitches.filter((p) => p.status === "new").length;
 
   return (
-    <main className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6 sm:py-14">
+    <main className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 sm:py-14">
       <AccountBar name={profile.display_name ?? user.email ?? ""} org={sponsor?.name ?? "Your brand"} role="sponsor" />
       <PageHeader side="sponsor" icon="send" eyebrow={<>Outreach</>} title={<>Your notes and team pitches</>}>
         <p className="mt-3 max-w-3xl text-muted">

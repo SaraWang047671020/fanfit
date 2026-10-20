@@ -31,7 +31,7 @@ export default async function AskPage() {
       ];
 
   return (
-    <main className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6 sm:py-14">
+    <main className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 sm:py-14">
       <AccountBar name={profile!.display_name ?? user.email ?? ""} org={org} role={isTeam ? "team" : "sponsor"} tour="ask" />
       <PageHeader side={isTeam ? "team" : "sponsor"} icon="sparkles" eyebrow={<>Ask FanFit</>} title={<>Give the agent a goal</>}>
         <p className="mt-3 max-w-3xl text-muted">

@@ -83,7 +83,7 @@ export default async function TeamOffersPage({ searchParams }: PageProps<"/team/
   const hits = judged.filter((c) => (c.lift ?? 0) > 1).length;
 
   return (
-    <main className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
+    <main className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 sm:py-14">
       <AccountBar name={profile.display_name ?? user.email ?? ""} org={team?.name ?? "Your team"} role="team" tour="team-offers" />
       <PageHeader side="team" icon="ticket" photo="/images/cafe.jpg" eyebrow={<>Fan map offers</>} title={<>Offers, claims and redemptions</>}>
         <p className="mt-3 max-w-3xl text-muted">
