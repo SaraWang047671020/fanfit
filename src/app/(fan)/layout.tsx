@@ -6,7 +6,8 @@ import { currentUser } from "@/lib/supabase/server";
 import DemoSwitch from "../DemoSwitch";
 import FanNav from "./FanNav";
 
-export const viewport: Viewport = { themeColor: "#f5f7fb", viewportFit: "cover" };
+// Fixed scale comes from the root layout; Next merges these fields over it.
+export const viewport: Viewport = { width: "device-width", initialScale: 1, maximumScale: 1, userScalable: false, themeColor: "#f5f7fb", viewportFit: "cover" };
 
 export default async function FanLayout({ children }: { children: React.ReactNode }) {
   const { user, profile } = process.env.NEXT_PUBLIC_SUPABASE_URL ? await currentUser() : { user: null, profile: null };
