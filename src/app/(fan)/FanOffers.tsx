@@ -193,27 +193,27 @@ function OfferMap({
       }
       layer.current!.clearLayers();
       const css = getComputedStyle(document.documentElement);
-      const gain = css.getPropertyValue("--gain").trim() || "#5fe0c1";
-      const accent = css.getPropertyValue("--accent").trim() || "#8fa4ff";
+      const gain = css.getPropertyValue("--gain").trim() || "#0b8a6a";
+      const accent = css.getPropertyValue("--accent").trim() || "#3b5bdb";
       const points: [number, number][] = [];
       for (const p of pinnedPartners) {
         const pt: [number, number] = [p.lat!, p.lon!];
         points.push(pt);
-        L.circleMarker(pt, { radius: 7, color: accent, weight: 3, fillColor: "#0b0d12", fillOpacity: 1 })
+        L.circleMarker(pt, { radius: 7, color: accent, weight: 3, fillColor: "#f5f7fb", fillOpacity: 1 })
           .bindTooltip(`${p.name} · official partner`)
           .addTo(layer.current!);
       }
       for (const o of placed) {
         const pt: [number, number] = [o.lat!, o.lon!];
         points.push(pt);
-        L.circleMarker(pt, { radius: o.offer_id === selected ? 10 : 7, color: "#0b0d12", weight: 2, fillColor: gain, fillOpacity: 1 })
+        L.circleMarker(pt, { radius: o.offer_id === selected ? 10 : 7, color: "#f5f7fb", weight: 2, fillColor: gain, fillOpacity: 1 })
           .bindTooltip(`${o.place_name}: ${o.title}${o.demo ? " (demo)" : ""}`)
           .on("click", () => onSelect(o.offer_id))
           .addTo(layer.current!);
       }
       if (here) {
         points.push([here.lat, here.lon]);
-        L.circleMarker([here.lat, here.lon], { radius: 6, color: "#ffffff", weight: 2, fillColor: "#8fa4ff", fillOpacity: 1 })
+        L.circleMarker([here.lat, here.lon], { radius: 6, color: "#ffffff", weight: 2, fillColor: "#3b5bdb", fillOpacity: 1 })
           .bindTooltip("You")
           .addTo(layer.current!);
       }

@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { currentUser } from "@/lib/supabase/server";
 import AccountBar from "../AccountBar";
@@ -32,10 +31,7 @@ export default async function AskPage() {
     <main className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6 sm:py-14">
       <AccountBar name={profile!.display_name ?? user.email ?? ""} org={org} role={isTeam ? "team" : "sponsor"} />
       <header className="mt-6">
-        <Link href={isTeam ? "/fanfit" : "/sponsor"} className="text-sm text-muted hover:text-text">
-          ← {isTeam ? "Sponsor finder" : "All teams"}
-        </Link>
-        <p className="mt-3 text-xs font-bold uppercase tracking-[0.14em] text-gain">Ask FanFit</p>
+        <p className="text-xs font-bold uppercase tracking-[0.14em] text-gain">Ask FanFit</p>
         <h1 className="mt-2 text-4xl font-bold">Give the agent a goal</h1>
         <p className="mt-3 max-w-3xl text-muted">
           The agent plans, calls FanFit&apos;s Qloo tools (fit rankings, fan profiles, shared tastes, sponsor checks, news) and answers

@@ -8,6 +8,7 @@ import { type DirectoryTeam, teamFit } from "@/lib/sponsor-fit";
 import { fitBand } from "@/lib/sponsor-fit-band";
 import { currentUser } from "@/lib/supabase/server";
 import AccountBar from "../../../AccountBar";
+import Tabs from "../../../Tabs";
 import TeamActions from "./TeamActions";
 
 export const metadata: Metadata = { title: "FanFit · Team detail" };
@@ -60,28 +61,48 @@ export default async function SponsorTeamPage({ params }: PageProps<"/sponsor/te
         </p>
       </header>
 
-      <div className="mt-8 grid gap-6 lg:grid-cols-2">
-        <Suspense fallback={<Loading title="Their fans vs your customers" />}>
-          <Audiences teamName={team.name} brandName={sponsor.name} data={audiences} />
-        </Suspense>
-        <Suspense fallback={<Loading title="Shared brand traits" />}>
-          <Traits teamQloo={team.qloo_id} brandQloo={sponsor.qloo_id} brandName={sponsor.name} />
-        </Suspense>
-      </div>
-      <div className="mt-6">
-        <Suspense fallback={<Loading title="What fans of both love" />}>
-          <Shared teamQloo={team.qloo_id} brandQloo={sponsor.qloo_id} city={team.city} teamName={team.name} brandName={sponsor.name} />
-        </Suspense>
-      </div>
-      <div className="mt-6">
-        <Suspense fallback={<Loading title="Sponsors, timing and an activation idea" />}>
-          <ActionsWithAge
-            data={audiences}
-            team={{ id: team.id, qloo: team.qloo_id, name: team.name, city: team.city }}
-            brand={{ qloo: sponsor.qloo_id, name: sponsor.name }}
-            listed={(listed ?? []).map((s) => ({ ...s, mine: covered.has(s.category) }))}
-          />
-        </Suspense>
+      <div className="mt-8">
+        <Tabs
+          tabs={[
+            {
+              key: "audience",
+              label: "Audience fit",
+              content: (
+                <div className="grid gap-6 lg:grid-cols-2">
+                  <Suspense fallback={<Loading title="Their fans vs your customers" />}>
+                    <Audiences teamName={team.name} brandName={sponsor.name} data={audiences} />
+                  </Suspense>
+                  <Suspense fallback={<Loading title="Shared brand traits" />}>
+                    <Traits teamQloo={team.qloo_id} brandQloo={sponsor.qloo_id} brandName={sponsor.name} />
+                  </Suspense>
+                </div>
+              ),
+            },
+            {
+              key: "taste",
+              label: "What fans of both love",
+              content: (
+                <Suspense fallback={<Loading title="What fans of both love" />}>
+                  <Shared teamQloo={team.qloo_id} brandQloo={sponsor.qloo_id} city={team.city} teamName={team.name} brandName={sponsor.name} />
+                </Suspense>
+              ),
+            },
+            {
+              key: "act",
+              label: "Sponsors, timing & activation",
+              content: (
+                <Suspense fallback={<Loading title="Sponsors, timing and an activation idea" />}>
+                  <ActionsWithAge
+                    data={audiences}
+                    team={{ id: team.id, qloo: team.qloo_id, name: team.name, city: team.city }}
+                    brand={{ qloo: sponsor.qloo_id, name: sponsor.name }}
+                    listed={(listed ?? []).map((s) => ({ ...s, mine: covered.has(s.category) }))}
+                  />
+                </Suspense>
+              ),
+            },
+          ]}
+        />
       </div>
     </main>
   );

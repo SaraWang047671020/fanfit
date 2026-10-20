@@ -27,6 +27,7 @@ export type Profile = {
   sponsor_id: string | null;
   team_approved: boolean; // team accounts: approved by an admin or a teammate (pending until then)
   is_admin: boolean;
+  is_demo: boolean; // shared demo account ("Try the demo"), with some actions switched off
 };
 
 /** The signed-in user and their profile, or nulls when signed out. */

@@ -2,11 +2,14 @@
 // a slim top bar and a bottom tab bar. Installed to the home screen (manifest.ts), it opens like an app.
 import type { Viewport } from "next";
 import Link from "next/link";
+import { currentUser } from "@/lib/supabase/server";
+import DemoSwitch from "../DemoSwitch";
 import FanNav from "./FanNav";
 
-export const viewport: Viewport = { themeColor: "#0b0d12", viewportFit: "cover" };
+export const viewport: Viewport = { themeColor: "#f5f7fb", viewportFit: "cover" };
 
-export default function FanLayout({ children }: { children: React.ReactNode }) {
+export default async function FanLayout({ children }: { children: React.ReactNode }) {
+  const { user, profile } = process.env.NEXT_PUBLIC_SUPABASE_URL ? await currentUser() : { user: null, profile: null };
   return (
     <div className="flex min-h-full flex-1 flex-col pb-[calc(4.5rem+env(safe-area-inset-bottom))]">
       <header className="sticky top-0 z-[1000] border-b border-line bg-bg/90 backdrop-blur">
@@ -14,7 +17,18 @@ export default function FanLayout({ children }: { children: React.ReactNode }) {
           <Link href="/fans" className="text-sm font-bold">
             <span className="text-gain">Fan</span>Fit
           </Link>
-          <span className="text-xs text-muted">Deals from your team&apos;s partners</span>
+          {profile?.is_demo ? (
+            <div className="text-xs">
+              <DemoSwitch current="fan" />
+            </div>
+          ) : !user ? (
+            <form action="/auth/demo" method="post">
+              <input type="hidden" name="as" value="fan" />
+              <button className="rounded-full bg-gain px-3 py-1 text-xs font-semibold text-white">Try the fan demo</button>
+            </form>
+          ) : (
+            <span className="text-xs text-muted">Deals from your team&apos;s partners</span>
+          )}
         </div>
       </header>
       <div className="flex-1">{children}</div>

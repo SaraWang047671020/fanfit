@@ -1,16 +1,16 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #0b0d12;
-  --panel: #111722;
-  --panel-2: #171e2d;
-  --line: #2a3448;
-  --text: #eef2ff;
-  --muted: #a7b2c8;
-  --accent: #8fa4ff;
-  --gain: #5fe0c1;
-  --loss: #ff8c98;
-  --warn: #ffc86a;
+  --bg: #f5f7fb;
+  --panel: #ffffff;
+  --panel-2: #f0f3f8;
+  --line: #dde3ec;
+  --text: #141a2b;
+  --muted: #5b6478;
+  --accent: #3b5bdb;
+  --gain: #0b8a6a;
+  --loss: #d6334a;
+  --warn: #a8670f;
 }
 
 @theme inline {
@@ -30,8 +30,13 @@
 
 body {
   background:
-    radial-gradient(circle at 8% 0%, rgba(143, 164, 255, 0.14), transparent 30%),
-    radial-gradient(circle at 92% 4%, rgba(95, 224, 193, 0.08), transparent 26%),
+    radial-gradient(circle at 8% 0%, rgba(59, 91, 219, 0.07), transparent 30%),
+    radial-gradient(circle at 92% 4%, rgba(11, 138, 106, 0.05), transparent 26%),
     var(--bg);
   color: var(--text);
+}
+
+/* Light theme: panels sit on the page with a soft shadow instead of a glow. */
+section.rounded-3xl {
+  box-shadow: 0 1px 2px rgba(20, 26, 43, 0.04), 0 6px 20px rgba(20, 26, 43, 0.05);
 }

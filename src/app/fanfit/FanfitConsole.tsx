@@ -37,8 +37,29 @@ const SHOWN: Record<Kind, number> = { brand: 15, place: 12 };
 const TIMING_BOOST = 3; // each timing point moves a candidate up 3 places
 const TABS: { kind: Kind; label: string; hint: string }[] = [
   { kind: "brand", label: "Brands", hint: "National and regional brands these fans love (Qloo brands, team + city as taste signals)." },
-  { kind: "place", label: "Local businesses", hint: "Restaurants, bars, shops and services in the city that these fans love (Qloo places)." },
+  {
+    kind: "place",
+    label: "Local businesses",
+    hint: "Restaurants, bars, shops and services in the city that these fans love (Qloo places).",
+  },
 ];
+
+type View = "call" | "category" | "fans" | "sponsors" | "trace";
+const VIEWS: { key: View; label: string }[] = [
+  { key: "call", label: "Who to call" },
+  { key: "category", label: "By category" },
+  { key: "fans", label: "Fan mix" },
+  { key: "sponsors", label: "Current sponsors" },
+  { key: "trace", label: "How the agent ran" },
+];
+
+function Empty({ running }: { running: boolean }) {
+  return (
+    <p className="rounded-2xl border border-dashed border-line p-6 text-sm text-muted">
+      {running ? "The agent is still working on this part…" : "Run the sponsor finder to fill this in."}
+    </p>
+  );
+}
 
 const even = () => Object.fromEntries(AGES.map((a) => [a, 1 / AGES.length])) as Weights;
 const pct = (x: number) => `${Math.round(x * 100)}%`;
@@ -64,6 +85,7 @@ export default function FanfitConsole({ initial = PRESETS[0] }: { initial?: { te
   const [activations, setActivations] = useState<Record<string, ActivationState>>({});
   const [categories, setCategories] = useState<Partial<Record<SponsorCategoryKey, CategoryResult>>>({});
   const [savedAt, setSavedAt] = useState<string | null>(null);
+  const [view, setView] = useState<View>("call");
   const runId = useRef(0);
 
   async function activate(row: FitRow, kind: Kind) {
@@ -129,11 +151,7 @@ export default function FanfitConsole({ initial = PRESETS[0] }: { initial?: { te
   }
 
   async function stream(body: object, id: number, onEvent?: () => void) {
-    const res = await fetch("/api/fanfit", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
+    const res = await fetch("/api/fanfit", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
     if (!res.ok || !res.body) throw new Error((await res.json().catch(() => null))?.error ?? `HTTP ${res.status}`);
     const reader = res.body.pipeThrough(new TextDecoderStream()).getReader();
     let buf = "";
@@ -192,22 +210,16 @@ export default function FanfitConsole({ initial = PRESETS[0] }: { initial?: { te
     };
     return { brand: score("brand"), place: score("place") };
   }, [buckets, mix]);
-  const ranked = useMemo(
-    () => ({ brand: rank(top.brand, timings), place: rank(top.place, timings) }),
-    [top, timings],
-  );
+  const ranked = useMemo(() => ({ brand: rank(top.brand, timings), place: rank(top.place, timings) }), [top, timings]);
   const unchecked = top[tab].filter((r) => !timings[r.id]);
 
   async function checkNew() {
     if (!info) return;
     setChecking(true);
     try {
-      const items = unchecked.slice(0, 10).map(({ id, name, category, address }) => ({
-        id,
-        name,
-        category,
-        ...(tab === "place" ? { address: address ?? "" } : {}),
-      }));
+      const items = unchecked
+        .slice(0, 10)
+        .map(({ id, name, category, address }) => ({ id, name, category, ...(tab === "place" ? { address: address ?? "" } : {}) }));
       await stream({ team: info.name, city: info.city, brands: items }, runId.current);
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
@@ -261,64 +273,31 @@ export default function FanfitConsole({ initial = PRESETS[0] }: { initial?: { te
         {error && <p className="mt-3 text-sm text-loss">{error}</p>}
       </section>
 
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.4fr)]">
-        <div className="space-y-6">
-          <section className="rounded-3xl border border-line bg-panel/90 p-6">
-            <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent">Agent trace</p>
-            {steps.length === 0 && <p className="mt-3 text-sm text-muted">Pick a team and run to watch each step.</p>}
-            <ol className="mt-4 space-y-3">
-              {steps.map((s, i) => (
-                <li key={s.id} className="rounded-xl border border-line bg-panel-2 p-3 text-sm">
-                  <div className="flex items-baseline gap-2">
-                    <span className="font-mono text-xs text-muted">{i + 1}</span>
-                    <span className="font-semibold">{s.label}</span>
-                  </div>
-                  <p className={`mt-1 ${s.status === "done" ? "text-gain" : s.status === "warn" ? "text-warn" : "animate-pulse text-muted"}`}>
-                    {s.status === "done" ? "→ " : s.status === "warn" ? "⚠ " : ""}
-                    {s.detail ?? "working…"}
-                  </p>
-                </li>
-              ))}
-            </ol>
-            {elapsed !== null && <p className="mt-3 text-xs text-muted">Finished in {(elapsed / 1000).toFixed(0)} s.</p>}
-          </section>
+      <div className="flex flex-wrap gap-2 border-b border-line pb-3" role="tablist" aria-label="Results">
+        {VIEWS.map((v) => (
+          <button
+            key={v.key}
+            role="tab"
+            aria-selected={view === v.key}
+            onClick={() => setView(v.key)}
+            className={`rounded-full px-4 py-2 text-sm font-semibold ${view === v.key ? "bg-accent text-white" : "border border-line bg-panel text-muted hover:text-text"}`}
+          >
+            {v.label}
+            {v.key === "trace" && running && <span className="ml-1.5 inline-block h-2 w-2 animate-pulse rounded-full bg-gain" />}
+            {v.key === "sponsors" && sponsors.length > 0 && <span className="ml-1.5 font-mono text-xs opacity-70">{sponsors.length}</span>}
+          </button>
+        ))}
+      </div>
+      {running && view !== "trace" && steps.length > 0 && (
+        <p className="text-xs text-muted">
+          Step {steps.length}: {steps[steps.length - 1].label}…{" "}
+          <button onClick={() => setView("trace")} className="text-accent">
+            See every step
+          </button>
+        </p>
+      )}
 
-          {estimate && (
-            <FanMix
-              weights={mix}
-              raw={weights}
-              estimate={estimate}
-              gender={gender}
-              onChange={setWeights}
-              onReset={() => setWeights(estimate)}
-            />
-          )}
-
-          {sponsors.length > 0 && (
-            <section className="rounded-3xl border border-line bg-panel/90 p-6">
-              <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent">Current sponsors found ({sponsors.length})</p>
-              <p className="mt-1 text-xs text-muted">
-                {sponsorSource === "club"
-                  ? "Your list on FanFit, used for exclusivity checks."
-                  : "From web search, used for exclusivity checks. Lists can miss deals; verify before outreach."}{" "}
-                <a href="/team/sponsors" className="text-accent">
-                  {sponsorSource === "club" ? "Edit the list →" : "Keep your own list →"}
-                </a>
-              </p>
-              <ul className="mt-3 space-y-1.5 text-sm">
-                {sponsors.map((s) => (
-                  <li key={s.name} className="flex items-baseline justify-between gap-3">
-                    <a href={s.sourceUrl} target="_blank" rel="noreferrer" className="hover:text-accent">
-                      {s.name}
-                    </a>
-                    <span className="font-mono text-xs text-muted">{s.category}</span>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )}
-        </div>
-
+      {view === "call" && (
         <section className="rounded-3xl border border-line bg-panel/90 p-6">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-3">
@@ -333,7 +312,7 @@ export default function FanfitConsole({ initial = PRESETS[0] }: { initial?: { te
                   role="tab"
                   aria-selected={tab === t.kind}
                   onClick={() => setTab(t.kind)}
-                  className={`rounded-full px-4 py-1.5 font-semibold ${tab === t.kind ? "bg-accent text-bg" : "text-muted hover:text-text"}`}
+                  className={`rounded-full px-4 py-1.5 font-semibold ${tab === t.kind ? "bg-accent text-white" : "text-muted hover:text-text"}`}
                 >
                   {t.label}
                   {top[t.kind].length > 0 && <span className="ml-1.5 font-mono text-xs opacity-70">{ranked[t.kind].ranked.length}</span>}
@@ -381,9 +360,81 @@ export default function FanfitConsole({ initial = PRESETS[0] }: { initial?: { te
             </div>
           )}
         </section>
-      </div>
-
-      {Object.keys(categories).length > 0 && info && <CategoryGrid categories={categories} sponsors={sponsors} city={info.city} />}
+      )}
+      {view === "category" &&
+        (Object.keys(categories).length > 0 && info ? (
+          <CategoryGrid categories={categories} sponsors={sponsors} city={info.city} />
+        ) : (
+          <Empty running={running} />
+        ))}
+      {view === "fans" &&
+        (estimate ? (
+          <div className="max-w-2xl">
+            <FanMix
+              weights={mix}
+              raw={weights}
+              estimate={estimate}
+              gender={gender}
+              onChange={setWeights}
+              onReset={() => setWeights(estimate)}
+            />
+          </div>
+        ) : (
+          <Empty running={running} />
+        ))}
+      {view === "sponsors" &&
+        (sponsors.length > 0 ? (
+          <div className="max-w-2xl">
+            <section className="rounded-3xl border border-line bg-panel/90 p-6">
+              <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent">Current sponsors found ({sponsors.length})</p>
+              <p className="mt-1 text-xs text-muted">
+                {sponsorSource === "club"
+                  ? "Your list on FanFit, used for exclusivity checks."
+                  : "From web search, used for exclusivity checks. Lists can miss deals; verify before outreach."}{" "}
+                <a href="/team/sponsors" className="text-accent">
+                  {sponsorSource === "club" ? "Edit the list →" : "Keep your own list →"}
+                </a>
+              </p>
+              <ul className="mt-3 space-y-1.5 text-sm">
+                {sponsors.map((s) => (
+                  <li key={s.name} className="flex items-baseline justify-between gap-3">
+                    <a href={s.sourceUrl} target="_blank" rel="noreferrer" className="hover:text-accent">
+                      {s.name}
+                    </a>
+                    <span className="font-mono text-xs text-muted">{s.category}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          </div>
+        ) : (
+          <Empty running={running} />
+        ))}
+      {view === "trace" && (
+        <div className="max-w-3xl">
+          <section className="rounded-3xl border border-line bg-panel/90 p-6">
+            <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent">Agent trace</p>
+            {steps.length === 0 && <p className="mt-3 text-sm text-muted">Pick a team and run to watch each step.</p>}
+            <ol className="mt-4 space-y-3">
+              {steps.map((s, i) => (
+                <li key={s.id} className="rounded-xl border border-line bg-panel-2 p-3 text-sm">
+                  <div className="flex items-baseline gap-2">
+                    <span className="font-mono text-xs text-muted">{i + 1}</span>
+                    <span className="font-semibold">{s.label}</span>
+                  </div>
+                  <p
+                    className={`mt-1 ${s.status === "done" ? "text-gain" : s.status === "warn" ? "text-warn" : "animate-pulse text-muted"}`}
+                  >
+                    {s.status === "done" ? "→ " : s.status === "warn" ? "⚠ " : ""}
+                    {s.detail ?? "working…"}
+                  </p>
+                </li>
+              ))}
+            </ol>
+            {elapsed !== null && <p className="mt-3 text-xs text-muted">Finished in {(elapsed / 1000).toFixed(0)} s.</p>}
+          </section>
+        </div>
+      )}
     </div>
   );
 }
@@ -401,8 +452,8 @@ function CategoryGrid({
     <section className="rounded-3xl border border-line bg-panel/90 p-6">
       <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent">Best fit by sponsorship category</p>
       <p className="mt-1 text-xs text-muted">
-        Top brands in each category for these fans (Qloo, team + {city}), ranked by affinity. Sponsorship is sold by category, so this
-        is the list to work through once a category is open; categories with a current sponsor are flagged.
+        Top brands in each category for these fans (Qloo, team + {city}), ranked by affinity. Sponsorship is sold by category, so this is
+        the list to work through once a category is open; categories with a current sponsor are flagged.
       </p>
       <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
         {SPONSOR_CATEGORIES.map((c) => {
@@ -518,7 +569,10 @@ function FanMix({
         ))}
       </div>
       {Math.abs(lean) > 0.05 && (
-        <p className="mt-3 text-xs text-muted">Qloo: fans lean {lean > 0 ? "male" : "female"} ({lean > 0 ? "+" : ""}{lean.toFixed(2)}).</p>
+        <p className="mt-3 text-xs text-muted">
+          Qloo: fans lean {lean > 0 ? "male" : "female"} ({lean > 0 ? "+" : ""}
+          {lean.toFixed(2)}).
+        </p>
       )}
     </section>
   );
@@ -545,7 +599,8 @@ function Card({
 }) {
   const flags: { tone: string; text: string }[] = [];
   if (timing) {
-    if (timing.existing.length) flags.push({ tone: "text-loss", text: `Already a sponsor (${timing.existing.map((s) => s.name).join(", ")})` });
+    if (timing.existing.length)
+      flags.push({ tone: "text-loss", text: `Already a sponsor (${timing.existing.map((s) => s.name).join(", ")})` });
     if (timing.conflicts.length)
       flags.push({ tone: "text-loss", text: `Conflicts with ${timing.conflicts.map((s) => `${s.name} (${s.category})`).join(", ")}` });
     if (timing.crowded.length)
@@ -567,9 +622,7 @@ function Card({
           <p className="text-xs text-muted">
             {timing?.categories.join(" / ") ?? row.category} · strongest with fans {AGE_LABEL[row.driver]} · in {row.reach}/6 age groups
           </p>
-          {row.noLocal && (
-            <p className="text-xs text-warn">No local data in Qloo for this city; scored on the team&apos;s fans alone.</p>
-          )}
+          {row.noLocal && <p className="text-xs text-warn">No local data in Qloo for this city; scored on the team&apos;s fans alone.</p>}
           {row.address && <p className="text-xs text-muted">{row.address}</p>}
           {timing ? (
             <>

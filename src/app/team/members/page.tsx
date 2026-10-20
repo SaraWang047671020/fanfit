@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { currentUser } from "@/lib/supabase/server";
 import AccountBar from "../../AccountBar";
@@ -30,12 +29,7 @@ export default async function TeamMembersPage() {
     <main className="mx-auto w-full max-w-4xl px-4 py-10 sm:px-6 sm:py-14">
       <AccountBar name={profile.display_name ?? user.email ?? ""} org={team?.name ?? "Your team"} role="team" />
       <header className="mt-6">
-        <div className="flex flex-wrap gap-4 text-sm">
-          <Link href="/fanfit" className="text-muted hover:text-text">← Sponsor finder</Link>
-          <Link href="/team/sponsors" className="text-muted hover:text-text">Your sponsors</Link>
-          <Link href="/team/offers" className="text-muted hover:text-text">Fan map offers</Link>
-        </div>
-        <p className="mt-3 text-xs font-bold uppercase tracking-[0.14em] text-gain">Team members</p>
+        <p className="text-xs font-bold uppercase tracking-[0.14em] text-gain">Team members</p>
         <h1 className="mt-2 text-4xl font-bold">Who can act for {team?.name}</h1>
         <p className="mt-3 max-w-3xl text-muted">
           Members can edit the sponsor list and fan map offers. Approve only people you know work for the club; anyone can ask to join.
