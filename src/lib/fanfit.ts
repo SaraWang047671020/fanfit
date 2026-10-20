@@ -128,7 +128,7 @@ async function findTeam(name: string) {
   return { hit: hits.find((h) => norm(h.name) === norm(name)), nearest: hits.map((h) => h.name) };
 }
 
-async function composition(teamId: string) {
+export async function composition(teamId: string) {
   return get("/v2/insights", { "filter.type": "urn:demographics", "signal.interests.entities": teamId }, (raw) => {
     const d = (raw as { results?: { demographics?: { query?: { age?: Record<string, number>; gender?: Record<string, number> } }[] } })
       .results?.demographics?.[0]?.query;
@@ -213,6 +213,37 @@ async function backfill(
 }
 
 /**
+ * Best-fit brands in one sponsorship category for a team's fans: one Qloo call with the team and city as signals,
+ * filtered by industry tags; widened to the US when the city leaves fewer than CATEGORY_MIN brands.
+ */
+export async function categoryLeaders(teamId: string, city: string, key: SponsorCategoryKey) {
+  const c = SPONSOR_CATEGORIES.find((x) => x.key === key)!;
+  const exclude = new Set<string>("exclude" in c ? c.exclude : []);
+  const query = (location: string) =>
+    get(
+      "/v2/insights",
+      {
+        "filter.type": "urn:entity:brand",
+        "filter.tags": c.tags.map((t) => `urn:tag:industry:qloo:${t}`).join(","),
+        "signal.interests.entities": teamId,
+        "signal.location.query": location,
+        take: CATEGORY_TAKE,
+      },
+      (raw) =>
+        entities(raw)
+          .filter((e) => !isSportsy(e) && !tagNames(e, "industry:qloo").some((t) => exclude.has(t)))
+          .map((e) => ({ id: e.entity_id, name: e.name, affinity: e.query?.affinity ?? 0 })),
+    );
+  let location = city;
+  let items = await query(city);
+  if (items.length < CATEGORY_MIN) {
+    location = "United States";
+    items = await query(location);
+  }
+  return { location, items };
+}
+
+/**
  * Best fit per sponsorship category: one Qloo call per category (team + city, no age split), filtered by industry tags.
  * Sponsorship is sold by category, and the overall list rarely reaches banks, insurers or airlines. The team signal alone
  * is not used as a fallback here: without a location it returns banks from every country.
@@ -224,30 +255,9 @@ async function categoryFit(teamId: string, city: string, emit: Emit) {
   const failed: string[] = [];
   await Promise.all(
     SPONSOR_CATEGORIES.map(async (c) => {
-      const exclude = new Set<string>("exclude" in c ? c.exclude : []);
-      const query = (location: string) =>
-        get(
-          "/v2/insights",
-          {
-            "filter.type": "urn:entity:brand",
-            "filter.tags": c.tags.map((t) => `urn:tag:industry:qloo:${t}`).join(","),
-            "signal.interests.entities": teamId,
-            "signal.location.query": location,
-            take: CATEGORY_TAKE,
-          },
-          (raw) =>
-            entities(raw)
-              .filter((e) => !isSportsy(e) && !tagNames(e, "industry:qloo").some((t) => exclude.has(t)))
-              .map((e) => ({ id: e.entity_id, name: e.name, affinity: e.query?.affinity ?? 0 })),
-        );
       try {
-        let location = city;
-        let items = await query(city);
-        if (items.length < CATEGORY_MIN) {
-          location = "United States";
-          items = await query(location);
-          widened++;
-        }
+        const { location, items } = await categoryLeaders(teamId, city, c.key);
+        if (location !== city) widened++;
         emit({ type: "category", key: c.key, location, considered: items.length, items: items.slice(0, CATEGORY_SHOWN) });
       } catch {
         failed.push(c.label); // a side view: one category failing should not stop the main run

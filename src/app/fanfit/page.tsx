@@ -20,6 +20,9 @@ export default async function FanfitPage() {
     <main className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 sm:py-14">
       <AccountBar name={profile.display_name ?? user.email ?? ""} org={team?.name ?? "Your team"} role="team" />
       <div className="mt-3 flex flex-wrap justify-end gap-4 text-sm">
+        <Link href="/ask" className="font-semibold text-gain hover:underline">
+          ✦ Ask FanFit →
+        </Link>
         <Link href="/team/members" className="text-accent hover:underline">
           Team members{requests?.length ? ` (${requests.length} waiting)` : ""} →
         </Link>

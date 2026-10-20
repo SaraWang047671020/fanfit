@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { SPONSOR_CATEGORIES } from "@/lib/fanfit-score";
@@ -28,7 +29,12 @@ export default async function SponsorPage() {
     <main className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
       <AccountBar name={profile.display_name ?? user.email ?? ""} org={sponsor.name} role="sponsor" />
       <header className="mt-6">
-        <p className="text-xs font-bold uppercase tracking-[0.14em] text-gain">FanFit for sponsors</p>
+        <div className="flex items-baseline justify-between gap-3">
+          <p className="text-xs font-bold uppercase tracking-[0.14em] text-gain">FanFit for sponsors</p>
+          <Link href="/ask" className="text-sm font-semibold text-gain hover:underline">
+            ✦ Ask FanFit →
+          </Link>
+        </div>
         <h1 className="mt-2 text-4xl font-bold">Teams whose fans already love {sponsor.name}.</h1>
         <p className="mt-3 max-w-3xl text-muted">
           Every team in the directory, ranked by how much more their fans like {sponsor.name} than the typical big brand (Qloo taste
