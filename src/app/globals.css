@@ -11,6 +11,12 @@
   --gain: #0b8a6a;
   --loss: #d6334a;
   --warn: #a8670f;
+  /* One colour per side of the product, used for headers, badges and role cards. */
+  --team: #3b5bdb;
+  --brand: #7048e8;
+  --fan: #d9480f;
+  --sun: #f59f00;
+  --ink: #0f1a3a; /* deep backgrounds: hero, page bands */
 }
 
 @theme inline {
@@ -24,6 +30,11 @@
   --color-gain: var(--gain);
   --color-loss: var(--loss);
   --color-warn: var(--warn);
+  --color-team: var(--team);
+  --color-brand: var(--brand);
+  --color-fan: var(--fan);
+  --color-sun: var(--sun);
+  --color-ink: var(--ink);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }

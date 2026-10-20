@@ -3,8 +3,8 @@
 **Sponsorships your fans already love.** FanFit matches sports teams and brands on what fans actually like, using
 [Qloo](https://qloo.com)'s cross-domain taste data, and closes the loop with deals that fans claim and redeem.
 
-**Try it:** https://fanfit-a73p.vercel.app. No sign-up: use **Team demo**, **Sponsor demo** or **Fan demo** at the top of
-the home page. Each page has a **? Guided tour**, and every score has an **ⓘ** that explains how it is calculated.
+**Try it:** https://fanfit-a73p.vercel.app. No sign-up: on the home page use **As a team**, **As a brand** or **As a fan** (also under
+**Judges: try the demo ▾** at the top). Each page has a **? Guided tour**, and every score has an **ⓘ** that explains how it is calculated.
 See [How to test it](#how-to-test-it) for a 10-minute path through all three sides.
 
 ---
@@ -18,7 +18,7 @@ Everything below runs on the live site with the shared demo accounts: no sign-up
 
 | # | Do this | You should see |
 | --- | --- | --- |
-| 1 | Home → **Team demo** | Seattle Sounders FC's workspace; a guided tour starts |
+| 1 | Home → **As a team** | Seattle Sounders FC's workspace; a guided tour starts |
 | 2 | **Find sponsors** → **Who to call** | Brands Sounders fans love, each with the age group that loves it most and "why now" news with sources. The analysis is saved, so it loads instantly |
 | 3 | Click **ⓘ** next to *Who to call*, then open **How the agent ran** | How the ranking works; every step the agent took |
 | 4 | Scroll to **Set aside**, find **Gatorade** (it clashes with Seattle's partner Powerade) → **✉ Prepare pitch** → **Create report** (~20–30 s) → **Open report ↗** | A one-page report anyone can open by link: fit, rank among 79 teams, shared fans, what both audiences love, sourced news, a matchday idea, and a category check that states the Powerade clash instead of hiding it. Any brand under *Who to call* works the same way |
