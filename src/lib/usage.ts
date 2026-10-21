@@ -4,9 +4,9 @@ import { adminClient } from "./supabase/admin";
 
 export type UsageKind = "run" | "activation" | "team_check" | "agent" | "report";
 
-// Per account per day, and across the whole site per day (the Qloo key allows 10,000 calls a month; a fresh run ~200).
-const PER_USER: Record<UsageKind, number> = { run: 3, activation: 10, team_check: 10, agent: 15, report: 10 };
-const SITE: Record<UsageKind, number> = { run: 20, activation: 100, team_check: 100, agent: 150, report: 60 };
+// Per account per day, and across the whole site per day (the Qloo key allows 50,000 calls a month; a fresh run ~200).
+const PER_USER: Record<UsageKind, number> = { run: 5, activation: 25, team_check: 25, agent: 30, report: 25 };
+const SITE: Record<UsageKind, number> = { run: 50, activation: 250, team_check: 250, agent: 400, report: 150 };
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 

@@ -2,16 +2,16 @@
 // - Callers pass a `slim` function so only the fields they use are kept in memory.
 // - Responses are cached in memory and in Supabase (qloo-cache.ts): the taste graph changes slowly, calls take
 //   seconds, and the monthly quota is small.
-// - Hackathon keys allow 5 requests per second and 10,000 per month (X-Second- / X-Month-RateLimit-* headers).
+// - The hackathon key allows 10 requests per second and 50,000 per month (X-Second- / X-Month-RateLimit-* headers).
 //   Requests are paced below the per-second limit: a concurrency cap alone was enough from Taiwan (2–5 s per call)
-//   but not from Vercel in the US, where calls return fast enough for 3 parallel requests to exceed 5 per second.
+//   but not from Vercel in the US, where calls return fast enough for 3 parallel requests to exceed the per-second limit.
 
 import { compact, readCache, writeCache } from "./qloo-cache";
 
 const BASE_URL = process.env.QLOO_API_URL ?? "https://hackathon.api.qloo.com";
 const CACHE_MS = 1000 * 60 * 60 * 24;
 const MAX_CONCURRENT = 3;
-const MIN_GAP_MS = 250; // at most 4 request starts per second, under the 5/s limit
+const MIN_GAP_MS = 125; // at most 8 request starts per second, under the 10/s limit
 const MAX_RETRIES = 6; // backoff 0.8 s → 25.6 s (~50 s total): FanFit's ~200-call runs outlast shorter waits
 
 export class QlooError extends Error {
