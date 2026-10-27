@@ -6,6 +6,8 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useTransition } from "react";
 import { GENDER_LABEL, INTERESTS, type Gender, type InterestKey, type Target, describeTarget } from "@/lib/audience";
 import { AGES, AGE_LABEL, type Age } from "@/lib/fanfit-score";
+import SectionIcon from "@/app/SectionIcon";
+import { Target as TargetIcon } from "lucide-react";
 
 export default function AudiencePicker({ target }: { target: Target | null }) {
   const router = useRouter();
@@ -27,7 +29,7 @@ export default function AudiencePicker({ target }: { target: Target | null }) {
   return (
     <section data-tour="audience" className="rounded-3xl border border-line bg-panel/90 p-5">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent">Target audience</p>
+        <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-accent"><SectionIcon icon={TargetIcon} tone="brand" /> Target audience</p>
         <p className="text-xs text-muted">
           {pending ? "Re-scoring every team with Qloo…" : target ? `Ranking for ${describeTarget(target)}` : "Ranking for all fans"}
           {target && !pending && (

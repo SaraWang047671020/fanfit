@@ -8,6 +8,9 @@ import type { Match } from "@/lib/fan-taste";
 import { AGES, AGE_LABEL, categoryLabel } from "@/lib/fanfit-score";
 import { createClient } from "@/lib/supabase/client";
 import { ForYouInfo } from "../Explain";
+import SectionIcon from "@/app/SectionIcon";
+import { BadgeCheck, Ticket } from "lucide-react";
+import { Monogram } from "../Art";
 
 export interface FanOffer {
   offer_id: string;
@@ -184,7 +187,7 @@ export default function FanOffers({
 function Partners({ partners, offers, onDeal }: { partners: Partner[]; offers: FanOffer[]; onDeal: (offerId: string) => void }) {
   return (
     <section className="pt-4">
-      <h2 className="text-xs font-bold uppercase tracking-[0.12em] text-accent">Official partners</h2>
+      <h2 className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-accent"><SectionIcon icon={BadgeCheck} tone="fan" /> Official partners</h2>
       {/* minmax(0,1fr): grid items otherwise grow to their longest line and push the page sideways on phones. */}
       <ul className="mt-3 grid grid-cols-[minmax(0,1fr)] gap-2 sm:grid-cols-2">
         {partners.map((p) => {
@@ -333,14 +336,19 @@ function OfferCard({
   }
 
   return (
-    <li id={`offer-${o.offer_id}`} className={`scroll-mt-20 rounded-2xl border bg-panel p-4 ${highlighted ? "border-accent" : "border-line"}`}>
-      <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <p className="font-semibold">{o.place_name}</p>
-        {distance !== null && <span className="font-mono text-xs text-muted">{distance < 1 ? `${Math.round(distance * 1000)} m` : `${distance.toFixed(1)} km`}</span>}
+    <li id={`offer-${o.offer_id}`} className={`scroll-mt-20 rounded-2xl border bg-panel p-4 shadow-[0_1px_2px_rgba(20,26,43,0.04)] ${highlighted ? "border-accent" : "border-line"}`}>
+      <div className="flex items-start gap-3">
+        <Monogram name={o.place_name} />
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-baseline justify-between gap-2">
+            <p className="font-semibold">{o.place_name}</p>
+            {distance !== null && (
+              <span className="font-mono text-xs text-muted">{distance < 1 ? `${Math.round(distance * 1000)} m` : `${distance.toFixed(1)} km`}</span>
+            )}
+          </div>
+          <p className="text-xs text-muted">{[o.category, o.address].filter(Boolean).join(" · ")}</p>
+        </div>
       </div>
-      <p className="text-xs text-muted">
-        {[o.category, o.address].filter(Boolean).join(" · ")}
-      </p>
       {o.team_name && o.team_id && (
         <a href={`/t/${o.team_id}`} className="mt-1 inline-block text-xs text-accent">
           {o.team_name} partner
@@ -348,7 +356,10 @@ function OfferCard({
       )}
       {o.match && <MatchBadge m={o.match} />}
       {o.demo && <DemoBadge />}
-      <p className="mt-2 text-lg font-semibold text-gain">{o.title}</p>
+      <p className="mt-3 flex items-center gap-2 rounded-xl bg-gain/8 px-3 py-2 text-lg font-semibold text-gain">
+        <Ticket className="h-5 w-5 shrink-0" aria-hidden />
+        {o.title}
+      </p>
       {o.details && <p className="text-sm text-muted">{o.details}</p>}
       {o.ends_on && <p className="mt-1 text-xs text-muted">Until {o.ends_on}</p>}
       {code ? (

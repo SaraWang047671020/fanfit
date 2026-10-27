@@ -8,10 +8,20 @@ import { type DirectoryTeam, teamFit } from "@/lib/sponsor-fit";
 import { fitBand } from "@/lib/sponsor-fit-band";
 import { currentUser } from "@/lib/supabase/server";
 import AccountBar from "../../../AccountBar";
+import { Monogram, Photo } from "../../../Art";
 import { FitInfo } from "../../../Explain";
 import Tabs from "../../../Tabs";
 import InterestCard, { type SentNote } from "./InterestCard";
 import TeamActions from "./TeamActions";
+import SectionIcon from "@/app/SectionIcon";
+import { Clock, Heart, Tags, Users } from "lucide-react";
+
+const PANEL_ICON: Record<string, Parameters<typeof SectionIcon>[0]> = {
+  "Their fans vs your customers": { icon: Users, tone: "brand" },
+  "Shared brand traits": { icon: Tags, tone: "gain" },
+  "What fans of both love": { icon: Heart, tone: "fan" },
+  "Sponsors, timing and an activation idea": { icon: Clock, tone: "sun" },
+};
 
 export const metadata: Metadata = { title: "FanFit · Team detail" };
 
@@ -49,16 +59,29 @@ export default async function SponsorTeamPage({ params }: PageProps<"/sponsor/te
       <Link href="/sponsor" className="mt-6 inline-block text-sm text-muted hover:text-text">
         ← All teams
       </Link>
-      <header className="mt-3">
-        <p className="text-xs font-bold uppercase tracking-[0.14em] text-gain">
-          {team.league} · {team.city}
-          {team.claimed_at && <span className="ml-2 rounded-full border border-gain px-2 py-0.5 text-[10px]">on FanFit</span>}
-        </p>
-        <h1 className="mt-2 text-4xl font-bold">
-          {team.name} × {sponsor.name}
-        </h1>
-        <p data-tour="fit" className="mt-3 text-muted">
-          <span className="font-semibold text-text">{fitBand(z)} fit</span>
+      <header className="relative mt-3 overflow-hidden rounded-3xl bg-gradient-to-br from-brand to-ink p-6 text-white sm:p-8">
+        <Photo src="/images/arena.jpg" tint="bg-gradient-to-br from-brand/80 via-brand/55 to-ink/85" opacity={1} />
+        <div className="relative flex flex-wrap items-center gap-4">
+          <div className="flex -space-x-3">
+            <span className="rounded-full ring-4 ring-white/25">
+              <Monogram name={team.name} size="lg" />
+            </span>
+            <span className="rounded-full ring-4 ring-white/25">
+              <Monogram name={sponsor.name} size="lg" />
+            </span>
+          </div>
+          <div className="min-w-0">
+            <p className="text-xs font-bold uppercase tracking-[0.14em] text-white/70">
+              {team.league} · {team.city}
+              {team.claimed_at && <span className="ml-2 rounded-full border border-white/50 px-2 py-0.5 text-[10px]">on FanFit</span>}
+            </p>
+            <h1 className="mt-1 text-3xl font-bold sm:text-4xl">
+              {team.name} × {sponsor.name}
+            </h1>
+          </div>
+        </div>
+        <p data-tour="fit" className="relative mt-5 inline-flex flex-wrap items-center gap-x-1.5 gap-y-1 rounded-2xl bg-white px-4 py-2 text-sm text-muted shadow-lg">
+          <span className="font-semibold text-gain">{fitBand(z)} fit</span>
           {z !== null && ` (${z >= 0 ? "+" : ""}${z.toFixed(1)}σ above how these fans like the typical big brand)`} · #{rank} of {fits.length} teams
           for {sponsor.name}.
           <FitInfo brand={sponsor.name} />
@@ -126,7 +149,10 @@ export default async function SponsorTeamPage({ params }: PageProps<"/sponsor/te
 function Panel({ title, hint, children }: { title: string; hint?: string; children: React.ReactNode }) {
   return (
     <section className="rounded-3xl border border-line bg-panel/90 p-6">
-      <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent">{title}</p>
+      <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-accent">
+        {PANEL_ICON[title] && <SectionIcon {...PANEL_ICON[title]} />}
+        {title}
+      </p>
       {hint && <p className="mt-1 text-xs text-muted">{hint}</p>}
       <div className="mt-4">{children}</div>
     </section>

@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { currentUser } from "@/lib/supabase/server";
 import { FollowButton, JoinFan } from "../FanButtons";
+import SectionIcon from "@/app/SectionIcon";
+import { Star } from "lucide-react";
 
 export const metadata: Metadata = { title: "Account · FanFit" };
 
@@ -48,7 +50,7 @@ export default async function FanAccountPage() {
         </p>
       )}
       <section className="mt-6">
-        <h2 className="text-xs font-bold uppercase tracking-[0.12em] text-accent">Teams you follow</h2>
+        <h2 className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-accent"><SectionIcon icon={Star} tone="fan" /> Teams you follow</h2>
         {(follows ?? []).length === 0 ? (
           <p className="mt-2 text-sm text-muted">
             None yet. Open a team from <Link href="/fans" className="text-accent">Home</Link> and tap Follow.

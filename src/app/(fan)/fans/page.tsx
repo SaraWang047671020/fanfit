@@ -7,6 +7,8 @@ import Tour from "../../Tour";
 import FanOffers, { type FanOffer, type Partner } from "../FanOffers";
 import TastePicker from "./TastePicker";
 import TeamSearch, { type FanTeam } from "./TeamSearch";
+import SectionIcon from "@/app/SectionIcon";
+import { Heart, Map } from "lucide-react";
 
 export const metadata: Metadata = { title: "FanFit for fans · Deals from your team's partners" };
 
@@ -74,7 +76,8 @@ export default async function FansHome() {
       </div>
       {mine.length > 0 && (
         <section data-tour="my-map" className="mt-6">
-          <h2 className="text-xs font-bold uppercase tracking-[0.12em] text-accent">
+          <h2 className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-accent">
+            <SectionIcon icon={Map} tone="fan" />
             My teams&apos; map · {mine.map((t) => t.name).join(", ")}
           </h2>
           <div className="mt-3">
@@ -102,7 +105,7 @@ export default async function FansHome() {
 function TastePreview({ signedInAs }: { signedInAs: string | null }) {
   return (
     <section className="rounded-2xl border border-dashed border-gain/50 bg-panel p-4">
-      <h2 className="text-xs font-bold uppercase tracking-[0.12em] text-accent">Your taste</h2>
+      <h2 className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-accent"><SectionIcon icon={Heart} tone="fan" /> Your taste</h2>
       <p className="mt-1 text-sm">
         Pick brands, music, movies and shows you love, and Qloo orders your teams&apos; deals for you, with the reason: “because you
         like Patagonia”.

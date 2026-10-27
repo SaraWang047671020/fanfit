@@ -3,6 +3,8 @@
 // Write a note, build a FanFit pitch report (~30-40 s), then share its link. FanFit does not send email itself:
 // "Email it" opens the user's own mail app with the subject, note and link filled in.
 import { useState } from "react";
+import SectionIcon from "./SectionIcon";
+import { Send } from "lucide-react";
 
 export default function PitchComposer({
   title,
@@ -80,7 +82,10 @@ export default function PitchComposer({
 
   return (
     <div>
-      <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent">{title}</p>
+      <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-accent">
+        <SectionIcon icon={Send} tone="brand" />
+        {title}
+      </p>
       <p className="mt-1 text-xs text-muted">{intro}</p>
       <textarea
         value={message}

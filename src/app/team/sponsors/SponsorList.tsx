@@ -13,6 +13,8 @@ import {
   setSponsorPlace,
   updateSponsor,
 } from "../actions";
+import SectionIcon from "@/app/SectionIcon";
+import { Globe, ListChecks, Plus } from "lucide-react";
 
 export interface ListedSponsor {
   id: string;
@@ -101,7 +103,7 @@ export default function SponsorList({ sponsors }: { sponsors: ListedSponsor[] })
   return (
     <div className="space-y-6">
       <section className="rounded-3xl border border-line bg-panel/90 p-6">
-        <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent">Listed ({sponsors.length})</p>
+        <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-accent"><SectionIcon icon={ListChecks} tone="team" /> Listed ({sponsors.length})</p>
         {sponsors.length === 0 ? (
           <p className="mt-3 text-sm text-muted">Nothing listed yet, so FanFit falls back to web search. Add sponsors below or import them.</p>
         ) : (
@@ -154,7 +156,7 @@ export default function SponsorList({ sponsors }: { sponsors: ListedSponsor[] })
       </section>
 
       <section className="rounded-3xl border border-line bg-panel/90 p-6">
-        <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent">Add a sponsor</p>
+        <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-accent"><SectionIcon icon={Plus} tone="gain" /> Add a sponsor</p>
         <div className="mt-3">
           <SponsorForm initial={empty} submitLabel="Add" onSubmit={addSponsor} />
         </div>
@@ -275,7 +277,7 @@ function WebImport() {
   const picked = rows.filter((r) => r.pick);
   return (
     <section className="rounded-3xl border border-line bg-panel/90 p-6">
-      <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent">Import from web search</p>
+      <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-accent"><SectionIcon icon={Globe} tone="brand" /> Import from web search</p>
       <p className="mt-1 text-sm text-muted">
         FanFit searches recent news and team pages for your current sponsors. Check each one before importing: search can miss
         deals or list old ones.

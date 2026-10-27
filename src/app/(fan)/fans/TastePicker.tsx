@@ -7,6 +7,8 @@ import { useEffect, useState, useTransition } from "react";
 import type { Taste, TasteKind } from "@/lib/fan-taste";
 import { ForYouInfo } from "../../Explain";
 import { findTastes, setTaste } from "./actions";
+import SectionIcon from "@/app/SectionIcon";
+import { Heart } from "lucide-react";
 
 const TABS: { kind: TasteKind; label: string; search: string }[] = [
   { kind: "brand", label: "Brands", search: "Search brands" },
@@ -96,7 +98,8 @@ export default function TastePicker({
   return (
     <section data-tour="taste" className="rounded-2xl border border-line bg-panel p-4">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h2 className="text-xs font-bold uppercase tracking-[0.12em] text-accent">
+        <h2 className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-accent">
+          <SectionIcon icon={Heart} tone="fan" />
           Your taste <span className="font-mono font-normal normal-case tracking-normal text-muted">{tastes.length}/{MAX}</span>
           <ForYouInfo />
         </h2>

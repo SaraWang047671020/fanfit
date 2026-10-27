@@ -28,6 +28,8 @@ import {
   scoreBrands,
   weightsFromAffinity,
 } from "@/lib/fanfit-score";
+import SectionIcon from "@/app/SectionIcon";
+import { Beer, Car, CupSoda, Dices, Handshake, HeartPulse, Landmark, Laptop, LayoutGrid, PhoneCall, PieChart, Plane, ShieldCheck, Shirt, ShoppingCart, Signal, UtensilsCrossed, Workflow } from "lucide-react";
 
 type Step = { id: string; label: string; status: "running" | "done" | "warn"; detail?: string };
 type Buckets = Partial<Record<Age, BrandHit[]>>;
@@ -331,7 +333,8 @@ export default function FanfitConsole({ initial = PRESETS[0] }: { initial?: { te
         <section className="rounded-3xl border border-line bg-panel/90 p-6">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-3">
-              <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent">
+              <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-accent">
+                <SectionIcon icon={PhoneCall} tone="team" />
                 Who to call {info && <span className="text-muted normal-case tracking-normal">· {info.name}</span>}
                 <WhoToCallInfo />
               </p>
@@ -439,7 +442,7 @@ export default function FanfitConsole({ initial = PRESETS[0] }: { initial?: { te
         (sponsors.length > 0 ? (
           <div className="max-w-2xl">
             <section className="rounded-3xl border border-line bg-panel/90 p-6">
-              <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent">Current sponsors found ({sponsors.length})</p>
+              <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-accent"><SectionIcon icon={Handshake} tone="brand" /> Current sponsors found ({sponsors.length})</p>
               <p className="mt-1 text-xs text-muted">
                 {sponsorSource === "club"
                   ? "Your list on FanFit, used for exclusivity checks."
@@ -466,7 +469,7 @@ export default function FanfitConsole({ initial = PRESETS[0] }: { initial?: { te
       {view === "trace" && (
         <div className="max-w-3xl">
           <section className="rounded-3xl border border-line bg-panel/90 p-6">
-            <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent">Agent trace</p>
+            <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-accent"><SectionIcon icon={Workflow} tone="gain" /> Agent trace</p>
             {steps.length === 0 && <p className="mt-3 text-sm text-muted">Pick a team and run to watch each step.</p>}
             <ol className="mt-4 space-y-3">
               {steps.map((s, i) => (
@@ -503,7 +506,8 @@ function CategoryGrid({
 }) {
   return (
     <section className="rounded-3xl border border-line bg-panel/90 p-6">
-      <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent">
+      <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-accent">
+        <SectionIcon icon={LayoutGrid} tone="sun" />
         Best fit by sponsorship category <CategoryInfo />
       </p>
       <p className="mt-1 text-xs text-muted">
@@ -516,9 +520,12 @@ function CategoryGrid({
           if (!r) return null;
           const signed = sponsors.filter((s) => (c.covers as readonly string[]).includes(s.category));
           return (
-            <div key={c.key} className="rounded-xl border border-line bg-panel-2 p-4 text-sm">
-              <div className="flex items-baseline justify-between gap-2">
-                <span className="font-semibold">{c.label}</span>
+            <div key={c.key} className="rounded-2xl border border-line bg-panel p-4 text-sm shadow-[0_1px_2px_rgba(20,26,43,0.04)]">
+              <div className="flex items-center justify-between gap-2">
+                <span className="flex items-center gap-2 font-semibold">
+                  <SectionIcon icon={CATEGORY_ICON[c.key].Icon} tone={CATEGORY_ICON[c.key].tone} />
+                  {c.label}
+                </span>
                 <span className="font-mono text-xs text-muted">
                   {r.location === city ? "" : "US-wide · "}
                   {r.considered} found
@@ -580,7 +587,8 @@ function FanMix({
   return (
     <section className="rounded-3xl border border-line bg-panel/90 p-6">
       <div className="flex items-baseline justify-between gap-2">
-        <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent">
+        <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-accent">
+          <SectionIcon icon={PieChart} tone="fan" />
           Fan mix <FanMixInfo />
         </p>
         {edited && (
@@ -620,6 +628,23 @@ function FanMix({
     </section>
   );
 }
+
+// One icon and colour per sponsorship category in the By category view.
+const CATEGORY_ICON: Record<SponsorCategoryKey, { Icon: typeof Beer; tone: "team" | "brand" | "gain" | "sun" | "fan" }> = {
+  bank: { Icon: Landmark, tone: "team" },
+  insurance: { Icon: ShieldCheck, tone: "brand" },
+  alcohol: { Icon: Beer, tone: "sun" },
+  beverage: { Icon: CupSoda, tone: "gain" },
+  auto: { Icon: Car, tone: "team" },
+  telecom: { Icon: Signal, tone: "brand" },
+  airline: { Icon: Plane, tone: "team" },
+  health: { Icon: HeartPulse, tone: "fan" },
+  betting: { Icon: Dices, tone: "brand" },
+  restaurant: { Icon: UtensilsCrossed, tone: "sun" },
+  sportswear: { Icon: Shirt, tone: "fan" },
+  retail: { Icon: ShoppingCart, tone: "gain" },
+  tech: { Icon: Laptop, tone: "team" },
+};
 
 const TIMING_TONE = ["text-muted", "text-warn", "text-gain/80", "text-gain"];
 

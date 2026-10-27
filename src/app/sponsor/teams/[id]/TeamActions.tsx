@@ -6,6 +6,8 @@ import type { Activation } from "@/lib/fanfit-activation";
 import { AGE_LABEL, type Age, type Sponsor, categoryLabel } from "@/lib/fanfit-score";
 import type { TeamNews } from "@/lib/sponsor-detail";
 import ActivationPanel from "../../../fanfit/ActivationPanel";
+import SectionIcon from "@/app/SectionIcon";
+import { Clock, Lightbulb } from "lucide-react";
 
 type Check = { sponsors: Sponsor[]; source: "club" | "web"; inMyCategories: string[]; news: TeamNews };
 type Load<T> = { status: "idle" } | { status: "loading" } | { status: "done"; data: T } | { status: "error"; message: string };
@@ -60,7 +62,7 @@ export default function TeamActions({
   return (
     <div className="grid gap-6 lg:grid-cols-2">
       <section className="rounded-3xl border border-line bg-panel/90 p-6">
-        <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent">Sponsors and why now</p>
+        <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-accent"><SectionIcon icon={Clock} tone="sun" /> Sponsors and why now</p>
         {listed.length > 0 && (
           <div className="mt-3 text-sm">
             <p className="text-xs text-muted">Listed by the club on FanFit:</p>
@@ -94,7 +96,7 @@ export default function TeamActions({
       </section>
 
       <section className="rounded-3xl border border-line bg-panel/90 p-6">
-        <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent">Activation idea</p>
+        <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-accent"><SectionIcon icon={Lightbulb} tone="gain" /> Activation idea</p>
         {idea.status !== "done" && (
           <>
             <p className="mt-3 text-sm text-muted">

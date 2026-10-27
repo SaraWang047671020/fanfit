@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import PitchComposer from "../../../PitchComposer";
 import { withdrawInterest } from "../../../interest-actions";
+import SectionIcon from "@/app/SectionIcon";
+import { Send } from "lucide-react";
 
 export interface SentNote {
   status: "new" | "interested" | "declined";
@@ -41,7 +43,7 @@ export default function InterestCard({
           : { text: onFanfit ? `Waiting for ${teamName} to answer.` : `${teamName} isn't on FanFit yet; they will see your note when they join.`, tone: "text-muted" };
     return (
       <section data-tour="interest" className="rounded-3xl border border-gain/40 bg-panel/90 p-6">
-        <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent">Your note to {teamName}</p>
+        <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-accent"><SectionIcon icon={Send} tone="brand" /> Your note to {teamName}</p>
         <p className="mt-2 text-sm">“{sent.message}”</p>
         <p className="mt-1 text-xs text-muted">
           Sent {new Date(sent.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}

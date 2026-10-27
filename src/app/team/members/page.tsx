@@ -4,6 +4,8 @@ import { currentUser } from "@/lib/supabase/server";
 import AccountBar from "../../AccountBar";
 import { DecideButtons } from "../RequestButtons";
 import PageHeader from "../../PageHeader";
+import SectionIcon from "@/app/SectionIcon";
+import { UserPlus, Users } from "lucide-react";
 
 export const metadata: Metadata = { title: "FanFit · Team members" };
 
@@ -36,7 +38,7 @@ export default async function TeamMembersPage() {
       </PageHeader>
 
       <section className="mt-8 rounded-3xl border border-line bg-panel/90 p-6">
-        <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent">Waiting for approval ({pending.length})</p>
+        <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-accent"><SectionIcon icon={UserPlus} tone="sun" /> Waiting for approval ({pending.length})</p>
         {pending.length === 0 ? (
           <p className="mt-3 text-sm text-muted">No requests right now.</p>
         ) : (
@@ -57,7 +59,7 @@ export default async function TeamMembersPage() {
       </section>
 
       <section className="mt-6 rounded-3xl border border-line bg-panel/90 p-6">
-        <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent">Members ({(members ?? []).length})</p>
+        <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-accent"><SectionIcon icon={Users} tone="team" /> Members ({(members ?? []).length})</p>
         <ul className="mt-3 divide-y divide-line">
           {((members ?? []) as Person[]).map((m) => (
             <li key={m.user_id} className="py-3 text-sm">

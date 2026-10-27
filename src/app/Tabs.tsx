@@ -7,14 +7,14 @@ export default function Tabs({ tabs, tour }: { tabs: { key: string; label: strin
   const [on, setOn] = useState(tabs[0]?.key);
   return (
     <div>
-      <div role="tablist" data-tour={tour} className="flex flex-wrap gap-2 border-b border-line pb-3">
+      <div role="tablist" data-tour={tour} className="flex w-fit max-w-full flex-wrap gap-1 rounded-2xl border border-line bg-panel p-1.5 shadow-[0_1px_2px_rgba(20,26,43,0.04)]">
         {tabs.map((t) => (
           <button
             key={t.key}
             role="tab"
             aria-selected={on === t.key}
             onClick={() => setOn(t.key)}
-            className={`rounded-full px-4 py-2 text-sm font-semibold ${on === t.key ? "bg-accent text-white" : "border border-line bg-panel text-muted hover:text-text"}`}
+            className={`rounded-xl px-4 py-2 text-sm font-semibold transition ${on === t.key ? "bg-accent text-white shadow-sm" : "text-muted hover:bg-panel-2 hover:text-text"}`}
           >
             {t.label}
           </button>

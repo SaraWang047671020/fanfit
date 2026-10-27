@@ -9,6 +9,8 @@ import AccountBar from "../../AccountBar";
 import { PredictedInfo } from "../../Explain";
 import { CopyLink, OfferControls, SimulatedControls } from "./OfferControls";
 import PageHeader from "../../PageHeader";
+import SectionIcon from "@/app/SectionIcon";
+import { ChartColumn, Crosshair, Ticket } from "lucide-react";
 
 export const metadata: Metadata = { title: "FanFit · Offers and fan map" };
 
@@ -104,7 +106,8 @@ export default async function TeamOffersPage({ searchParams }: PageProps<"/team/
 
       <section data-tour="offer-results" className="mt-8 rounded-3xl border border-line bg-panel/90 p-6">
         <div className="flex flex-wrap items-baseline justify-between gap-3">
-          <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent">
+          <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-accent">
+            <SectionIcon icon={ChartColumn} tone="gain" />
             Results{" "}
             {showSim && (
               <span className="ml-2 rounded-full border border-warn px-2 py-0.5 text-warn normal-case tracking-normal">
@@ -156,7 +159,8 @@ export default async function TeamOffersPage({ searchParams }: PageProps<"/team/
       </section>
 
       <section data-tour="offer-predicted" className="mt-6 rounded-3xl border border-line bg-panel/90 p-6">
-        <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent">
+        <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-accent">
+          <SectionIcon icon={Crosshair} tone="brand" />
           Predicted vs actual <PredictedInfo />
         </p>
         <p className="mt-1 max-w-3xl text-xs text-muted">
@@ -240,7 +244,7 @@ export default async function TeamOffersPage({ searchParams }: PageProps<"/team/
       </section>
 
       <section data-tour="offer-list" className="mt-6 rounded-3xl border border-line bg-panel/90 p-6">
-        <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent">Offers</p>
+        <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-accent"><SectionIcon icon={Ticket} tone="sun" /> Offers</p>
         {(offers ?? []).length === 0 && (
           <p className="mt-3 text-sm text-muted">
             No offers yet. Run the{" "}

@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useRef, useState } from "react";
 import OfferButton from "../fanfit/OfferButton";
 import type { Answer, AskEvent } from "@/lib/ask-agent";
+import SectionIcon from "@/app/SectionIcon";
+import { MessageSquareText, Sparkles, Workflow } from "lucide-react";
 
 type Step = { step: number; tool: string; reason: string; args: Record<string, unknown>; summary?: string; error?: boolean };
 
@@ -107,12 +109,21 @@ export default function AskConsole({ examples, role }: { examples: string[]; rol
             {running ? "Working…" : "Ask"}
           </button>
         </form>
-        <div data-tour="ask-examples" className="mt-3 flex flex-wrap gap-2 text-xs">
-          {examples.map((x) => (
-            <button key={x} disabled={running} onClick={() => ask(x)} className="rounded-full border border-line px-3 py-1.5 text-left text-muted hover:border-accent hover:text-text disabled:opacity-50">
-              {x}
-            </button>
-          ))}
+        <div data-tour="ask-examples" className="mt-4 grid gap-2 text-sm sm:grid-cols-3">
+          {examples.map((x, i) => {
+            const tone = ["border-team/25 bg-team/5 text-team", "border-brand/25 bg-brand/5 text-brand", "border-gain/25 bg-gain/5 text-gain"][i % 3];
+            return (
+              <button
+                key={x}
+                disabled={running}
+                onClick={() => ask(x)}
+                className={`group flex items-start gap-2 rounded-2xl border p-3 text-left transition hover:-translate-y-0.5 hover:shadow-md disabled:opacity-50 ${tone}`}
+              >
+                <Sparkles className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
+                <span className="text-text">{x}</span>
+              </button>
+            );
+          })}
         </div>
         {error && <p className="mt-3 text-sm text-loss">{error}</p>}
       </section>
@@ -120,7 +131,7 @@ export default function AskConsole({ examples, role }: { examples: string[]; rol
       {(steps.length > 0 || running) && (
         <div className="grid gap-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.3fr)]">
           <section className="rounded-3xl border border-line bg-panel/90 p-6">
-            <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent">Agent trace</p>
+            <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-accent"><SectionIcon icon={Workflow} tone="gain" /> Agent trace</p>
             <ol className="mt-4 space-y-3">
               {steps.map((s) => (
                 <li key={s.step} className="rounded-xl border border-line bg-panel-2 p-3 text-sm">
@@ -157,7 +168,7 @@ export default function AskConsole({ examples, role }: { examples: string[]; rol
           </section>
 
           <section className="rounded-3xl border border-line bg-panel/90 p-6">
-            <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent">Answer</p>
+            <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-accent"><SectionIcon icon={MessageSquareText} tone="brand" /> Answer</p>
             {!answer ? (
               <p className="mt-3 text-sm text-muted">{running ? "The agent is working…" : "No answer."}</p>
             ) : (
