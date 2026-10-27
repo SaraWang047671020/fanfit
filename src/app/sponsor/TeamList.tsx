@@ -17,11 +17,11 @@ export interface TeamRow {
 }
 
 const BAND_TONE: Record<string, string> = {
-  Strong: "text-gain",
-  Good: "text-gain/80",
-  Average: "text-muted",
-  Weak: "text-muted",
-  "No data": "text-muted",
+  Strong: "bg-gain/12 text-gain",
+  Good: "bg-gain/8 text-gain/90",
+  Average: "bg-panel-2 text-muted",
+  Weak: "bg-panel-2 text-muted",
+  "No data": "bg-panel-2 text-muted",
 };
 
 export default function TeamList({ rows, targeted = false, query = "" }: { rows: TeamRow[]; targeted?: boolean; query?: string }) {
@@ -49,7 +49,7 @@ export default function TeamList({ rows, targeted = false, query = "" }: { rows:
           Hide teams with my category taken
         </label>
       </div>
-      <ol className="mt-4 divide-y divide-line">
+      <ol className="mt-4 divide-y divide-line/70">
         {shown.map((r, i) => {
           const band = fitBand(r.z);
           const rank = rows.indexOf(r) + 1;
@@ -58,11 +58,11 @@ export default function TeamList({ rows, targeted = false, query = "" }: { rows:
             <li
               key={r.id}
               data-tour={i === 0 ? "team-row" : undefined}
-              className="grid grid-cols-[2rem_minmax(0,1fr)_auto] items-center gap-3 py-3 text-sm sm:grid-cols-[2rem_minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)]"
+              className="-mx-3 grid grid-cols-[2rem_minmax(0,1fr)_auto] items-center gap-3 rounded-xl px-3 py-3 text-sm transition hover:bg-panel-2/60 sm:grid-cols-[2rem_minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)]"
             >
-              <span className="font-mono text-xs text-muted">{i + 1}</span>
+              <span className="font-mono text-sm font-bold text-muted">{i + 1}</span>
               <div className="flex min-w-0 items-center gap-3">
-                <Monogram name={r.name} size="sm" />
+                <Monogram name={r.name} />
                 <div className="min-w-0">
                   <p className="font-semibold leading-snug sm:truncate">
                     <Link href={`/sponsor/teams/${r.id}${query}`} className="hover:text-accent">
@@ -89,24 +89,24 @@ export default function TeamList({ rows, targeted = false, query = "" }: { rows:
                 </div>
               </div>
               <div className="text-right sm:text-left">
-                <p className={`text-xs font-semibold ${BAND_TONE[band]}`}>
-                  {band}
+                <p className="flex items-center justify-end gap-2 text-xs sm:justify-start">
+                  <span className={`rounded-full px-2 py-0.5 font-semibold ${BAND_TONE[band]}`}>{band}</span>
                   {r.z !== null && (
-                    <span className="ml-1 font-mono font-normal text-muted">
+                    <span className="font-mono font-semibold">
                       {r.z >= 0 ? "+" : ""}
                       {r.z.toFixed(1)}σ
                     </span>
                   )}
                 </p>
-                <div className="mt-1 hidden h-1.5 rounded-full bg-panel-2 sm:block">
-                  <div className="h-1.5 rounded-full bg-gain" style={{ width: `${Math.max(0, ((r.z ?? 0) / max) * 100)}%` }} />
+                <div className="mt-2 hidden h-2 rounded-full bg-panel-2 sm:block">
+                  <div className="h-2 rounded-full bg-gradient-to-r from-brand to-gain" style={{ width: `${Math.max(0, ((r.z ?? 0) / max) * 100)}%` }} />
                 </div>
               </div>
               <p className={`col-span-3 text-xs sm:col-span-1 ${r.category.status === "unknown" ? "hidden sm:block" : ""}`}>
                 {r.category.status === "taken" ? (
-                  <span className="text-loss">Category taken: {r.category.by.join(", ")}</span>
+                  <span className="rounded-full bg-loss/10 px-2 py-0.5 font-medium text-loss">Category taken: {r.category.by.join(", ")}</span>
                 ) : r.category.status === "open" ? (
-                  <span className="text-gain">Category open</span>
+                  <span className="rounded-full bg-gain/10 px-2 py-0.5 font-medium text-gain">Category open</span>
                 ) : (
                   <span className="text-muted">Sponsors not listed yet</span>
                 )}

@@ -122,10 +122,10 @@ export default async function TeamOffersPage({ searchParams }: PageProps<"/team/
           </div>
         </div>
         <div className="mt-4 grid gap-3 sm:grid-cols-4">
-          <Tile label="Live offers" value={String((offers ?? []).filter((o) => o.active).length)} />
-          <Tile label="Codes claimed" value={String(counted.length)} />
-          <Tile label="Redeemed" value={String(redeemed.length)} />
-          <Tile label="Redemption rate" value={pct(redeemed.length, counted.length)} />
+          <Tile label="Live offers" value={String((offers ?? []).filter((o) => o.active).length)} tone="bg-team" />
+          <Tile label="Codes claimed" value={String(counted.length)} tone="bg-brand" />
+          <Tile label="Redeemed" value={String(redeemed.length)} tone="bg-gain" />
+          <Tile label="Redemption rate" value={pct(redeemed.length, counted.length)} tone="bg-sun" />
         </div>
         <div className="mt-6">
           <p className="text-sm font-semibold">Claims by age group</p>
@@ -136,8 +136,8 @@ export default async function TeamOffersPage({ searchParams }: PageProps<"/team/
             {byAge.map(({ a, n }) => (
               <div key={a} className="grid grid-cols-[3.5rem_1fr_2.5rem] items-center gap-3 text-xs" title={`${AGE_LABEL[a]}: ${n} claims`}>
                 <span className="text-muted">{AGE_LABEL[a]}</span>
-                <div className="h-2.5 rounded-full bg-panel-2">
-                  <div className="h-2.5 rounded-r-[4px] bg-gain" style={{ width: `${(100 * n) / maxAge}%` }} />
+                <div className="h-3 rounded-full bg-panel-2">
+                  <div className="h-3 rounded-full bg-gradient-to-r from-team to-gain" style={{ width: `${(100 * n) / maxAge}%` }} />
                 </div>
                 <span className="text-right font-mono">{n}</span>
               </div>
@@ -302,11 +302,12 @@ export default async function TeamOffersPage({ searchParams }: PageProps<"/team/
   );
 }
 
-function Tile({ label, value }: { label: string; value: string }) {
+function Tile({ label, value, tone }: { label: string; value: string; tone: string }) {
   return (
-    <div className="rounded-2xl border border-line bg-panel-2 p-4">
-      <p className="text-xs text-muted">{label}</p>
-      <p className="mt-1 text-2xl font-bold">{value}</p>
+    <div className="relative overflow-hidden rounded-2xl border border-line bg-panel p-4 pl-5">
+      <span className={`absolute inset-y-0 left-0 w-1.5 ${tone}`} aria-hidden />
+      <p className="text-xs font-medium text-muted">{label}</p>
+      <p className="mt-1 text-3xl font-bold tracking-tight">{value}</p>
     </div>
   );
 }

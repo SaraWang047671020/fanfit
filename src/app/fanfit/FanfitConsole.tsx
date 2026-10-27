@@ -298,14 +298,19 @@ export default function FanfitConsole({ initial = PRESETS[0] }: { initial?: { te
       </section>
 
       {status === "idle" && !error && <FirstRun team={team} onRun={() => run()} />}
-      <div data-tour="results-tabs" className="flex flex-wrap gap-2 border-b border-line pb-3" role="tablist" aria-label="Results">
+      <div
+        data-tour="results-tabs"
+        className="flex w-fit max-w-full flex-wrap gap-1 rounded-2xl border border-line bg-panel p-1.5 shadow-[0_1px_2px_rgba(20,26,43,0.04)]"
+        role="tablist"
+        aria-label="Results"
+      >
         {VIEWS.map((v) => (
           <button
             key={v.key}
             role="tab"
             aria-selected={view === v.key}
             onClick={() => setView(v.key)}
-            className={`rounded-full px-4 py-2 text-sm font-semibold ${view === v.key ? "bg-accent text-white" : "border border-line bg-panel text-muted hover:text-text"}`}
+            className={`rounded-xl px-4 py-2 text-sm font-semibold transition ${view === v.key ? "bg-accent text-white shadow-sm" : "text-muted hover:bg-panel-2 hover:text-text"}`}
           >
             {v.label}
             {v.key === "trace" && running && <span className="ml-1.5 inline-block h-2 w-2 animate-pulse rounded-full bg-gain" />}
@@ -654,47 +659,49 @@ function Card({
     if (timing.relationship) flags.push({ tone: "text-warn", text: `Existing tie: ${timing.relationship}` });
     if (timing.fitRisk) flags.push({ tone: "text-muted", text: `Risk: ${timing.fitRisk}` });
   }
+  const cats = (timing?.categories ?? [row.category]).filter((c) => c && c !== "—").map(categoryLabel);
   return (
-    <li data-tour={tour} className="rounded-xl border border-line bg-panel-2 p-4 text-sm">
-      <div className="flex items-baseline gap-3">
-        <span className="w-6 font-mono text-lg font-bold">{rank ?? "—"}</span>
-        <Monogram name={row.name} />
+    <li
+      data-tour={tour}
+      className="rounded-2xl border border-line bg-panel p-4 text-sm shadow-[0_1px_2px_rgba(20,26,43,0.04)] transition hover:border-accent/30 hover:shadow-[0_8px_24px_rgba(20,26,43,0.08)] sm:p-5"
+    >
+      <div className="flex items-start gap-3 sm:gap-4">
+        <span className="mt-1.5 w-5 shrink-0 text-center font-mono text-sm font-bold text-muted sm:w-6">{rank ?? "—"}</span>
+        <span className="hidden sm:block">
+          <Monogram name={row.name} size="lg" />
+        </span>
         <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-baseline justify-between gap-2">
-            <span className="font-semibold">{row.name}</span>
-            <span className="text-xs text-muted">
-              fit #{fitRank} · {row.score.toFixed(0)}/100
-            </span>
+          <div className="flex items-start justify-between gap-3">
+            <p className="min-w-0 pt-1 text-base font-bold leading-snug">{row.name}</p>
+            <FitBadge score={row.score} fitRank={fitRank} />
           </div>
-          <p className="text-xs text-muted">
-            {(timing?.categories ?? [row.category]).map(categoryLabel).join(", ")} · strongest with fans {AGE_LABEL[row.driver]} · in {row.reach}/6 age groups
-            {row.noLocal && <span title="No local data in Qloo for this city; scored on the team's fans alone."> · team fans only*</span>}
-          </p>
-          {row.address && <p className="text-xs text-muted">{row.address}</p>}
-          {timing?.exclusivityOnly ? (
-            <>
-              {flags.map((f) => (
-                <p key={f.text} className={`mt-2 text-xs ${f.tone}`}>
-                  {f.text}
-                </p>
-              ))}
-              <p className="mt-2 text-xs text-muted">{flags.length ? "" : "No clash with current sponsors. "}Timing not checked yet.</p>
-            </>
-          ) : timing ? (
-            <>
-              <p className="mt-2">
-                <span className={`font-mono text-xs font-bold ${TIMING_TONE[timing.timing]}`}>timing {timing.timing}/3</span>{" "}
-                {timing.whyNow || <span className="text-muted">No recent reason found.</span>}
+          <div className="mt-1.5 flex flex-wrap gap-1.5 text-[11px] font-medium">
+            {cats.map((c) => (
+              <span key={c} className="rounded-full bg-panel-2 px-2 py-0.5 text-muted">
+                {c}
+              </span>
+            ))}
+            <span className="rounded-full bg-team/10 px-2 py-0.5 text-team">Strongest {AGE_LABEL[row.driver]}</span>
+            <span className="rounded-full bg-panel-2 px-2 py-0.5 text-muted">{row.reach}/6 age groups</span>
+            {row.noLocal && (
+              <span title="No local data in Qloo for this city; scored on the team's fans alone." className="rounded-full bg-sun/15 px-2 py-0.5 text-warn">
+                team fans only*
+              </span>
+            )}
+          </div>
+          {row.address && <p className="mt-1.5 text-xs text-muted">{row.address}</p>}
+
+          {timing && !timing.exclusivityOnly ? (
+            <div className="mt-3 rounded-xl bg-panel-2/70 p-3">
+              <p className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider">
+                <span className={TIMING_TONE[timing.timing]}>Why now</span>
+                <TimingDots n={timing.timing} />
               </p>
-              {flags.map((f) => (
-                <p key={f.text} className={`mt-1 text-xs ${f.tone}`}>
-                  {f.text}
-                </p>
-              ))}
+              <p className="mt-1 leading-relaxed">{timing.whyNow || <span className="text-muted">No recent reason found.</span>}</p>
               {timing.signals.length > 0 && (
                 <details className="mt-2 text-xs">
-                  <summary className="cursor-pointer text-muted">{timing.signals.length} signals with sources</summary>
-                  <ul className="mt-1 space-y-1">
+                  <summary className="cursor-pointer text-accent">{timing.signals.length} signals with sources</summary>
+                  <ul className="mt-2 space-y-1.5">
                     {timing.signals.map((s) => (
                       <li key={s.url + s.summary}>
                         <span className="font-mono text-muted">{s.type}</span> {s.date} · {s.summary}{" "}
@@ -706,26 +713,69 @@ function Card({
                   </ul>
                 </details>
               )}
-            </>
+            </div>
           ) : (
-            <p className="mt-2 text-xs text-muted">Timing and exclusivity not checked yet.</p>
+            <p className="mt-3 text-xs text-muted">
+              {timing?.exclusivityOnly
+                ? `${flags.length ? "" : "No clash with current sponsors. "}Timing not checked yet.`
+                : "Timing and exclusivity not checked yet."}
+            </p>
           )}
-          {onActivate && activation?.status !== "done" && (
-            <button
-              onClick={onActivate}
-              disabled={activation?.status === "loading"}
-              className="mt-3 rounded-full border border-gain px-3 py-1 text-xs font-semibold text-gain disabled:opacity-60"
-            >
-              {activation?.status === "loading" ? "Designing activation… (~15 s)" : "✦ Activation idea"}
-            </button>
+          {flags.length > 0 && (
+            <ul className="mt-2 space-y-1">
+              {flags.map((f) => (
+                <li key={f.text} className={`flex gap-1.5 text-xs ${f.tone}`}>
+                  <span aria-hidden>{f.tone === "text-muted" ? "·" : "!"}</span>
+                  <span>{f.text}</span>
+                </li>
+              ))}
+            </ul>
           )}
-          {offerable && <OfferButton row={row} />}
-          {pitchable && <PitchToggle row={row} timing={timing} teamName={teamName ?? "our club"} />}
+
+          <div className="mt-3 flex flex-wrap items-start gap-2 [&>*]:m-0 [&>div]:basis-full">
+            {onActivate && activation?.status !== "done" && (
+              <button
+                onClick={onActivate}
+                disabled={activation?.status === "loading"}
+                className="rounded-full bg-gain px-3 py-1 text-xs font-semibold text-white hover:bg-gain/90 disabled:opacity-60"
+              >
+                {activation?.status === "loading" ? "Designing activation… (~15 s)" : "✦ Activation idea"}
+              </button>
+            )}
+            {offerable && <OfferButton row={row} />}
+            {pitchable && <PitchToggle row={row} timing={timing} teamName={teamName ?? "our club"} />}
+          </div>
           {activation?.status === "error" && <p className="mt-2 text-xs text-loss">{activation.message}</p>}
           {activation?.status === "done" && <ActivationPanel a={activation.data} partner={row.name} />}
         </div>
       </div>
     </li>
+  );
+}
+
+/** Fit score at the right of a card: the number, its rank among all candidates, and a bar. */
+function FitBadge({ score, fitRank }: { score: number; fitRank: number }) {
+  return (
+    <div className="w-20 shrink-0 text-right">
+      <p className="leading-none">
+        <span className="text-2xl font-bold">{score.toFixed(0)}</span>
+        <span className="text-xs text-muted">/100</span>
+      </p>
+      <div className="mt-1.5 h-1.5 rounded-full bg-panel-2">
+        <div className="h-1.5 rounded-full bg-gradient-to-r from-accent to-gain" style={{ width: `${Math.max(4, Math.min(100, score))}%` }} />
+      </div>
+      <p className="mt-1 text-[11px] text-muted">fit #{fitRank}</p>
+    </div>
+  );
+}
+
+function TimingDots({ n }: { n: number }) {
+  return (
+    <span className="flex gap-0.5" aria-label={`timing ${n} of 3`}>
+      {[1, 2, 3].map((i) => (
+        <span key={i} className={`h-1.5 w-3.5 rounded-full ${i <= n ? "bg-gain" : "bg-line"}`} />
+      ))}
+    </span>
   );
 }
 
@@ -736,7 +786,7 @@ function PitchToggle({ row, timing, teamName }: { row: FitRow; timing?: Timing; 
     return (
       <button
         onClick={() => setOpen(true)}
-        className="mt-3 ml-2 rounded-full border border-accent px-3 py-1 text-xs font-semibold text-accent"
+        className="rounded-full border border-accent px-3 py-1 text-xs font-semibold text-accent hover:bg-accent/5"
       >
         ✉ Prepare pitch
       </button>
