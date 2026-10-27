@@ -105,7 +105,7 @@ export default function AskConsole({ examples, role }: { examples: string[]; rol
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
             maxLength={500}
-            placeholder={role === "team" ? "e.g. Which banks fit our fans best?" : "e.g. Find three NBA teams whose category is open"}
+            placeholder={role === "team" ? "e.g. Which telecom brands should we pitch?" : "e.g. Find three NWSL teams whose fans love us"}
             aria-label="Your goal"
             className="w-full rounded-full border border-white/20 bg-white px-5 py-3 text-sm text-text outline-none focus:ring-4 focus:ring-white/30"
           />

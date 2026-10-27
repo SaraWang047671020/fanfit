@@ -18,16 +18,17 @@ export default async function AskPage() {
     ? ((await supabase.from("teams").select("name").eq("id", profile!.team_id!).single<{ name: string }>()).data?.name ?? "Your team")
     : ((await supabase.from("sponsors").select("name").eq("id", profile!.sponsor_id!).single<{ name: string }>()).data?.name ??
       "Your brand");
+  // Each example was run three times on the live demo (2026-10-27) and answered every time with consistent picks.
   const examples = isTeam
     ? [
-        "Which banks would fit our fans best, and do any clash with our current sponsors?",
+        "Who is our biggest fan age group, and which three brands should we call first for them?",
+        "Which telecom brands should we pitch, and are any blocked by a current sponsor?",
         "Find three local businesses for a matchday deal aimed at our biggest age group.",
-        `Would Gatorade be a good fit for ${org}, compared with other teams?`,
       ]
     : [
-        "Find three NBA teams whose fans love us and whose category is still open.",
-        "Which teams in the Southeast (GA, FL, NC, TN) fit us best, and why?",
         "Compare the top two MLS teams for us: who are their fans and what do they share with our customers?",
+        "Find three NWSL teams whose fans love us most, and what their fans share with our customers.",
+        "Which teams in the Southeast (GA, FL, NC, TN) fit us best, and why?",
       ];
 
   return (

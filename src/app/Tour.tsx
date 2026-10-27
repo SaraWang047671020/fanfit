@@ -33,7 +33,7 @@ const TOURS: Record<string, Step[]> = {
     {
       el: "nav-/ask",
       title: "Ask FanFit",
-      body: "Give the agent a goal in plain words, like “Which banks fit our fans?”. It picks its own Qloo tools and shows every step.",
+      body: "Give the agent a goal in plain words, like “Which telecom brands should we pitch?”. It picks its own Qloo tools and shows every step.",
     },
     {
       el: "nav-/team/offers",
@@ -59,7 +59,7 @@ const TOURS: Record<string, Step[]> = {
       title: "Open a team",
       body: "See their fans next to your customers, what both love, whether your category is free, and a matchday activation idea.",
     },
-    { el: "nav-/ask", title: "Ask FanFit", body: "Or give the agent a goal, like “Find three NBA teams whose category is still open”." },
+    { el: "nav-/ask", title: "Ask FanFit", body: "Or give the agent a goal, like “Find three NWSL teams whose fans love us most”." },
   ],
   "sponsor-team": [
     {
