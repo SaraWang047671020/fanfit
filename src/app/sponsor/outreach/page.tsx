@@ -114,7 +114,7 @@ export default async function OutreachPage({ searchParams }: PageProps<"/sponsor
                       </p>
                       <p className="mt-1 text-sm text-muted">“{n.message}”</p>
                       <p className="mt-1 text-xs text-muted">
-                        Sent {new Date(n.created_at).toLocaleDateString()}
+                        Sent {new Date(n.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
                         {n.fit_z !== null && ` · ${fitBand(n.fit_z)} fit (${n.fit_z >= 0 ? "+" : ""}${n.fit_z.toFixed(1)}σ)`}
                         {n.target && ` · aimed at ${n.target}`}
                         {n.report && (
@@ -159,7 +159,7 @@ export default async function OutreachPage({ searchParams }: PageProps<"/sponsor
                     {p.team_league} · {p.team_city}
                   </span>
                 </p>
-                <p className="text-xs text-muted">{new Date(p.created_at).toLocaleDateString()}</p>
+                <p className="text-xs text-muted">{new Date(p.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</p>
               </div>
               <p className="mt-3">“{p.message}”</p>
               {p.report_token && (

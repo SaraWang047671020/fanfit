@@ -20,3 +20,26 @@ export async function loadSavedRun(team: string, city: string) {
     .maybeSingle<{ events: FanfitEvent[]; created_at: string }>();
   return data;
 }
+
+/**
+ * Add timing checks run after a saved run (the "Check timing" button) to that run, so a reload or the next visitor
+ * sees them instead of "Timing not checked yet". A newer check of the same brand replaces the older one.
+ */
+export async function appendTimings(team: string, city: string, added: FanfitEvent[]) {
+  const db = adminClient();
+  const timings = added.filter((e) => e.type === "timing");
+  if (!db || !timings.length) return;
+  const { data } = await db
+    .from("analysis_runs")
+    .select("id, events")
+    .eq("team_key", teamKey(team, city))
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .maybeSingle<{ id: string; events: FanfitEvent[] }>();
+  if (!data) return;
+  const ids = new Set(timings.map((e) => e.timing.brandId));
+  const kept = data.events.filter((e) => !(e.type === "timing" && ids.has(e.timing.brandId)));
+  const end = kept.findLastIndex((e) => e.type === "done");
+  const events = end < 0 ? [...kept, ...timings] : [...kept.slice(0, end), ...timings, ...kept.slice(end)];
+  await db.from("analysis_runs").update({ events }).eq("id", data.id);
+}

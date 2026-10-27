@@ -40,7 +40,7 @@ export default async function AdminPage() {
                   <p className="font-semibold">{r.team_name}</p>
                   <p className="text-xs text-muted">
                     {r.email}
-                    {r.display_name ? ` · ${r.display_name}` : ""} · asked {new Date(r.requested_at).toLocaleDateString()}
+                    {r.display_name ? ` · ${r.display_name}` : ""} · asked {new Date(r.requested_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
                   </p>
                 </div>
                 <DecideButtons userId={r.user_id} />

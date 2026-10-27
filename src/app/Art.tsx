@@ -29,8 +29,8 @@ export function FitDiagram() {
   const chips = [
     { label: "Nike Training Club", kind: "brand", pos: "left-[4%] top-[8%]" },
     { label: "Kygo", kind: "artist", pos: "right-[6%] top-[4%]" },
-    { label: "Space Needle", kind: "place", pos: "left-[0%] bottom-[14%]" },
-    { label: "Major Lazer", kind: "artist", pos: "right-[2%] bottom-[20%]" },
+    { label: "Space Needle", kind: "place", pos: "left-[0%] bottom-[27%] sm:bottom-[14%]" },
+    { label: "Major Lazer", kind: "artist", pos: "right-[2%] bottom-[31%] sm:bottom-[20%]" },
   ];
   return (
     <figure className="relative mx-auto aspect-[5/4] w-full max-w-md">

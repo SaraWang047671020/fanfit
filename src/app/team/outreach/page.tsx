@@ -110,7 +110,7 @@ export default async function TeamOutreachPage({ searchParams }: PageProps<"/tea
                 </p>
                 <p className="mt-1 text-sm text-muted">“{p.message}”</p>
                 <p className="mt-2 text-xs text-muted">
-                  Sent {new Date(p.created_at).toLocaleDateString()}
+                  Sent {new Date(p.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
                   {p.report && (
                     <>
                       {" · "}
@@ -119,7 +119,7 @@ export default async function TeamOutreachPage({ searchParams }: PageProps<"/tea
                       </a>
                       {" · "}
                       {p.report.views
-                        ? `opened ${p.report.views} time${p.report.views === 1 ? "" : "s"}, last ${new Date(p.report.last_viewed_at!).toLocaleDateString()}`
+                        ? `opened ${p.report.views} time${p.report.views === 1 ? "" : "s"}, last ${new Date(p.report.last_viewed_at!).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}`
                         : "not opened yet"}
                     </>
                   )}
@@ -161,7 +161,7 @@ export default async function TeamOutreachPage({ searchParams }: PageProps<"/tea
                       <span className="ml-2 rounded-full border border-warn px-2 py-0.5 text-[10px] font-semibold text-warn">DEMO</span>
                     )}
                   </p>
-                  <p className="text-xs text-muted">{new Date(n.created_at).toLocaleDateString()}</p>
+                  <p className="text-xs text-muted">{new Date(n.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</p>
                 </div>
                 <p className="mt-1 text-xs text-muted">
                   {labels.join(", ") || "No categories set"}

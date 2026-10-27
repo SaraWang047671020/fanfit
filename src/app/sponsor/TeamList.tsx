@@ -64,7 +64,7 @@ export default function TeamList({ rows, targeted = false, query = "" }: { rows:
               <div className="flex min-w-0 items-center gap-3">
                 <Monogram name={r.name} size="sm" />
                 <div className="min-w-0">
-                  <p className="truncate font-semibold">
+                  <p className="font-semibold leading-snug sm:truncate">
                     <Link href={`/sponsor/teams/${r.id}${query}`} className="hover:text-accent">
                       {r.name}
                     </Link>
@@ -102,7 +102,7 @@ export default function TeamList({ rows, targeted = false, query = "" }: { rows:
                   <div className="h-1.5 rounded-full bg-gain" style={{ width: `${Math.max(0, ((r.z ?? 0) / max) * 100)}%` }} />
                 </div>
               </div>
-              <p className="col-span-3 text-xs sm:col-span-1">
+              <p className={`col-span-3 text-xs sm:col-span-1 ${r.category.status === "unknown" ? "hidden sm:block" : ""}`}>
                 {r.category.status === "taken" ? (
                   <span className="text-loss">Category taken: {r.category.by.join(", ")}</span>
                 ) : r.category.status === "open" ? (
@@ -119,7 +119,7 @@ export default function TeamList({ rows, targeted = false, query = "" }: { rows:
       <p className="mt-4 text-xs text-muted">
         Open a team for why the fit is there, its current sponsors and an activation idea. Fit compares how much this team&apos;s fans like
         your brand with how they like 40 big brands (σ = standard deviations above their usual). Women&apos;s league teams have thinner Qloo
-        data, so treat their scores as rougher.
+        data, so treat their scores as rougher. Category open or taken shows once a team lists its sponsors on FanFit.
       </p>
     </section>
   );

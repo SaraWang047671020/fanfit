@@ -46,7 +46,7 @@ export default async function TeamMembersPage() {
                 <div className="min-w-0">
                   <p className="font-semibold">{p.email}</p>
                   <p className="text-xs text-muted">
-                    {p.display_name ? `${p.display_name} · ` : ""}asked {new Date(p.requested_at).toLocaleDateString()}
+                    {p.display_name ? `${p.display_name} · ` : ""}asked {new Date(p.requested_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
                   </p>
                 </div>
                 <DecideButtons userId={p.user_id} />

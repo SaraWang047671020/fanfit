@@ -3,7 +3,7 @@
 // On-demand parts of the sponsor's team page: they cost model calls with web search, so they run only when asked.
 import { useState } from "react";
 import type { Activation } from "@/lib/fanfit-activation";
-import { AGE_LABEL, type Age, type Sponsor } from "@/lib/fanfit-score";
+import { AGE_LABEL, type Age, type Sponsor, categoryLabel } from "@/lib/fanfit-score";
 import type { TeamNews } from "@/lib/sponsor-detail";
 import ActivationPanel from "../../../fanfit/ActivationPanel";
 
@@ -67,7 +67,7 @@ export default function TeamActions({
             <ul className="mt-1 space-y-0.5">
               {listed.map((s) => (
                 <li key={s.name} className={s.mine ? "text-loss" : ""}>
-                  {s.name} <span className="font-mono text-xs text-muted">{s.category}</span>
+                  {s.name} <span className="text-xs text-muted">{categoryLabel(s.category)}</span>
                   {s.mine && <span className="ml-1 text-xs">· your category</span>}
                 </li>
               ))}
@@ -154,7 +154,7 @@ function CheckResult({ c }: { c: Check }) {
                 <a href={s.sourceUrl} target="_blank" rel="noreferrer" className="hover:text-accent">
                   {s.name}
                 </a>{" "}
-                <span className="font-mono text-muted">{s.category}</span>
+                <span className="text-muted">{categoryLabel(s.category)}</span>
               </li>
             ))}
           </ul>

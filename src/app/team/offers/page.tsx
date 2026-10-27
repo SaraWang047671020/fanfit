@@ -40,7 +40,6 @@ export default async function TeamOffersPage({ searchParams }: PageProps<"/team/
   if (profile?.role !== "team") redirect(profile?.role === "sponsor" ? "/sponsor" : "/onboarding");
   if (!profile.team_approved) redirect("/fanfit"); // pending: the fanfit page explains
   const { sim } = await searchParams;
-  const showSim = sim === "1";
 
   const [{ data: team }, { data: offers }, { data: keys }, { data: claims }] = await Promise.all([
     supabase.from("teams").select("id, name, city").eq("id", profile.team_id!).single<{ id: string; name: string; city: string }>(),
@@ -60,6 +59,9 @@ export default async function TeamOffersPage({ searchParams }: PageProps<"/team/
   // Demo tab: simulated claims plus every claim on a demo offer (the business never agreed to it). Real tab: the rest.
   const demoOffers = new Set((offers ?? []).filter((o) => o.demo).map((o) => o.id));
   const isDemo = (c: Claim) => c.simulated || demoOffers.has(c.offer_id);
+  // With no real claims yet, open on the Demo tab so the page does not read as all zeros; ?sim=0 forces the Real tab.
+  const noReal = !(claims ?? []).some((c) => !isDemo(c));
+  const showSim = sim === "1" || (sim !== "0" && noReal && (claims ?? []).length > 0);
   const counted = (claims ?? []).filter((c) => isDemo(c) === showSim);
   const redeemed = counted.filter((c) => c.redeemed_at);
   const byAge = AGES.map((a) => ({ a, n: counted.filter((c) => c.age_group === a).length }));
@@ -111,7 +113,7 @@ export default async function TeamOffersPage({ searchParams }: PageProps<"/team/
             )}
           </p>
           <div data-tour="offer-tabs" className="flex gap-3 text-xs">
-            <Link href="/team/offers" className={!showSim ? "text-text" : "text-muted hover:text-text"}>
+            <Link href="/team/offers?sim=0" className={!showSim ? "text-text" : "text-muted hover:text-text"}>
               Real
             </Link>
             <Link href="/team/offers?sim=1" className={showSim ? "text-text" : "text-muted hover:text-text"}>
@@ -149,7 +151,7 @@ export default async function TeamOffersPage({ searchParams }: PageProps<"/team/
           </p>
         )}
         <div className="mt-4">
-          <SimulatedControls hasSimulated={hasSim} />
+          {!profile.is_demo && <SimulatedControls hasSimulated={hasSim} />}
         </div>
       </section>
 

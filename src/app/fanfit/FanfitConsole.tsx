@@ -20,6 +20,7 @@ import {
   type SponsorCategoryKey,
   type Weights,
   TIMING_BOOST,
+  categoryLabel,
   normalize,
   rankWithTiming,
   shortlist,
@@ -287,7 +288,7 @@ export default function FanfitConsole({ initial = PRESETS[0] }: { initial?: { te
         </div>
         {savedAt && !running && (
           <p className="mt-3 flex flex-wrap items-center gap-3 text-xs text-muted">
-            Saved analysis from {new Date(savedAt).toLocaleString()}. Results load instantly and cost nothing.
+            Saved analysis from {new Date(savedAt).toLocaleString("en-US", { month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" })}. Results load instantly and cost nothing.
             <button onClick={() => run("fresh")} className="rounded-full border border-accent px-3 py-1 font-semibold text-accent">
               Re-run with fresh data (~2–3 min)
             </button>
@@ -362,6 +363,11 @@ export default function FanfitConsole({ initial = PRESETS[0] }: { initial?: { te
           {top[tab].length === 0 && (
             <p className="mt-4 text-sm text-muted">
               {status === "idle" ? "Nothing yet: run the sponsor finder above." : "Results appear once all six age groups are in."}
+            </p>
+          )}
+          {current.ranked.some((r) => r.row.noLocal) && (
+            <p className="mt-3 text-xs text-muted">
+              * Qloo has no local data for this brand in {info?.city ?? "this city"}, so it is scored on the team&apos;s fans alone.
             </p>
           )}
           <ol className="mt-4 space-y-3">
@@ -443,7 +449,7 @@ export default function FanfitConsole({ initial = PRESETS[0] }: { initial?: { te
                     <a href={s.sourceUrl} target="_blank" rel="noreferrer" className="hover:text-accent">
                       {s.name}
                     </a>
-                    <span className="font-mono text-xs text-muted">{s.category}</span>
+                    <span className="text-xs text-muted">{categoryLabel(s.category)}</span>
                   </li>
                 ))}
               </ul>
@@ -642,9 +648,9 @@ function Card({
     if (timing.existing.length)
       flags.push({ tone: "text-loss", text: `Already a sponsor (${timing.existing.map((s) => s.name).join(", ")})` });
     if (timing.conflicts.length && !place)
-      flags.push({ tone: "text-loss", text: `Conflicts with ${timing.conflicts.map((s) => `${s.name} (${s.category})`).join(", ")}` });
+      flags.push({ tone: "text-loss", text: `Conflicts with ${timing.conflicts.map((s) => `${s.name} (${categoryLabel(s.category).toLowerCase()})`).join(", ")}` });
     if (timing.crowded.length && !place)
-      flags.push({ tone: "text-warn", text: `Same group as ${timing.crowded.map((s) => `${s.name} (${s.category})`).join(", ")}` });
+      flags.push({ tone: "text-warn", text: `Related to current sponsor ${timing.crowded.map((s) => `${s.name} (${categoryLabel(s.category).toLowerCase()})`).join(", ")}` });
     if (timing.relationship) flags.push({ tone: "text-warn", text: `Existing tie: ${timing.relationship}` });
     if (timing.fitRisk) flags.push({ tone: "text-muted", text: `Risk: ${timing.fitRisk}` });
   }
@@ -661,9 +667,9 @@ function Card({
             </span>
           </div>
           <p className="text-xs text-muted">
-            {timing?.categories.join(" / ") ?? row.category} · strongest with fans {AGE_LABEL[row.driver]} · in {row.reach}/6 age groups
+            {(timing?.categories ?? [row.category]).map(categoryLabel).join(", ")} · strongest with fans {AGE_LABEL[row.driver]} · in {row.reach}/6 age groups
+            {row.noLocal && <span title="No local data in Qloo for this city; scored on the team's fans alone."> · team fans only*</span>}
           </p>
-          {row.noLocal && <p className="text-xs text-warn">No local data in Qloo for this city; scored on the team&apos;s fans alone.</p>}
           {row.address && <p className="text-xs text-muted">{row.address}</p>}
           {timing?.exclusivityOnly ? (
             <>

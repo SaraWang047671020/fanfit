@@ -44,7 +44,7 @@ export default function InterestCard({
         <p className="text-xs font-bold uppercase tracking-[0.12em] text-accent">Your note to {teamName}</p>
         <p className="mt-2 text-sm">“{sent.message}”</p>
         <p className="mt-1 text-xs text-muted">
-          Sent {new Date(sent.created_at).toLocaleDateString()}
+          Sent {new Date(sent.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
           {sent.report && (
             <>
               {" · "}

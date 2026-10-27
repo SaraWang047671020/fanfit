@@ -9,7 +9,7 @@ import { currentUser } from "@/lib/supabase/server";
 async function teamMember() {
   const { supabase, user, profile } = await currentUser();
   if (!user || profile?.role !== "team" || !profile.team_id) throw new Error("Team account required.");
-  return { supabase, user, teamId: profile.team_id };
+  return { supabase, user, teamId: profile.team_id, isDemo: !!profile.is_demo };
 }
 
 /**
@@ -60,7 +60,8 @@ export async function simulateClaims(offerId: string) {
 }
 
 export async function clearSimulated() {
-  const { supabase, teamId } = await teamMember();
+  const { supabase, teamId, isDemo } = await teamMember();
+  if (isDemo) return; // the shared demo keeps its sample claims for every visitor
   await supabase.rpc("clear_simulated", { p_team: teamId });
   revalidatePath("/team/offers");
 }

@@ -1,5 +1,5 @@
 import { type FanfitEvent, runExclusivity, runFanfit, runTiming } from "@/lib/fanfit";
-import { loadSavedRun, teamKey } from "@/lib/saved-runs";
+import { appendTimings, loadSavedRun, teamKey } from "@/lib/saved-runs";
 import { adminClient } from "@/lib/supabase/admin";
 import { currentUser } from "@/lib/supabase/server";
 import { takeUsage } from "@/lib/usage";
@@ -111,6 +111,7 @@ export async function POST(req: Request) {
         if (brands) {
           await runTiming(team, city, brands, send);
           send({ type: "done", ms: Date.now() - t0 });
+          await appendTimings(team, city, collected);
         } else {
           await runFanfit(team, city, send);
           if (db)
