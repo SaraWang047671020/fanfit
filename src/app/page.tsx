@@ -168,21 +168,56 @@ export default async function Home() {
         </ol>
       </section>
 
-      {/* Why Qloo */}
+      {/* Why Qloo: the data FanFit asks for, and what it changes */}
       <section id="qloo" className="relative overflow-hidden bg-ink py-16 text-white">
         <PitchLines className="pointer-events-none absolute inset-0 h-full w-full text-white/[0.05]" />
         <div className="relative mx-auto w-full max-w-6xl px-4 sm:px-6">
           <p className="text-xs font-bold uppercase tracking-[0.14em] text-sun">Why Qloo</p>
-          <h2 className="mt-2 max-w-3xl text-3xl font-bold sm:text-4xl">The audience research big leagues pay for, for every club</h2>
-          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {QLOO.map(({ Icon, title, text }) => (
-              <div key={title} className="rounded-3xl border border-white/10 bg-white/5 p-5">
+          <h2 className="mt-2 max-w-3xl text-3xl font-bold sm:text-4xl">Every recommendation starts with a Qloo call</h2>
+          <p className="mt-3 max-w-3xl text-white/70">
+            FanFit doesn&apos;t guess who fans are. It asks Qloo&apos;s taste graph eight kinds of questions, and every team, brand and place
+            on screen came back from one of them.
+          </p>
+
+          <h3 className="mt-10 text-sm font-bold uppercase tracking-[0.12em] text-white/60">The Qloo data FanFit uses</h3>
+          <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {QLOO_DATA.map(({ Icon, title, text, used }) => (
+              <div key={title} className="flex flex-col rounded-2xl border border-white/10 bg-white/5 p-5">
                 <Icon className="h-5 w-5 text-sun" aria-hidden />
                 <p className="mt-3 font-semibold">{title}</p>
-                <p className="mt-1 text-sm text-white/70">{text}</p>
+                <p className="mt-1 flex-1 text-sm text-white/70">{text}</p>
+                <p className="mt-4 text-xs font-semibold text-gain">→ {used}</p>
               </div>
             ))}
           </div>
+
+          <h3 className="mt-14 text-sm font-bold uppercase tracking-[0.12em] text-white/60">What changes with Qloo</h3>
+          <div className="mt-4 overflow-hidden rounded-3xl border border-white/10">
+            <div className="hidden grid-cols-[1.1fr_1fr_1.6fr] gap-4 bg-white/5 px-6 py-3 text-xs font-bold uppercase tracking-wider text-white/50 md:grid">
+              <span>The question</span>
+              <span>Without Qloo</span>
+              <span className="text-sun">With Qloo, in the demo</span>
+            </div>
+            <ul className="divide-y divide-white/10">
+              {QLOO_CHANGES.map(({ q, before, after }) => (
+                <li key={q} className="grid gap-2 px-6 py-5 md:grid-cols-[1.1fr_1fr_1.6fr] md:gap-4">
+                  <p className="font-semibold">{q}</p>
+                  <p className="text-sm text-white/50">
+                    <span className="mr-1 font-semibold text-white/40 md:hidden">Without:</span>
+                    {before}
+                  </p>
+                  <p className="text-sm text-white/90">
+                    <span className="mr-1 font-semibold text-sun md:hidden">With Qloo:</span>
+                    {after}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <p className="mt-4 text-xs text-white/50">
+            Examples are from the live demo (Seattle Sounders FC, Gatorade, a Seattle fan). Qloo gives aggregate taste insight, so no personal
+            data is collected to understand an audience. Fit measures shared taste, not sales.
+          </p>
         </div>
       </section>
 
@@ -257,11 +292,50 @@ const STEPS = [
   { Icon: Target, title: "Learn what worked", text: "Redemptions by age group are set against FanFit's prediction." },
 ];
 
-const QLOO = [
-  { Icon: Sparkles, title: "Across every taste", text: "One team connects to brands, artists, films, TV and places: sponsors, deals and halftime acts from one signal." },
-  { Icon: ChartColumn, title: "Affinity, not popularity", text: "How much more these fans like a brand than their usual one, so small brands can win." },
-  { Icon: Users, title: "Who and where", text: "Age, gender, interests and city: rank for the fans a brand wants, near the club." },
-  { Icon: ShieldCheck, title: "Privacy-safe", text: "Aggregate taste insight: no personal data collected to understand an audience." },
+// What FanFit asks Qloo (Insights API), and where each answer shows up.
+const QLOO_DATA = [
+  { Icon: Users, title: "Who the fans are", text: "Age and gender mix of a club's fans (Qloo demographics for the team).", used: "Fan mix, weights every ranking" },
+  { Icon: Radar, title: "Brands fans love, by age", text: "Brands ranked for the team + city as signals, once for each of six age groups.", used: "Who to call" },
+  { Icon: MapPin, title: "Places near the club", text: "Local businesses these fans like, limited to the club's city, with address and map position.", used: "Local businesses, fan map" },
+  { Icon: ChartColumn, title: "Best brand per category", text: "Brands filtered by Qloo industry tags: bank, beer, insurance, airline and more.", used: "By category" },
+  { Icon: Trophy, title: "How each team's fans score a brand", text: "One brand against all 79 teams, compared with how the same fans score 40 big brands.", used: "Team ranking for brands" },
+  { Icon: Target, title: "A target audience", text: "Age, gender and interest signals (e.g. women 25–29 into fitness) re-score every team.", used: "Target audience" },
+  { Icon: Handshake, title: "Tastes both sides share", text: "Artists, brands and places that fans of the team and the brand both like.", used: "Pitch report, activation ideas" },
+  { Icon: Heart, title: "A fan's own taste", text: "The brands, artists, films and shows a fan picks rank that fan's local deals.", used: "“For you” deals" },
+];
+
+// Without vs with Qloo. The "with" side quotes the live demo.
+const QLOO_CHANGES = [
+  {
+    q: "Which brands should a club call?",
+    before: "Whoever has a sports budget, from a contact list or a hunch.",
+    after: "A ranked list of brands Seattle Sounders FC fans like more than usual, each with the age group it's strongest with and a sourced reason to call now.",
+  },
+  {
+    q: "What goes in the pitch?",
+    before: "Attendance, impressions and TV reach: the same deck for every brand.",
+    after: "Why these fans fit this brand: Sounders × Gatorade share the most fans at 25–29, and both audiences love Kygo, Nike Training Club and the Space Needle.",
+  },
+  {
+    q: "Which teams should a brand sponsor?",
+    before: "The biggest markets and TV ratings.",
+    after: "All 79 teams ranked by how much their fans like Gatorade. For women 25–29 into fitness, NJ/NY Gotham FC climbs 63 places to No. 2.",
+  },
+  {
+    q: "Which local businesses fit the fans?",
+    before: "Not researched: too costly for a single café or shop.",
+    after: "Seattle places these fans like, with a map position, ready to become a deal on the club's fan map.",
+  },
+  {
+    q: "Which deal does a fan see first?",
+    before: "The same coupon list for everyone.",
+    after: "Deals ordered by the fan's own taste: REI comes first “because you like Patagonia”.",
+  },
+  {
+    q: "How long does the research take?",
+    before: "An agency study, if the club can afford one.",
+    after: "About 3 minutes and some 200 Qloo calls per club, saved so the next look is instant.",
+  },
 ];
 
 const TRUST = [
