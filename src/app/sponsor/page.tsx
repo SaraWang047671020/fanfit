@@ -2,7 +2,10 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { SPONSOR_CATEGORIES } from "@/lib/fanfit-score";
-import { type Target, parseTarget } from "@/lib/audience";
+import { type Target, describeTarget, parseTarget } from "@/lib/audience";
+import { fitBand } from "@/lib/sponsor-fit-band";
+import { DoorOpen, Flame, Trophy, Users } from "lucide-react";
+import StatBlock from "../StatBlock";
 import { type DirectoryTeam, type TeamFit, targetedFit, teamFit } from "@/lib/sponsor-fit";
 import { currentUser } from "@/lib/supabase/server";
 import AccountBar from "../AccountBar";
@@ -91,5 +94,18 @@ async function Ranking({ sponsor, target }: { sponsor: SponsorRow; target: Targe
     };
   });
   const query = target ? `?${new URLSearchParams(Object.entries(target).filter(([, v]) => v) as [string, string][])}` : "";
-  return <TeamList rows={rows} targeted={!!target} query={query} />;
+  const best = rows[0];
+  const strong = rows.filter((r) => fitBand(r.z) === "Strong").length;
+  const notTaken = rows.filter((r) => r.category.status !== "taken").length;
+  return (
+    <>
+      <div className="mb-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
+        <StatBlock icon={Trophy} label="Best fit" value={best?.name ?? "—"} sub={best?.z != null ? `+${best.z.toFixed(1)}σ · ${best.league}` : undefined} tone="brand" />
+        <StatBlock icon={Flame} label="Strong fits" value={strong} sub={`of ${rows.length} teams`} tone="gain" />
+        <StatBlock icon={DoorOpen} label="Category not taken" value={notTaken} sub="no listed sponsor in your categories" tone="team" />
+        <StatBlock icon={Users} label="Audience" value={target ? "Targeted" : "All fans"} sub={target ? describeTarget(target) : "Pick an audience above"} tone="sun" />
+      </div>
+      <TeamList rows={rows} targeted={!!target} query={query} />
+    </>
+  );
 }

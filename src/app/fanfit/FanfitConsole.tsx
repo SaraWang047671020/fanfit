@@ -29,7 +29,8 @@ import {
   weightsFromAffinity,
 } from "@/lib/fanfit-score";
 import SectionIcon from "@/app/SectionIcon";
-import { Beer, Car, CupSoda, Dices, Handshake, HeartPulse, Landmark, Laptop, LayoutGrid, PhoneCall, PieChart, Plane, ShieldCheck, Shirt, ShoppingCart, Signal, UtensilsCrossed, Workflow } from "lucide-react";
+import { Ban, Beer, Car, CupSoda, Dices, Handshake, HeartPulse, Landmark, Laptop, LayoutGrid, PhoneCall, PieChart, Plane, ShieldCheck, Shirt, ShoppingCart, Signal, Store, Users, UtensilsCrossed, Workflow } from "lucide-react";
+import StatBlock from "../StatBlock";
 
 type Step = { id: string; label: string; status: "running" | "done" | "warn"; detail?: string };
 type Buckets = Partial<Record<Age, BrandHit[]>>;
@@ -300,6 +301,26 @@ export default function FanfitConsole({ initial = PRESETS[0] }: { initial?: { te
       </section>
 
       {status === "idle" && !error && <FirstRun team={team} onRun={() => run()} />}
+      {top.brand.length > 0 && (
+        <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+          <StatBlock
+            icon={Users}
+            label="Biggest fan group"
+            value={AGE_LABEL[AGES.reduce((b, a) => (mix[a] > mix[b] ? a : b), AGES[0])]}
+            sub={`${Math.round(Math.max(...AGES.map((a) => mix[a])) * 100)}% of fans (Qloo estimate)`}
+            tone="fan"
+          />
+          <StatBlock icon={PhoneCall} label="Brands to call" value={ranked.brand.ranked.length} sub={`top: ${ranked.brand.ranked[0]?.row.name ?? "—"}`} tone="team" />
+          <StatBlock icon={Store} label="Local businesses" value={ranked.place.ranked.length} sub={`top: ${ranked.place.ranked[0]?.row.name ?? "—"}`} tone="gain" />
+          <StatBlock
+            icon={Ban}
+            label="Set aside"
+            value={ranked.brand.excluded.length + ranked.place.excluded.length}
+            sub="already signed or clashing"
+            tone="sun"
+          />
+        </div>
+      )}
       <div
         data-tour="results-tabs"
         className="flex w-fit max-w-full flex-wrap gap-1 rounded-2xl border border-line bg-panel p-1.5 shadow-[0_1px_2px_rgba(20,26,43,0.04)]"
@@ -330,23 +351,23 @@ export default function FanfitConsole({ initial = PRESETS[0] }: { initial?: { te
       )}
 
       {view === "call" && (
-        <section className="rounded-3xl border border-line bg-panel/90 p-6">
-          <div className="flex flex-wrap items-center justify-between gap-3">
+        <section className="overflow-hidden rounded-3xl border border-line bg-panel/90 p-6">
+          <div className="-mx-6 -mt-6 mb-5 flex flex-wrap items-center justify-between gap-3 bg-gradient-to-r from-team to-ink px-6 py-5 text-white [&_.text-accent]:text-white [&_.text-muted]:text-white/70">
             <div className="flex items-center gap-3">
               <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-accent">
-                <SectionIcon icon={PhoneCall} tone="team" />
+                <SectionIcon icon={PhoneCall} tone="white" />
                 Who to call {info && <span className="text-muted normal-case tracking-normal">· {info.name}</span>}
                 <WhoToCallInfo />
               </p>
             </div>
-            <div role="tablist" className="flex rounded-full border border-line bg-panel-2 p-1 text-sm">
+            <div role="tablist" className="flex rounded-full border border-white/20 bg-white/10 p-1 text-sm">
               {TABS.map((t) => (
                 <button
                   key={t.kind}
                   role="tab"
                   aria-selected={tab === t.kind}
                   onClick={() => setTab(t.kind)}
-                  className={`rounded-full px-4 py-1.5 font-semibold ${tab === t.kind ? "bg-accent text-white" : "text-muted hover:text-text"}`}
+                  className={`rounded-full px-4 py-1.5 font-semibold ${tab === t.kind ? "bg-white text-team" : "text-white/80 hover:text-white"}`}
                 >
                   {t.label}
                   {top[t.kind].length > 0 && <span className="ml-1.5 font-mono text-xs opacity-70">{ranked[t.kind].ranked.length}</span>}
@@ -520,18 +541,22 @@ function CategoryGrid({
           if (!r) return null;
           const signed = sponsors.filter((s) => (c.covers as readonly string[]).includes(s.category));
           return (
-            <div key={c.key} className="rounded-2xl border border-line bg-panel p-4 text-sm shadow-[0_1px_2px_rgba(20,26,43,0.04)]">
-              <div className="flex items-center justify-between gap-2">
+            <div key={c.key} className="overflow-hidden rounded-2xl border border-line bg-panel text-sm shadow-[0_1px_2px_rgba(20,26,43,0.04)]">
+              <div className={`flex items-center justify-between gap-2 px-4 py-3 ${CATEGORY_BAND[CATEGORY_ICON[c.key].tone]}`}>
                 <span className="flex items-center gap-2 font-semibold">
-                  <SectionIcon icon={CATEGORY_ICON[c.key].Icon} tone={CATEGORY_ICON[c.key].tone} />
+                  {(() => {
+                    const Icon = CATEGORY_ICON[c.key].Icon;
+                    return <Icon className="h-5 w-5" aria-hidden />;
+                  })()}
                   {c.label}
                 </span>
-                <span className="font-mono text-xs text-muted">
+                <span className="font-mono text-xs opacity-80">
                   {r.location === city ? "" : "US-wide · "}
                   {r.considered} found
                 </span>
               </div>
-              {signed.length > 0 && <p className="mt-1 text-xs text-loss">Signed: {signed.map((s) => s.name).join(", ")}</p>}
+              <div className="p-4 pt-3">
+              {signed.length > 0 && <p className="text-xs text-loss">Signed: {signed.map((s) => s.name).join(", ")}</p>}
               {r.items.length === 0 && <p className="mt-2 text-xs text-muted">No brands in Qloo for this category.</p>}
               <ol className="mt-2 space-y-1">
                 {r.items.map((it, i) => {
@@ -545,6 +570,7 @@ function CategoryGrid({
                   );
                 })}
               </ol>
+              </div>
             </div>
           );
         })}
@@ -645,6 +671,14 @@ const CATEGORY_ICON: Record<SponsorCategoryKey, { Icon: typeof Beer; tone: "team
   retail: { Icon: ShoppingCart, tone: "gain" },
   tech: { Icon: Laptop, tone: "team" },
 };
+
+const CATEGORY_BAND = {
+  team: "bg-team text-white",
+  brand: "bg-brand text-white",
+  gain: "bg-gain text-white",
+  sun: "bg-sun text-ink",
+  fan: "bg-fan text-white",
+} as const;
 
 const TIMING_TONE = ["text-muted", "text-warn", "text-gain/80", "text-gain"];
 

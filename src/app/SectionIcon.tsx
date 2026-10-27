@@ -7,6 +7,7 @@ const TONES = {
   gain: "bg-gain/10 text-gain",
   sun: "bg-sun/15 text-warn",
   fan: "bg-fan/10 text-fan",
+  white: "bg-white/15 text-white", // on a colour band
 } as const;
 
 export default function SectionIcon({ icon: Icon, tone = "team" }: { icon: LucideIcon; tone?: keyof typeof TONES }) {

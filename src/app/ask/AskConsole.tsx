@@ -88,7 +88,11 @@ export default function AskConsole({ examples, role }: { examples: string[]; rol
   const running = status === "running";
   return (
     <div className="space-y-6">
-      <section className="rounded-3xl border border-line bg-panel/90 p-6">
+      <section className={`rounded-3xl bg-gradient-to-br p-6 text-white shadow-lg sm:p-8 ${role === "team" ? "from-team to-ink" : "from-brand to-ink"}`}>
+        <p className="mb-4 flex items-center gap-2 text-lg font-bold">
+          <Sparkles className="h-5 w-5 text-sun" aria-hidden />
+          What should the agent find?
+        </p>
         <form
           data-tour="ask-input"
           onSubmit={(e) => {
@@ -103,29 +107,29 @@ export default function AskConsole({ examples, role }: { examples: string[]; rol
             maxLength={500}
             placeholder={role === "team" ? "e.g. Which banks fit our fans best?" : "e.g. Find three NBA teams whose category is open"}
             aria-label="Your goal"
-            className="w-full rounded-full border border-line bg-panel-2 px-5 py-3 text-sm outline-none focus:border-accent"
+            className="w-full rounded-full border border-white/20 bg-white px-5 py-3 text-sm text-text outline-none focus:ring-4 focus:ring-white/30"
           />
-          <button disabled={running || question.trim().length < 5} className="shrink-0 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-bg disabled:opacity-50">
+          <button disabled={running || question.trim().length < 5} className="shrink-0 rounded-full bg-sun px-6 py-3 text-sm font-semibold text-ink disabled:opacity-60">
             {running ? "Working…" : "Ask"}
           </button>
         </form>
         <div data-tour="ask-examples" className="mt-4 grid gap-2 text-sm sm:grid-cols-3">
           {examples.map((x, i) => {
-            const tone = ["border-team/25 bg-team/5 text-team", "border-brand/25 bg-brand/5 text-brand", "border-gain/25 bg-gain/5 text-gain"][i % 3];
+            const tone = ["text-sun", "text-[#7ee2c4]", "text-[#c9b8ff]"][i % 3];
             return (
               <button
                 key={x}
                 disabled={running}
                 onClick={() => ask(x)}
-                className={`group flex items-start gap-2 rounded-2xl border p-3 text-left transition hover:-translate-y-0.5 hover:shadow-md disabled:opacity-50 ${tone}`}
+                className={`group flex items-start gap-2 rounded-2xl border border-white/15 bg-white/10 p-3 text-left transition hover:-translate-y-0.5 hover:bg-white/15 disabled:opacity-50 ${tone}`}
               >
                 <Sparkles className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
-                <span className="text-text">{x}</span>
+                <span className="text-white">{x}</span>
               </button>
             );
           })}
         </div>
-        {error && <p className="mt-3 text-sm text-loss">{error}</p>}
+        {error && <p className="mt-3 rounded-xl bg-white/95 px-3 py-2 text-sm text-loss">{error}</p>}
       </section>
 
       {(steps.length > 0 || running) && (

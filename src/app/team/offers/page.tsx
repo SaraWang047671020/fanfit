@@ -10,7 +10,8 @@ import { PredictedInfo } from "../../Explain";
 import { CopyLink, OfferControls, SimulatedControls } from "./OfferControls";
 import PageHeader from "../../PageHeader";
 import SectionIcon from "@/app/SectionIcon";
-import { ChartColumn, Crosshair, Ticket } from "lucide-react";
+import { BadgeCheck, ChartColumn, Crosshair, Percent, QrCode, Ticket } from "lucide-react";
+import StatBlock from "@/app/StatBlock";
 
 export const metadata: Metadata = { title: "FanFit · Offers and fan map" };
 
@@ -125,10 +126,10 @@ export default async function TeamOffersPage({ searchParams }: PageProps<"/team/
           </div>
         </div>
         <div className="mt-4 grid gap-3 sm:grid-cols-4">
-          <Tile label="Live offers" value={String((offers ?? []).filter((o) => o.active).length)} tone="bg-team" />
-          <Tile label="Codes claimed" value={String(counted.length)} tone="bg-brand" />
-          <Tile label="Redeemed" value={String(redeemed.length)} tone="bg-gain" />
-          <Tile label="Redemption rate" value={pct(redeemed.length, counted.length)} tone="bg-sun" />
+          <StatBlock icon={Ticket} label="Live offers" value={String((offers ?? []).filter((o) => o.active).length)} tone="team" />
+          <StatBlock icon={QrCode} label="Codes claimed" value={String(counted.length)} tone="brand" />
+          <StatBlock icon={BadgeCheck} label="Redeemed" value={String(redeemed.length)} tone="gain" />
+          <StatBlock icon={Percent} label="Redemption rate" value={pct(redeemed.length, counted.length)} tone="sun" />
         </div>
         <div className="mt-6">
           <p className="text-sm font-semibold">Claims by age group</p>
@@ -303,15 +304,5 @@ export default async function TeamOffersPage({ searchParams }: PageProps<"/team/
         </p>
       </section>
     </main>
-  );
-}
-
-function Tile({ label, value, tone }: { label: string; value: string; tone: string }) {
-  return (
-    <div className="relative overflow-hidden rounded-2xl border border-line bg-panel p-4 pl-5">
-      <span className={`absolute inset-y-0 left-0 w-1.5 ${tone}`} aria-hidden />
-      <p className="text-xs font-medium text-muted">{label}</p>
-      <p className="mt-1 text-3xl font-bold tracking-tight">{value}</p>
-    </div>
   );
 }
